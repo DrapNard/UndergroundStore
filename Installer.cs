@@ -225,11 +225,11 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
         }
 
-        public async Task Install(MainWindow mainScript)
+        public async Task Install(MainWindow mainScript, string _path)
         {
+            exeDirectory = _path;
             // Disable the Install/Update/Play button, show progress bar, and status message
             mainScript.Install_Update_Play.IsEnabled = false;
-            mainScript.StatueMask.Visibility = Visibility.Visible;
             mainScript.progressBar.Visibility = Visibility.Visible;
             mainScript.Statue.Content = "Preparation ...";
             mainScript.Statue.Visibility = Visibility.Visible;
@@ -278,7 +278,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
             mainScript.progressBar.IsIndeterminate = false;
             mainScript.Install_Update_Play.IsEnabled = true;
             mainScript.progressBar.Visibility = Visibility.Collapsed;
-            mainScript.StatueMask.Visibility = Visibility.Collapsed;
             mainScript.Statue.Visibility = Visibility.Collapsed;
 
             // Update the Config.ini with the game installation path and graphic pack status
@@ -301,7 +300,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
             mainScript.Install_Update_Play.IsEnabled = false;
             mainScript.progressBar.Visibility = Visibility.Visible;
             mainScript.Statue.Content = "Preparation ...";
-            mainScript.StatueMask.Visibility = Visibility.Visible;
             mainScript.Statue.Visibility = Visibility.Visible;
 
             IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
@@ -360,7 +358,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 mainScript.Install_Update_Play.IsEnabled = true; // Re-enable the button after download
                 mainScript.progressBar.Visibility = Visibility.Collapsed;
                 mainScript.Statue.Visibility = Visibility.Collapsed;
-                mainScript.StatueMask.Visibility = Visibility.Collapsed;
 
                 mainScript.progressBar.Value = 0;
                 mainScript.Install_Update_Play.Content = "Play";
@@ -399,7 +396,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                             mainScript.progressBar.Visibility = Visibility.Visible;
                             mainScript.Statue.Content = "Preparation ...";
                             mainScript.Statue.Visibility = Visibility.Visible;
-                            mainScript.StatueMask.Visibility = Visibility.Visible;
 
                             IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
                             string txtPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GamePath.txt");
@@ -454,7 +450,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                                 mainScript.Install_Update_Play.IsEnabled = true; // Re-enable the button after download
                                 mainScript.progressBar.Visibility = Visibility.Collapsed;
                                 mainScript.Statue.Visibility = Visibility.Collapsed;
-                                mainScript.StatueMask.Visibility = Visibility.Collapsed;
 
                                 mainScript.progressBar.Value = 0;
                                 mainScript.Install_Update_Play.Content = "Play";
@@ -509,7 +504,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                             mainScript.progressBar.Visibility = Visibility.Visible;
                             mainScript.Statue.Content = "Preparation ...";
                             mainScript.Statue.Visibility = Visibility.Visible;
-                            mainScript.StatueMask.Visibility = Visibility.Visible;
 
                             IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
                             string GameDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -568,7 +562,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                                 mainScript.Install_Update_Play.IsEnabled = true; // Re-enable the button after download
                                 mainScript.progressBar.Visibility = Visibility.Collapsed;
                                 mainScript.Statue.Visibility = Visibility.Collapsed;
-                                mainScript.StatueMask.Visibility = Visibility.Collapsed;
 
                                 mainScript.progressBar.Value = 0;
 

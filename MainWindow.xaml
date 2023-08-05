@@ -149,6 +149,48 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="PlayImageButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Image x:Name="buttonImage" Source="/Asset/PlayButton/play_button_base.png" Width="398" Height="215"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="buttonImage" Property="Source" Value="/Asset/PlayButton/play_button_hover.png"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="buttonImage" Property="Source" Value="/Asset/PlayButton/play_button_pressed.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="InstallImageButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Image x:Name="buttonImage" Source="/Asset/PlayButton/install_button_base.png" Width="398" Height="215"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="buttonImage" Property="Source" Value="/Asset/PlayButton/install_button_hover.png"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="buttonImage" Property="Source" Value="/Asset/PlayButton/install_button_pressed.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Window.Template>
@@ -225,16 +267,27 @@
                     <ImageBrush ImageSource="/Asset/pokecommunity-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,520,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="FusionDex" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,525,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="FusionDex_Click" Foreground="{x:Null}" Cursor="Hand">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Asset/pokedex-icon.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
             
-            
-            <Button x:Name="Install_Update_Play" Content="Play" Style="{StaticResource DarkButtonStyle}" HorizontalAlignment="Left" Margin="851,630,0,0" VerticalAlignment="Top" Height="68" Width="206" Click="Install_Update_Play_Click" FontSize="48"/>
+
+            <Button x:Name="Install_Update_Play" HorizontalAlignment="Left" Margin="44,425,0,0" VerticalAlignment="Top" Height="215" Width="398" Click="Install_Update_Play_Click" FontSize="140" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
             <Button Content="----" HorizontalAlignment="Left" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Top" Height="68" FontSize="20" Margin="1057,630,0,0" Visibility="Collapsed"/>
-            <ProgressBar Name="progressBar" Margin="430,635,478,94" Focusable="True" Visibility="Collapsed" />
-            <Rectangle x:Name="StatueMask" Margin="430,678,514,38" Fill="Black" Opacity="0.5" Visibility="Collapsed" />
-            <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="430,678,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="{x:Null}" Foreground="White" Visibility="Collapsed"/>
-            <ScrollViewer x:Name="News" Margin="10,334,904,38" Height="386" Width="386" Background="#7F000000" Foreground="White" FontSize="36"/>
-            <Image Margin="10,10,957,492" Source="/Asset/Title x300.png" Stretch="Fill" Width="333" Height="256"/>
+            <ProgressBar Name="progressBar" Margin="44,663,864,66" Focusable="True" Visibility="Collapsed" />
+            <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="44,692,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="#7F000000" Foreground="White" Visibility="Collapsed"/>
+            <Label Margin="624,62,480,638" Content="News :" Foreground="White" FontSize="36" Background="#7F000000" />
+            <ScrollViewer Margin="624,120,128,35" Background="#7F000000" Foreground="White" FontSize="20">
+                <TextBlock x:Name="News" TextWrapping="Wrap" />
+            </ScrollViewer>
             <Label x:Name="InstPath" Content="" Margin="852,698,98,7" OpacityMask="Black" FontSize="24" IsEnabled="False" />
+            
+            <Image Source="/Asset/Title.png" Margin="0,0,719,366" />
+            <Rectangle x:Name="DisiableOtherButton" Visibility="Collapsed"/>
             <Grid.Effect>
                 <BlurEffect Radius="0" x:Name="BlurEffect" RenderingBias="Quality" KernelType="Gaussian" />
             </Grid.Effect>

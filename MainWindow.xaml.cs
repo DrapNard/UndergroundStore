@@ -65,9 +65,10 @@ namespace Pokémon_Infinite_Fusion_Launcher
             string GamePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GamePath.txt");
             if (File.Exists(GamePath))
             {
+                Install_Update_Play.Style = (Style)FindResource("PlayImageButtonStyle");
                 Install_Update_Play.Content = "Play";
                 install = false;
-                News.Width = 386;
+                News.Width = 640;
                 InstSpritePack.IsEnabled = false;
             }
             else
@@ -100,10 +101,10 @@ namespace Pokémon_Infinite_Fusion_Launcher
             DiscordRpc("On the Launcher of Infinite Fusion", "Idle");
             discordClientInitialize();
         }
-        
+
         private void FirstInitialisation()
         {
-            Install_Update_Play.Content = "Install";
+            Install_Update_Play.Style = (Style)FindResource("InstallImageButtonStyle");
             InstSpritePack.IsEnabled = true;
             install = true;
             News.Width = 730;
@@ -189,12 +190,16 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 // Récupérez les messages passés dans le canal (max. 100 messages)
                 var messages = await channel.GetMessagesAsync(100).FlattenAsync();
 
+                
+
+                Console.WriteLine(messages);
                 // Affichez les messages passés dans le contrôle "News"
                 Dispatcher.Invoke(() =>
                 {
                     foreach (var message in messages)
                     {
-                        News.Content += $"{message.Content}{Environment.NewLine}";
+                        News.Text += $"[{message.Author.Username}]  {message.Content} {Environment.NewLine} --- {Environment.NewLine}";
+
                     }
                 });
             }
@@ -203,7 +208,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 // Affichez une erreur en cas d'échec de récupération des messages passés
                 Dispatcher.Invoke(() =>
                 {
-                    Console.WriteLine( "Erreur lors de la récupération des messages passés : " + ex.Message);
+                News.Text += "Erreur lors de la récupération des messages passés : " + ex.Message ;
                 });
             }
         }
@@ -216,7 +221,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 // Affichez le nouveau message dans le contrôle "News"
                 Dispatcher.Invoke(() =>
                 {
-                    News.Content += $"[{message.Author.Username}] {message.Content}{Environment.NewLine}";
+                    News.Text += $"[{message.Author.Username}] {message.Content} {Environment.NewLine} --- {Environment.NewLine}";
                 });
             }
             return Task.CompletedTask;
@@ -261,6 +266,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
         {
             if (OptionGrid.Visibility == Visibility.Visible)
             {
+                DisiableOtherButton.Visibility = Visibility.Collapsed;
                 OptionGrid.Visibility = Visibility.Collapsed;
                 // Cacher le menu d'options et appliquer l'animation de flou
                 DoubleAnimation blurAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
@@ -272,6 +278,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
             else
             {
+                DisiableOtherButton.Visibility = Visibility.Visible;
                 OptionGrid.Visibility = Visibility.Visible;
                 // Afficher le menu d'options et appliquer l'animation de flou
                 DoubleAnimation blurAnimation = new DoubleAnimation(10, TimeSpan.FromSeconds(0.3));
@@ -355,6 +362,14 @@ namespace Pokémon_Infinite_Fusion_Launcher
             });
         }
 
+        private void FusionDex_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://if.daena.me/")
+            {
+                UseShellExecute = true
+            });
+        }
+
         public void PlayNotificationSound()
         {
             try
@@ -372,6 +387,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
         }
         private async void Install_Update_Play_Click(object sender, RoutedEventArgs e)
         {
+            
             if (install)
             {
                 // Créer une boîte de dialogue personnalisée (peut être un UserControl ou une autre fenêtre WPF)
@@ -385,13 +401,15 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 {
                     if (InstSpritePack.IsChecked == true)
                     {
+                        string SelectFolder = optionsDialog.selectedFolderPath;
                         PlayNotificationSound();
-                        await InstallButon();
+                        await InstallButon(SelectFolder);
                     }
                     else
                     {
+                        string SelectFolder = optionsDialog.selectedFolderPath;
                         PlayNotificationSound();
-                        await InstallerInstance.Install(this);
+                        await InstallerInstance.Install(this, SelectFolder);
                     }
                 }
 
@@ -458,9 +476,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
             client.SetPresence(presence);
         }
 
-        private async Task InstallButon()
+        private async Task InstallButon(string _path)
         {
-            await InstallerInstance.Install(this);
+            await InstallerInstance.Install(this, _path);
             Console.WriteLine($"Le jeu est installé, le téléchargement et l'installation des packs de sprites vont commencer");
             await InstallerInstance.GraphicPackInstall(this);
         }

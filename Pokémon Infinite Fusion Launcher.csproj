@@ -10,6 +10,14 @@
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Asset\calculator-icon.png" />
     <None Remove="Asset\CloseButton.png" />
@@ -18,12 +26,20 @@
     <None Remove="Asset\icon.png" />
     <None Remove="Asset\IF_Banner-launcher.png" />
     <None Remove="Asset\OptionButton.png" />
+    <None Remove="Asset\PlayButton\install_button_base.png" />
+    <None Remove="Asset\PlayButton\install_button_hover.png" />
+    <None Remove="Asset\PlayButton\install_button_pressed.png" />
+    <None Remove="Asset\PlayButton\play_button_base.png" />
+    <None Remove="Asset\PlayButton\play_button_hover.png" />
+    <None Remove="Asset\PlayButton\play_button_pressed.png" />
     <None Remove="Asset\pokecommunity-icon.png" />
+    <None Remove="Asset\pokedex-icon.png" />
     <None Remove="Asset\reddit-icon.png" />
     <None Remove="Asset\SmallButton.png" />
     <None Remove="Asset\Title x300.jpg" />
     <None Remove="Asset\Title x300.png" />
     <None Remove="Asset\Title.jpg" />
+    <None Remove="Asset\Title.png" />
     <None Remove="Asset\wiki-icon.png" />
     <None Remove="icon.ico" />
     <None Remove="icon.png" />
@@ -58,7 +74,28 @@
     <Resource Include="Asset\OptionButton.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Asset\PlayButton\install_button_base.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\PlayButton\install_button_hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\PlayButton\install_button_pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\PlayButton\play_button_base.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\PlayButton\play_button_hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\PlayButton\play_button_pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Asset\pokecommunity-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\pokedex-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Asset\reddit-icon.png">
@@ -74,6 +111,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Asset\Title.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\Title.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Asset\wiki-icon.png">
@@ -92,6 +132,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="LauncherRelease.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="saved.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
