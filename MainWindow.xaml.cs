@@ -53,6 +53,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
         private DiscordSocketClient discordClient;
         private ulong channelId = 302158319886532618;
         private bool SysTray;
+        private TOKEN TOKEN = new TOKEN();
 
         System.Windows.Controls.ProgressBar progressBarInstance = new System.Windows.Controls.ProgressBar();
         System.Windows.Controls.Button Install_Update_PlayInstance = new System.Windows.Controls.Button();
@@ -165,9 +166,8 @@ namespace Pokémon_Infinite_Fusion_Launcher
             discordClient.MessageReceived += DiscordClient_MessageReceived;
 
             // Connectez-vous à Discord en utilisant un token de bot valide
-            string botToken = "MTEzNjMxMjcyNTEwNzEzNDQ4NA.GDsl2Y.5Hbr7Ri3OPHkvYZmnXj8Qv5gzoq7igf8zwUa84";
             discordClient = new DiscordSocketClient();
-            discordClient.LoginAsync(TokenType.Bot, botToken);
+            discordClient.LoginAsync(TokenType.Bot, TOKEN.token);
             discordClient.StartAsync();
 
             // Attendez que le client Discord soit prêt avant de récupérer les messages passés
