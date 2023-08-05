@@ -1,0 +1,968 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0-windows7.0": {
+      "Discord.Net/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Discord.Net.Commands": "3.11.0",
+          "Discord.Net.Core": "3.11.0",
+          "Discord.Net.Interactions": "3.11.0",
+          "Discord.Net.Rest": "3.11.0",
+          "Discord.Net.WebSocket": "3.11.0",
+          "Discord.Net.Webhook": "3.11.0"
+        }
+      },
+      "Discord.Net.Commands/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Discord.Net.Core": "3.11.0"
+        },
+        "compile": {
+          "lib/net6.0/Discord.Net.Commands.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Commands.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Discord.Net.Core/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2",
+          "System.Collections.Immutable": "5.0.0",
+          "System.Interactive.Async": "5.0.0",
+          "System.ValueTuple": "4.5.0"
+        },
+        "compile": {
+          "lib/net6.0/Discord.Net.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Discord.Net.Interactions/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Discord.Net.Core": "3.11.0",
+          "Discord.Net.Rest": "3.11.0",
+          "Discord.Net.WebSocket": "3.11.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0",
+          "System.Collections.Immutable": "5.0.0",
+          "System.Reactive": "5.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Discord.Net.Interactions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Interactions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Discord.Net.Rest/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Discord.Net.Core": "3.11.0"
+        },
+        "compile": {
+          "lib/net6.0/Discord.Net.Rest.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Rest.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Discord.Net.Webhook/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Discord.Net.Core": "3.11.0",
+          "Discord.Net.Rest": "3.11.0"
+        },
+        "compile": {
+          "lib/net6.0/Discord.Net.Webhook.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.Webhook.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Discord.Net.WebSocket/3.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Discord.Net.Core": "3.11.0",
+          "Discord.Net.Rest": "3.11.0"
+        },
+        "compile": {
+          "lib/net6.0/Discord.Net.WebSocket.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Discord.Net.WebSocket.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DiscordRichPresence/1.2.1.24": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Win32.Registry": "4.5.0",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/DiscordRPC.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/DiscordRPC.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "Hardcodet.NotifyIcon.Wpf/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App"
+        ]
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.NETCore.Platforms/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/_._": {}
+        }
+      },
+      "Microsoft.Win32.Registry/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Security.AccessControl": "4.5.0",
+          "System.Security.Principal.Windows": "4.5.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Win32.Registry.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Octokit/7.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Octokit.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Octokit.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Collections.Immutable/5.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/System.Collections.Immutable.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Collections.Immutable.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Interactive.Async/5.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Linq.Async": "5.0.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/System.Interactive.Async.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/System.Interactive.Async.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Linq.Async/5.0.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp3.1/System.Linq.Async.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/System.Linq.Async.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Reactive/5.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/System.Reactive.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0/System.Reactive.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net5.0/_._": {}
+        }
+      },
+      "System.Security.AccessControl/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0",
+          "System.Security.Principal.Windows": "4.5.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Security.AccessControl.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "System.Security.Principal.Windows/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Security.Principal.Windows.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netcoreapp2.0/System.Security.Principal.Windows.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netcoreapp2.0/System.Security.Principal.Windows.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "System.ValueTuple/4.5.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Discord.Net/3.11.0": {
+      "sha512": "v2OuUfpnBwpiokFta1OTEI5X4YqIAhCps6M+hg2K45aiO+wlH33aRUDCTfJzdkKcIvoZzZHTzMoTREe7QrklbA==",
+      "type": "package",
+      "path": "discord.net/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.3.11.0.nupkg.sha512",
+        "discord.net.nuspec"
+      ]
+    },
+    "Discord.Net.Commands/3.11.0": {
+      "sha512": "G++xp6rVOphx6jX8m8TCVfiwQi6AsXlWW+lNXfKE3j5VhSKYbytRXOs0faUCrTa+tsfOGI6OCoe8XHMjEDwPoA==",
+      "type": "package",
+      "path": "discord.net.commands/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.commands.3.11.0.nupkg.sha512",
+        "discord.net.commands.nuspec",
+        "lib/net461/Discord.Net.Commands.dll",
+        "lib/net461/Discord.Net.Commands.xml",
+        "lib/net5.0/Discord.Net.Commands.dll",
+        "lib/net5.0/Discord.Net.Commands.xml",
+        "lib/net6.0/Discord.Net.Commands.dll",
+        "lib/net6.0/Discord.Net.Commands.xml",
+        "lib/netstandard2.0/Discord.Net.Commands.dll",
+        "lib/netstandard2.0/Discord.Net.Commands.xml",
+        "lib/netstandard2.1/Discord.Net.Commands.dll",
+        "lib/netstandard2.1/Discord.Net.Commands.xml"
+      ]
+    },
+    "Discord.Net.Core/3.11.0": {
+      "sha512": "jVwzXlIs/tHFufukhych0/GGOntXOYr2hDJyJTYprvJBMGtGZG2N8GZDt923wW/08M96DX7SesDwOdItvT7VzQ==",
+      "type": "package",
+      "path": "discord.net.core/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.core.3.11.0.nupkg.sha512",
+        "discord.net.core.nuspec",
+        "lib/net461/Discord.Net.Core.dll",
+        "lib/net461/Discord.Net.Core.xml",
+        "lib/net5.0/Discord.Net.Core.dll",
+        "lib/net5.0/Discord.Net.Core.xml",
+        "lib/net6.0/Discord.Net.Core.dll",
+        "lib/net6.0/Discord.Net.Core.xml",
+        "lib/netstandard2.0/Discord.Net.Core.dll",
+        "lib/netstandard2.0/Discord.Net.Core.xml",
+        "lib/netstandard2.1/Discord.Net.Core.dll",
+        "lib/netstandard2.1/Discord.Net.Core.xml"
+      ]
+    },
+    "Discord.Net.Interactions/3.11.0": {
+      "sha512": "JyxnIKhcR7KfYAOiNC720mq5qjgU8VjU++AgvJJDChq1/8qP/pgimDOvQi/Vvx9gsCRAI1avOGzy94DH8GsS7Q==",
+      "type": "package",
+      "path": "discord.net.interactions/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.interactions.3.11.0.nupkg.sha512",
+        "discord.net.interactions.nuspec",
+        "lib/net461/Discord.Net.Interactions.dll",
+        "lib/net461/Discord.Net.Interactions.xml",
+        "lib/net5.0/Discord.Net.Interactions.dll",
+        "lib/net5.0/Discord.Net.Interactions.xml",
+        "lib/net6.0/Discord.Net.Interactions.dll",
+        "lib/net6.0/Discord.Net.Interactions.xml",
+        "lib/netstandard2.0/Discord.Net.Interactions.dll",
+        "lib/netstandard2.0/Discord.Net.Interactions.xml",
+        "lib/netstandard2.1/Discord.Net.Interactions.dll",
+        "lib/netstandard2.1/Discord.Net.Interactions.xml"
+      ]
+    },
+    "Discord.Net.Rest/3.11.0": {
+      "sha512": "mq/pE+j1dISgD0740rFKIdrONa6R0Rn+gw6qjq9baJRH8eezVr7zRJOW0QMy/X+iSnh+hxJWW9eErCGWuShXNg==",
+      "type": "package",
+      "path": "discord.net.rest/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.rest.3.11.0.nupkg.sha512",
+        "discord.net.rest.nuspec",
+        "lib/net461/Discord.Net.Rest.dll",
+        "lib/net461/Discord.Net.Rest.xml",
+        "lib/net5.0/Discord.Net.Rest.dll",
+        "lib/net5.0/Discord.Net.Rest.xml",
+        "lib/net6.0/Discord.Net.Rest.dll",
+        "lib/net6.0/Discord.Net.Rest.xml",
+        "lib/netstandard2.0/Discord.Net.Rest.dll",
+        "lib/netstandard2.0/Discord.Net.Rest.xml",
+        "lib/netstandard2.1/Discord.Net.Rest.dll",
+        "lib/netstandard2.1/Discord.Net.Rest.xml"
+      ]
+    },
+    "Discord.Net.Webhook/3.11.0": {
+      "sha512": "rLGzOTEECVwKbjHfy2u57zI8xfd2x7Je8DYhAUdHnKjZhHupYFXn4xHWLDiv/7wuWT5H0MIR7rbtHM7eKdC9mQ==",
+      "type": "package",
+      "path": "discord.net.webhook/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.webhook.3.11.0.nupkg.sha512",
+        "discord.net.webhook.nuspec",
+        "lib/net5.0/Discord.Net.Webhook.dll",
+        "lib/net5.0/Discord.Net.Webhook.xml",
+        "lib/net6.0/Discord.Net.Webhook.dll",
+        "lib/net6.0/Discord.Net.Webhook.xml",
+        "lib/netstandard2.0/Discord.Net.Webhook.dll",
+        "lib/netstandard2.0/Discord.Net.Webhook.xml",
+        "lib/netstandard2.1/Discord.Net.Webhook.dll",
+        "lib/netstandard2.1/Discord.Net.Webhook.xml"
+      ]
+    },
+    "Discord.Net.WebSocket/3.11.0": {
+      "sha512": "85vyo2bMThjgQgu1Fr4NCi7TNXrWEn3MlRF9zt1qcAFlMNy8UE6qpa1KmERD0Z05G8UB+l8/UQ4TmH1mWN/cqQ==",
+      "type": "package",
+      "path": "discord.net.websocket/3.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "PackageLogo.png",
+        "discord.net.websocket.3.11.0.nupkg.sha512",
+        "discord.net.websocket.nuspec",
+        "lib/net461/Discord.Net.WebSocket.dll",
+        "lib/net461/Discord.Net.WebSocket.xml",
+        "lib/net5.0/Discord.Net.WebSocket.dll",
+        "lib/net5.0/Discord.Net.WebSocket.xml",
+        "lib/net6.0/Discord.Net.WebSocket.dll",
+        "lib/net6.0/Discord.Net.WebSocket.xml",
+        "lib/netstandard2.0/Discord.Net.WebSocket.dll",
+        "lib/netstandard2.0/Discord.Net.WebSocket.xml",
+        "lib/netstandard2.1/Discord.Net.WebSocket.dll",
+        "lib/netstandard2.1/Discord.Net.WebSocket.xml"
+      ]
+    },
+    "DiscordRichPresence/1.2.1.24": {
+      "sha512": "DVmmlFQ/oQmidNRmZhPzYjC7ryaT4beWcKaMKPVw6fhOzM/HOoY6NOL4KMOYEnD4M7SNsODjleYimvUNIZcbiA==",
+      "type": "package",
+      "path": "discordrichpresence/1.2.1.24",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "discordrichpresence.1.2.1.24.nupkg.sha512",
+        "discordrichpresence.nuspec",
+        "lib/net45/DiscordRPC.dll",
+        "lib/net45/DiscordRPC.pdb",
+        "lib/net45/DiscordRPC.xml",
+        "lib/netstandard2.0/DiscordRPC.dll",
+        "lib/netstandard2.0/DiscordRPC.pdb",
+        "lib/netstandard2.0/DiscordRPC.xml"
+      ]
+    },
+    "Hardcodet.NotifyIcon.Wpf/1.1.0": {
+      "sha512": "FFEkdRSidMrbMfQVwhCzq6KtSyR1qQojqtiUrkCyjnOOuMf7W3TNQkzFnBBxYxFe7uLk5mz7M38wFh1qdWyfvg==",
+      "type": "package",
+      "path": "hardcodet.notifyicon.wpf/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512",
+        "hardcodet.notifyicon.wpf.nuspec",
+        "icon.png",
+        "lib/net45/Hardcodet.NotifyIcon.Wpf.dll",
+        "lib/net45/Hardcodet.NotifyIcon.Wpf.xml",
+        "lib/net462/Hardcodet.NotifyIcon.Wpf.dll",
+        "lib/net462/Hardcodet.NotifyIcon.Wpf.xml",
+        "lib/net472/Hardcodet.NotifyIcon.Wpf.dll",
+        "lib/net472/Hardcodet.NotifyIcon.Wpf.xml",
+        "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.dll",
+        "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.xml",
+        "lib/netcoreapp3.1/Hardcodet.NotifyIcon.Wpf.dll",
+        "lib/netcoreapp3.1/Hardcodet.NotifyIcon.Wpf.xml"
+      ]
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+      "sha512": "ORj7Zh81gC69TyvmcUm9tSzytcy8AVousi+IVRAI8nLieQjOFryRusSFh7+aLk16FN9pQNqJAiMd7BTKINK0kA==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "Microsoft.NETCore.Platforms/2.0.0": {
+      "sha512": "VdLJOCXhZaEMY7Hm2GKiULmn7IEPFE4XC5LPSfBVCUIA8YLZVh846gtfBJalsPQF2PlzdD7ecX7DZEulJ402ZQ==",
+      "type": "package",
+      "path": "microsoft.netcore.platforms/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netstandard1.0/_._",
+        "microsoft.netcore.platforms.2.0.0.nupkg.sha512",
+        "microsoft.netcore.platforms.nuspec",
+        "runtime.json",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "Microsoft.Win32.Registry/4.5.0": {
+      "sha512": "+FWlwd//+Tt56316p00hVePBCouXyEzT86Jb3+AuRotTND0IYn0OO3obs1gnQEs/txEnt+rF2JBGLItTG+Be6A==",
+      "type": "package",
+      "path": "microsoft.win32.registry/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/Microsoft.Win32.Registry.dll",
+        "lib/net461/Microsoft.Win32.Registry.dll",
+        "lib/netstandard1.3/Microsoft.Win32.Registry.dll",
+        "lib/netstandard2.0/Microsoft.Win32.Registry.dll",
+        "microsoft.win32.registry.4.5.0.nupkg.sha512",
+        "microsoft.win32.registry.nuspec",
+        "ref/net46/Microsoft.Win32.Registry.dll",
+        "ref/net461/Microsoft.Win32.Registry.dll",
+        "ref/net461/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/Microsoft.Win32.Registry.dll",
+        "ref/netstandard1.3/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/de/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/es/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/fr/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/it/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/ja/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/ko/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/ru/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/zh-hans/Microsoft.Win32.Registry.xml",
+        "ref/netstandard1.3/zh-hant/Microsoft.Win32.Registry.xml",
+        "ref/netstandard2.0/Microsoft.Win32.Registry.dll",
+        "ref/netstandard2.0/Microsoft.Win32.Registry.xml",
+        "runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll",
+        "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
+        "runtimes/win/lib/net461/Microsoft.Win32.Registry.dll",
+        "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll",
+        "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "Newtonsoft.Json/13.0.2": {
+      "sha512": "R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.2.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "Octokit/7.1.0": {
+      "sha512": "v2qhKBe1Zlssa4XOmpOXNDFBrOAMw2tBmr8L8YMSrEi+PlF/L/PboZcXHSkZuhIxIeOGxEFiwkuJLkvG4aHNHQ==",
+      "type": "package",
+      "path": "octokit/7.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Octokit.dll",
+        "lib/netstandard2.0/Octokit.xml",
+        "octokit.7.1.0.nupkg.sha512",
+        "octokit.nuspec",
+        "octokit.png"
+      ]
+    },
+    "System.Collections.Immutable/5.0.0": {
+      "sha512": "FXkLXiK0sVVewcso0imKQoOxjoPAj42R8HtjjbSjVPAzwDfzoyoznWxgA3c38LDbN9SJux1xXoXYAhz98j7r2g==",
+      "type": "package",
+      "path": "system.collections.immutable/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Collections.Immutable.dll",
+        "lib/net461/System.Collections.Immutable.xml",
+        "lib/netstandard1.0/System.Collections.Immutable.dll",
+        "lib/netstandard1.0/System.Collections.Immutable.xml",
+        "lib/netstandard1.3/System.Collections.Immutable.dll",
+        "lib/netstandard1.3/System.Collections.Immutable.xml",
+        "lib/netstandard2.0/System.Collections.Immutable.dll",
+        "lib/netstandard2.0/System.Collections.Immutable.xml",
+        "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+        "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml",
+        "system.collections.immutable.5.0.0.nupkg.sha512",
+        "system.collections.immutable.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Interactive.Async/5.0.0": {
+      "sha512": "QaqhQVDiULcu4vm6o89+iP329HcK44cETHOYgy/jfEjtzeFy0ZxmuM7nel9ocjnKxEM4yh1mli7hgh8Q9o+/Iw==",
+      "type": "package",
+      "path": "system.interactive.async/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/System.Interactive.Async.dll",
+        "lib/net461/System.Interactive.Async.xml",
+        "lib/netcoreapp3.1/System.Interactive.Async.dll",
+        "lib/netcoreapp3.1/System.Interactive.Async.xml",
+        "lib/netstandard2.0/System.Interactive.Async.dll",
+        "lib/netstandard2.0/System.Interactive.Async.xml",
+        "lib/netstandard2.1/System.Interactive.Async.dll",
+        "lib/netstandard2.1/System.Interactive.Async.xml",
+        "system.interactive.async.5.0.0.nupkg.sha512",
+        "system.interactive.async.nuspec"
+      ]
+    },
+    "System.Linq.Async/5.0.0": {
+      "sha512": "cPtIuuH8TIjVHSi2ewwReWGW1PfChPE0LxPIDlfwVcLuTM9GANFTXiMB7k3aC4sk3f0cQU25LNKzx+jZMxijqw==",
+      "type": "package",
+      "path": "system.linq.async/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/System.Linq.Async.dll",
+        "lib/net461/System.Linq.Async.xml",
+        "lib/netcoreapp3.1/System.Linq.Async.dll",
+        "lib/netcoreapp3.1/System.Linq.Async.xml",
+        "lib/netstandard2.0/System.Linq.Async.dll",
+        "lib/netstandard2.0/System.Linq.Async.xml",
+        "lib/netstandard2.1/System.Linq.Async.dll",
+        "lib/netstandard2.1/System.Linq.Async.xml",
+        "ref/net461/System.Linq.Async.dll",
+        "ref/net461/System.Linq.Async.xml",
+        "ref/netcoreapp3.1/System.Linq.Async.dll",
+        "ref/netcoreapp3.1/System.Linq.Async.xml",
+        "ref/netstandard2.0/System.Linq.Async.dll",
+        "ref/netstandard2.0/System.Linq.Async.xml",
+        "ref/netstandard2.1/System.Linq.Async.dll",
+        "ref/netstandard2.1/System.Linq.Async.xml",
+        "system.linq.async.5.0.0.nupkg.sha512",
+        "system.linq.async.nuspec"
+      ]
+    },
+    "System.Reactive/5.0.0": {
+      "sha512": "erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ==",
+      "type": "package",
+      "path": "system.reactive/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net5.0/_._",
+        "build/netcoreapp3.1/System.Reactive.dll",
+        "build/netcoreapp3.1/System.Reactive.targets",
+        "build/netcoreapp3.1/System.Reactive.xml",
+        "buildTransitive/net5.0/_._",
+        "buildTransitive/netcoreapp3.1/System.Reactive.targets",
+        "lib/net472/System.Reactive.dll",
+        "lib/net472/System.Reactive.xml",
+        "lib/net5.0-windows10.0.19041/System.Reactive.dll",
+        "lib/net5.0-windows10.0.19041/System.Reactive.xml",
+        "lib/net5.0/System.Reactive.dll",
+        "lib/net5.0/System.Reactive.xml",
+        "lib/netcoreapp3.1/_._",
+        "lib/netstandard2.0/System.Reactive.dll",
+        "lib/netstandard2.0/System.Reactive.xml",
+        "lib/uap10.0.16299/System.Reactive.dll",
+        "lib/uap10.0.16299/System.Reactive.pri",
+        "lib/uap10.0.16299/System.Reactive.xml",
+        "system.reactive.5.0.0.nupkg.sha512",
+        "system.reactive.nuspec"
+      ]
+    },
+    "System.Security.AccessControl/4.5.0": {
+      "sha512": "vW8Eoq0TMyz5vAG/6ce483x/CP83fgm4SJe5P8Tb1tZaobcvPrbMEL7rhH1DRdrYbbb6F0vq3OlzmK0Pkwks5A==",
+      "type": "package",
+      "path": "system.security.accesscontrol/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.Security.AccessControl.dll",
+        "lib/net461/System.Security.AccessControl.dll",
+        "lib/netstandard1.3/System.Security.AccessControl.dll",
+        "lib/netstandard2.0/System.Security.AccessControl.dll",
+        "lib/uap10.0.16299/_._",
+        "ref/net46/System.Security.AccessControl.dll",
+        "ref/net461/System.Security.AccessControl.dll",
+        "ref/net461/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/System.Security.AccessControl.dll",
+        "ref/netstandard1.3/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/de/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/es/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/fr/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/it/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/ja/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/ko/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/ru/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/zh-hans/System.Security.AccessControl.xml",
+        "ref/netstandard1.3/zh-hant/System.Security.AccessControl.xml",
+        "ref/netstandard2.0/System.Security.AccessControl.dll",
+        "ref/netstandard2.0/System.Security.AccessControl.xml",
+        "ref/uap10.0.16299/_._",
+        "runtimes/win/lib/net46/System.Security.AccessControl.dll",
+        "runtimes/win/lib/net461/System.Security.AccessControl.dll",
+        "runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.dll",
+        "runtimes/win/lib/netstandard1.3/System.Security.AccessControl.dll",
+        "runtimes/win/lib/uap10.0.16299/_._",
+        "system.security.accesscontrol.4.5.0.nupkg.sha512",
+        "system.security.accesscontrol.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Security.Principal.Windows/4.5.0": {
+      "sha512": "U77HfRXlZlOeIXd//Yoj6Jnk8AXlbeisf1oq1os+hxOGVnuG+lGSfGqTwTZBoORFF6j/0q7HXIl8cqwQ9aUGqQ==",
+      "type": "package",
+      "path": "system.security.principal.windows/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.Security.Principal.Windows.dll",
+        "lib/net461/System.Security.Principal.Windows.dll",
+        "lib/netstandard1.3/System.Security.Principal.Windows.dll",
+        "lib/netstandard2.0/System.Security.Principal.Windows.dll",
+        "lib/uap10.0.16299/_._",
+        "ref/net46/System.Security.Principal.Windows.dll",
+        "ref/net461/System.Security.Principal.Windows.dll",
+        "ref/net461/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/System.Security.Principal.Windows.dll",
+        "ref/netstandard1.3/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/de/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/es/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/fr/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/it/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/ja/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/ko/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/ru/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/zh-hans/System.Security.Principal.Windows.xml",
+        "ref/netstandard1.3/zh-hant/System.Security.Principal.Windows.xml",
+        "ref/netstandard2.0/System.Security.Principal.Windows.dll",
+        "ref/netstandard2.0/System.Security.Principal.Windows.xml",
+        "ref/uap10.0.16299/_._",
+        "runtimes/unix/lib/netcoreapp2.0/System.Security.Principal.Windows.dll",
+        "runtimes/win/lib/net46/System.Security.Principal.Windows.dll",
+        "runtimes/win/lib/net461/System.Security.Principal.Windows.dll",
+        "runtimes/win/lib/netcoreapp2.0/System.Security.Principal.Windows.dll",
+        "runtimes/win/lib/netstandard1.3/System.Security.Principal.Windows.dll",
+        "runtimes/win/lib/uap10.0.16299/_._",
+        "system.security.principal.windows.4.5.0.nupkg.sha512",
+        "system.security.principal.windows.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.ValueTuple/4.5.0": {
+      "sha512": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+      "type": "package",
+      "path": "system.valuetuple/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.ValueTuple.dll",
+        "lib/net461/System.ValueTuple.xml",
+        "lib/net47/System.ValueTuple.dll",
+        "lib/net47/System.ValueTuple.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.ValueTuple.dll",
+        "lib/netstandard1.0/System.ValueTuple.xml",
+        "lib/netstandard2.0/_._",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
+        "lib/uap10.0.16299/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net461/System.ValueTuple.dll",
+        "ref/net47/System.ValueTuple.dll",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard2.0/_._",
+        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "ref/uap10.0.16299/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.valuetuple.4.5.0.nupkg.sha512",
+        "system.valuetuple.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0-windows7.0": [
+      "Discord.Net >= 3.11.0",
+      "DiscordRichPresence >= 1.2.1.24",
+      "Hardcodet.NotifyIcon.Wpf >= 1.1.0",
+      "Octokit >= 7.1.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Drap\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+      "projectName": "Pokémon Infinite Fusion Launcher",
+      "projectPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+      "packagesPath": "C:\\Users\\Drap\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Drap\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0-windows7.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows7.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0-windows7.0": {
+        "targetAlias": "net6.0-windows7.0",
+        "dependencies": {
+          "Discord.Net": {
+            "target": "Package",
+            "version": "[3.11.0, )"
+          },
+          "DiscordRichPresence": {
+            "target": "Package",
+            "version": "[1.2.1.24, )"
+          },
+          "Hardcodet.NotifyIcon.Wpf": {
+            "target": "Package",
+            "version": "[1.1.0, )"
+          },
+          "Octokit": {
+            "target": "Package",
+            "version": "[7.1.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App": {
+            "privateAssets": "none"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

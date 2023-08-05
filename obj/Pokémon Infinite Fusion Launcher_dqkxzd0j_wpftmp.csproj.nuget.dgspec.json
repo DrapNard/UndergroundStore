@@ -1,0 +1,79 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+        "projectName": "Pokémon Infinite Fusion Launcher",
+        "projectPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+        "packagesPath": "C:\\Users\\Drap\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Drap\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows7.0",
+          "dependencies": {
+            "Hardcodet.NotifyIcon.Wpf": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "Octokit": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

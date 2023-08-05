@@ -1,0 +1,23 @@
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\bin\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.exe
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\bin\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.deps.json
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\bin\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.runtimeconfig.json
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\bin\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.dll
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\bin\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.pdb
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.csproj.AssemblyReference.cache
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\App.g.cs
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher_MarkupCompile.cache
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher_MarkupCompile.lref
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\MainWindow.baml
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.g.resources
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.AssemblyInfoInputs.cache
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.AssemblyInfo.cs
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.csproj.CoreCompileInputs.cache
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.dll
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\refint\Pokémon Infinite Fusion Launcher.dll
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.pdb
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.genruntimeconfig.cache
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\ref\Pokémon Infinite Fusion Launcher.dll
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\bin\Debug\net6.0-windows\Octokit.dll
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows\Pokémon Infinite Fusion Launcher.csproj.CopyComplete

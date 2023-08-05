@@ -1,0 +1,262 @@
+﻿<Window x:Class="Pokémon_Infinite_Fusion_Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pokémon_Infinite_Fusion_Launcher"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        mc:Ignorable="d"
+        Title="Pokémon Infinite Fusion Launcher" Height="800" Width="1300" ResizeMode="CanMinimize" Icon="/icon.png" WindowStyle="None" VerticalAlignment="Top">
+
+    <Window.Resources>
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="FontSize" Value="16"/>
+            <!-- Ajoutez d'autres setters ici pour personnaliser le style -->
+        </Style>
+        <Style x:Key="DarkButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#363636"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4F4F4F"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2F2F2F"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#595959"/>
+                                <Setter Property="Foreground" Value="#A0A0A0"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Style de l'animation d'opacité -->
+        <Storyboard x:Key="OpacityAnimation" RepeatBehavior="Forever" x:Name="OpacityAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1.0" To="0.0" Duration="0:0:1" AutoReverse="True"/>
+        </Storyboard>
+
+        <!-- Style de bouton sans focus -->
+        <Style x:Key="ButtonStyleNoFocus" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style de bouton animé avec l'animation d'opacité -->
+        <Style x:Key="AnimatedButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyleNoFocus}">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource OpacityAnimation}" Name="OpacityAnimation_BeginStoryboard"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <StopStoryboard BeginStoryboardName="OpacityAnimation_BeginStoryboard"/>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="RedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="Red"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Define the red border brush -->
+        <SolidColorBrush x:Key="RedBorderBrush" Color="#FFFF8282" />
+        <!-- Define the button style with custom border -->
+        <Style x:Key="RedBorderButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="ButtonBorder"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource RedBorderBrush}" />
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource RedBorderBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="WhiteBorderBrush" Color="#FFD4D4D4" />
+        <!-- Define the button style with custom border -->
+        <Style x:Key="WhiteBorderButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="ButtonBorder"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource WhiteBorderBrush}" />
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource WhiteBorderBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border Background="Transparent">
+                <Grid>
+                    <!-- Titre bar personnalisé -->
+                    <Grid Height="50" Background="#333333" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Margin="0,0,0,750">
+                        <!-- Ajoutez des contrôles ici, comme un bouton -->
+                        <Button x:Name="ExitButton" Click="ExitButton_Click" Style="{StaticResource RedBorderButtonStyle}"  Margin="1250,0,0,0" Width="NaN" Height="NaN" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Cursor="Hand" >
+                            <Button.Content>
+                                <Image Source="/Asset/CloseButton.png"/>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="SmallButton" Click="MinimazeButton_Click" Style="{StaticResource WhiteBorderButtonStyle}" Margin="1200,0,50,0" Width="NaN" Height="NaN" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" Cursor="Hand">
+                            <Button.Content>
+                                <Image Stretch="Uniform" Source="/Asset/SmallButton.png"/>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="OptionButton"  Click="OptionButton_Click" Style="{StaticResource WhiteBorderButtonStyle}" Margin="1150,0,100,0" Width="NaN" Height="NaN" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" Cursor="Hand" >
+                            <Button.Content>
+                                <Image Source="/Asset/OptionButton.png"/>
+                            </Button.Content>
+                        </Button>
+                        <Label Content="Pokémon Infinite Fusion Launcher" HorizontalAlignment="Left" Height="50" Width="440" Cursor="" FontSize="24" VerticalAlignment="Center" Margin="52,0,0,0" Foreground="White"/>
+                        <Image Source="/Asset/icon.png" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <!-- Contenu de la fenêtre -->
+                    <Border Margin="0,50,0,0" Background="White" Height="750">
+                        <ContentPresenter Height="748" >
+                        </ContentPresenter>
+                    </Border>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
+    <Grid>
+        <Grid Margin="0,-7,0,-3">
+            <Image Source="/Asset/IF_Banner-launcher.png" Margin="0,5,0,1" />
+
+            <Rectangle HorizontalAlignment="Left" Height="773" Margin="1202,6.,0,0" VerticalAlignment="Top" Width="98" Opacity="0.5" Fill="Black"/>
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="Discord" Style="{StaticResource AnimatedButtonStyle}"  HorizontalAlignment="Left" Margin="1223,25,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Discord_Click" Foreground="{x:Null}" Cursor="Hand" Background="{x:Null}">
+                <Button.Content>
+                    <Image Source="/Asset/discord-icon x500.png" Stretch="Uniform"></Image>
+                </Button.Content>
+            </Button>
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="Wiki" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,125,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Wiki_Click" Foreground="{x:Null}" Cursor="Hand">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Asset/wiki-icon.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,220,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="Calcutor" Style="{StaticResource AnimatedButtonStyle}"  HorizontalAlignment="Left" Margin="1223,225,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Calcutor_Click" Foreground="{x:Null}" Cursor="Hand" Background="{x:Null}">
+                <Button.Content>
+                    <Image Source="/Asset/calculator-icon.png" Stretch="Uniform"></Image>
+                </Button.Content>
+            </Button>
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,320,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="Reddit" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,325,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Reddit_Click" Foreground="{x:Null}" Cursor="Hand">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Asset/reddit-icon.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,420,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="Pokecommunity" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,425,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Pokecommunity_Click" Foreground="{x:Null}" Cursor="Hand">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Asset/pokecommunity-icon.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+            
+            
+            <Button x:Name="Install_Update_Play" Content="Play" Style="{StaticResource DarkButtonStyle}" HorizontalAlignment="Left" Margin="851,630,0,0" VerticalAlignment="Top" Height="68" Width="206" Click="Install_Update_Play_Click" FontSize="48"/>
+            <Button Content="----" HorizontalAlignment="Left" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Top" Height="68" FontSize="20" Margin="1057,630,0,0" Visibility="Collapsed"/>
+            <ProgressBar Name="progressBar" Margin="430,635,478,94" Focusable="True" Visibility="Collapsed" />
+            <Rectangle x:Name="StatueMask" Margin="430,678,514,38" Fill="Black" Opacity="0.5" Visibility="Collapsed" />
+            <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="430,678,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="{x:Null}" Foreground="White" Visibility="Collapsed"/>
+            <ScrollViewer x:Name="News" Margin="10,334,904,38" Height="386" Width="386" Background="#7F000000" Foreground="White" FontSize="36"/>
+            <Image Margin="10,10,957,492" Source="/Asset/Title x300.png" Stretch="Fill" Width="333" Height="256"/>
+            <Label x:Name="InstPath" Content="" Margin="852,698,98,7" OpacityMask="Black" FontSize="24" IsEnabled="False" />
+            <Grid.Effect>
+                <BlurEffect Radius="0" x:Name="BlurEffect" RenderingBias="Quality" KernelType="Gaussian" />
+            </Grid.Effect>
+        </Grid>
+        <Grid x:Name="OptionGrid" Background="#1A1A1A" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+            <!-- Grid pour les catégories -->
+            <Rectangle Height="500" />
+            <Rectangle Fill="#FF3E3E3E" HorizontalAlignment="Right" Width="600" />
+            <Label Foreground="White" Content="Settings" FontSize="36" Margin="25,10,636,431" />
+            <CheckBox x:Name="MinimizeSysTray" Content="Minimize in system tray" FontSize="20" HorizontalAlignment="Left" Margin="257,110,0,358" Width="256" Checked="MinimizeSysTray_Checked" Background="White" Foreground="White"/>
+            <CheckBox x:Name="CloseApp" HorizontalAlignment="Left" Margin="257,182,0,286" Width="243" Checked="CloseApp_Checked" Content="Always close app" Foreground="White" FontSize="20" />
+            <Label Foreground="White" HorizontalAlignment="Left" Content="Closing" FontSize="24" Margin="250,50,0,395" Width="119" />
+            <Label Foreground="White" HorizontalAlignment="Left" Content="Save" FontSize="24" Margin="250,250,0,207" Width="60" />
+            <Label Foreground="White" HorizontalAlignment="Left" Content="Other" FontSize="24" Margin="250,383,0,73" Width="80" />
+            <CheckBox x:Name="InstSpritePack" HorizontalAlignment="Left" Margin="257,432,0,36" Width="533" Checked="InstSpritePack_Checked" Content="Install Sprite Pack   ⚠️ Only when installing the Game ⚠️" Foreground="White" FontSize="20" />
+            <Button Height="50" Margin="250,310,390,140" Content="Open Save Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="Button_Click" Cursor="Hand"/>
+            <Grid.RenderTransform>
+                <TranslateTransform X="0" />
+            </Grid.RenderTransform>
+        </Grid>
+
+
+
+    </Grid>
+</Window>
