@@ -422,7 +422,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 }
 
                 PlayNotificationSound();
-                Install_Update_Play.Style = (Style)FindResource("PlayImageButtonStyle");
                 return;
             }
             if (!install)
@@ -555,6 +554,17 @@ namespace Pokémon_Infinite_Fusion_Launcher
             else
             {
                 InstOptDiag.GraphPackInstall.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public void InstPlayButtonStyle(bool Install)
+        {
+            if (Install)
+            {
+                Install_Update_Play.Style = (Style)FindResource("PlayImageButtonStyle");
+            }else
+            {
+                Install_Update_Play.Style = (Style)FindResource("InstallImageButtonStyle");
             }
         }
     }

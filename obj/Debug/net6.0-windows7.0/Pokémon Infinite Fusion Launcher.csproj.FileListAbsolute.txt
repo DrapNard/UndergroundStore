@@ -23,4 +23,3 @@ C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite F
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\saved.bat
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\WindowsBackground.wav
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\LauncherRelease.txt
-C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher_Content.g.cs

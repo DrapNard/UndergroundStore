@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -290,7 +291,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             mainScript.install = false;
             mainScript.progressBar.Value = 0;
             mainScript.Install_Update_Play.Content = "Play";
-
+            mainScript.InstPlayButtonStyle(true);
             mainScript.InstSpritePack.IsEnabled = false;
     }
 
@@ -518,12 +519,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
                                 mainScript.Statue.Content = "Downloading Update Archive ...";
                                 // Download the update file
                                 await ReleaseDownloaderAsync(progress, "DrapNard", "InfiniteFusion-Launcher", "Update");
+                                Thread.Sleep(3000);
 
                                 mainScript.Statue.Content = "Extracting Update File ...";
 
                                 // Extract the update files
                                 await DecompressZip(ZipInstaller, tempDirectory);
-
+                                Thread.Sleep(3000);
                                 mainScript.Statue.Content = "Finishing ...";
 
                                 // Replace the application files with the new files
@@ -540,7 +542,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                                 CopyFilesRecursively(new DirectoryInfo(InstallfolderPath), new DirectoryInfo(GameDirectory));
 
                                 mainScript.Statue.Content = "Update completed successfully!";
-
+                                Thread.Sleep(3000);
 
                             }
                             catch (Exception ex)
@@ -564,6 +566,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                                 mainScript.Statue.Visibility = Visibility.Collapsed;
 
                                 mainScript.progressBar.Value = 0;
+                                Thread.Sleep(3000);
 
                                 string appPath = Process.GetCurrentProcess().MainModule.FileName;
 
