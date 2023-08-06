@@ -381,7 +381,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     Console.WriteLine($"Latest release name: {releaseName}");
                 }
 
-                string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "/Release_Actual.txt");
+                string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Release_Actual.txt");
                 if (File.Exists(txtFolder))
                 {
                     string actualRelease = File.ReadAllText(txtFolder);
@@ -489,7 +489,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     Console.WriteLine($"Latest release name: {releaseName}");
                 }
 
-                string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "/LauncherRelease.txt");
+                string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LauncherRelease.txt");
                 if (File.Exists(txtFolder))
                 {
                     string actualRelease = await File.ReadAllTextAsync(txtFolder);
