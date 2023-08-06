@@ -8,6 +8,7 @@
     <UseWPF>true</UseWPF>
     <BaseOutputPath>C:\Users\Drap\Desktop\Debug</BaseOutputPath>
     <UseWindowsForms>True</UseWindowsForms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -44,6 +45,10 @@
     <None Remove="Asset\wiki-icon.png" />
     <None Remove="icon.ico" />
     <None Remove="icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
