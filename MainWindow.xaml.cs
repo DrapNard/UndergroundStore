@@ -370,6 +370,14 @@ namespace Pokémon_Infinite_Fusion_Launcher
             });
         }
 
+        private void GitHub_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://github.com/DrapNard/InfiniteFusion-Launcher")
+            {
+                UseShellExecute = true
+            });
+        }
+
         public void PlayNotificationSound()
         {
             try
@@ -414,6 +422,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 }
 
                 PlayNotificationSound();
+                Install_Update_Play.Style = (Style)FindResource("PlayImageButtonStyle");
                 return;
             }
             if (!install)

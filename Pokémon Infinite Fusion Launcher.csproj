@@ -23,6 +23,7 @@
     <None Remove="Asset\CloseButton.png" />
     <None Remove="Asset\discord-icon x500.png" />
     <None Remove="Asset\discord-icon.png" />
+    <None Remove="Asset\github-icon.png" />
     <None Remove="Asset\icon.png" />
     <None Remove="Asset\IF_Banner-launcher.png" />
     <None Remove="Asset\OptionButton.png" />
@@ -64,6 +65,9 @@
     </Resource>
     <Resource Include="Asset\discord-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Asset\github-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Asset\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

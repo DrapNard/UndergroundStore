@@ -274,7 +274,13 @@
                     <ImageBrush ImageSource="/Asset/pokedex-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
-            
+
+            <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,620,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
+            <Button x:Name="GitHub" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,625,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="GitHub_Click" Foreground="{x:Null}" Cursor="Hand">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Asset/github-icon.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
 
             <Button x:Name="Install_Update_Play" HorizontalAlignment="Left" Margin="44,425,0,0" VerticalAlignment="Top" Height="215" Width="398" Click="Install_Update_Play_Click" FontSize="140" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
             <Button Content="----" HorizontalAlignment="Left" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Top" Height="68" FontSize="20" Margin="1057,630,0,0" Visibility="Collapsed"/>
