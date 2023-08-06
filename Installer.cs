@@ -385,7 +385,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 if (File.Exists(txtFolder))
                 {
                     string actualRelease = File.ReadAllText(txtFolder);
-                    if (actualRelease == releaseName)
+                    if (actualRelease != releaseName)
                     {
                         MessageBoxResult result = MessageBox.Show("A new update is available", "Do you want to install it?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -493,7 +493,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 if (File.Exists(txtFolder))
                 {
                     string actualRelease = await File.ReadAllTextAsync(txtFolder);
-                    if (actualRelease == releaseName)
+                    if (actualRelease != releaseName)
                     {
                         MessageBoxResult result = MessageBox.Show("A new update is available of launcher", "Do you want to install it?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
