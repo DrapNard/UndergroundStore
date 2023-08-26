@@ -11,11 +11,7 @@ The Pokémon Infinite Fusion Launcher is a game launcher utility for "Pokémon I
 - **Automatic Updates:** Stay up-to-date with the latest game versions through automatic updates.
 - **Intuitive User Interface:** Simple and user-friendly interface to access all features.
 
-## Installation
-
-1. Download the latest version of the launcher from [project releases](https://github.com/DrapNard/InfiniteFusion-Launcher/releases).
-2. Run the installer program and follow the instructions.
-3. Once installation is complete, open the launcher.
+## [Installation Guide](https://github.com/DrapNard/InfiniteFusion-Launcher/wiki/Installation)
 
 ## Contributing
 
