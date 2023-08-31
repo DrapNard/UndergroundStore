@@ -20,3 +20,6 @@ We welcome community contributions! If you have ideas for improvements, bug fixe
 ---
 
 For more information, visit our [Discord](https://discord.gg/infinitefusion)
+
+---
+This is a fanmade, non-profit game. It is not affiliated with Nintendo ©, The Pokémon Company ©, Creatures Inc ©. or Game Freak © in any way. No copyright infringements intended.
