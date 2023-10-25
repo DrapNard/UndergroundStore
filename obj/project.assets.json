@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {
+    "net6.0-windows10.0.22621": {
       "Discord.Net/3.11.0": {
         "type": "package",
         "dependencies": {
@@ -270,15 +270,18 @@
       "System.Reactive/5.0.0": {
         "type": "package",
         "compile": {
-          "lib/net5.0/System.Reactive.dll": {
+          "lib/net5.0-windows10.0.19041/System.Reactive.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/System.Reactive.dll": {
+          "lib/net5.0-windows10.0.19041/System.Reactive.dll": {
             "related": ".xml"
           }
         },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App"
+        ],
         "build": {
           "buildTransitive/net5.0/_._": {}
         }
@@ -875,43 +878,49 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": [
+    "net6.0-windows10.0.22621": [
       "Discord.Net >= 3.11.0",
+      "Discord.Net.WebSocket >= 3.11.0",
       "DiscordRichPresence >= 1.2.1.24",
       "Hardcodet.NotifyIcon.Wpf >= 1.1.0",
+      "Newtonsoft.Json >= 13.0.2",
       "Octokit >= 7.1.0"
     ]
   },
   "packageFolders": {
     "C:\\Users\\Drap\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+      "projectUniqueName": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher (WPF)\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
       "projectName": "Pokémon Infinite Fusion Launcher",
-      "projectPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+      "projectPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher (WPF)\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
       "packagesPath": "C:\\Users\\Drap\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\obj\\",
+      "outputPath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher (WPF)\\Pokémon Infinite Fusion Launcher\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\Drap\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0-windows7.0"
+        "net6.0-windows10.0.22621.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net6.0-windows7.0": {
-          "targetAlias": "net6.0-windows7.0",
+        "net6.0-windows10.0.22621": {
+          "targetAlias": "net6.0-windows10.0.22621.0",
           "projectReferences": {}
         }
       },
@@ -922,10 +931,14 @@
       }
     },
     "frameworks": {
-      "net6.0-windows7.0": {
-        "targetAlias": "net6.0-windows7.0",
+      "net6.0-windows10.0.22621": {
+        "targetAlias": "net6.0-windows10.0.22621.0",
         "dependencies": {
           "Discord.Net": {
+            "target": "Package",
+            "version": "[3.11.0, )"
+          },
+          "Discord.Net.WebSocket": {
             "target": "Package",
             "version": "[3.11.0, )"
           },
@@ -936,6 +949,10 @@
           "Hardcodet.NotifyIcon.Wpf": {
             "target": "Package",
             "version": "[1.1.0, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.2, )"
           },
           "Octokit": {
             "target": "Package",
@@ -953,15 +970,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.Windows.SDK.NET.Ref",
+            "version": "[10.0.22621.29, 10.0.22621.29]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.Windows.SDK.NET.Ref": {
             "privateAssets": "all"
           },
           "Microsoft.WindowsDesktop.App": {
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

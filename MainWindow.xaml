@@ -1,4 +1,4 @@
-﻿<Window x:Class="Pokémon_Infinite_Fusion_Launcher.MainWindow"
+﻿<Window x:Name="Main" x:Class="Pokémon_Infinite_Fusion_Launcher.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,7 +16,7 @@
             <!-- Ajoutez d'autres setters ici pour personnaliser le style -->
         </Style>
         <Style x:Key="DarkButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#363636"/>
+            <Setter Property="Background" Value="#FF292929"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -191,6 +191,39 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <DoubleAnimation x:Key="FadeInAnimation"
+                     From="0" To="1" Duration="0:0:0.25" />
+
+
+        <DoubleAnimation x:Key="FadeOutAnimation"
+                From="1" To="0" Duration="0:0:0.25" />
+
+        <Style x:Key="NoBorderButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4F4F4F"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2F2F2F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </Window.Resources>
 
     <Window.Template>
@@ -200,7 +233,7 @@
                     <!-- Titre bar personnalisé -->
                     <Grid Height="50" Background="#333333" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Margin="0,0,0,750">
                         <!-- Ajoutez des contrôles ici, comme un bouton -->
-                        <Button x:Name="ExitButton" Click="ExitButton_Click" Style="{StaticResource RedBorderButtonStyle}"  Margin="1250,0,0,0" Width="NaN" Height="NaN" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Cursor="Hand" >
+                        <Button x:Name="ExitButton" Click="ExitButton_Click" Style="{StaticResource RedBorderButtonStyle}"  Margin="1250,0,0,0" Width="NaN" Height="NaN" Foreground="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand" Background="{x:Null}" >
                             <Button.Content>
                                 <Image Source="/Asset/CloseButton.png"/>
                             </Button.Content>
@@ -282,40 +315,104 @@
                 </Button.Background>
             </Button>
 
-            <Button x:Name="Install_Update_Play" HorizontalAlignment="Left" Margin="44,425,0,0" VerticalAlignment="Top" Height="215" Width="398" Click="Install_Update_Play_Click" FontSize="140" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
+            <Button x:Name="Install_Update_Play" HorizontalAlignment="Left" Margin="44,425,0,0" VerticalAlignment="Top" Height="215" Width="398" Click="Install_Update_Play_Click" FontSize="140" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0,0,0,0" SnapsToDevicePixels="True"/>
             <Button Content="----" HorizontalAlignment="Left" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Top" Height="68" FontSize="20" Margin="1057,630,0,0" Visibility="Collapsed"/>
             <ProgressBar Name="progressBar" Margin="44,663,864,66" Focusable="True" Visibility="Collapsed" />
             <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="44,692,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="#7F000000" Foreground="White" Visibility="Collapsed"/>
             <Label Margin="624,62,480,638" Content="News :" Foreground="White" FontSize="36" Background="#7F000000" />
-            <ScrollViewer Margin="624,120,128,35" Background="#7F000000" Foreground="White" FontSize="20">
-                <TextBlock x:Name="News" TextWrapping="Wrap" />
-            </ScrollViewer>
-            <Label x:Name="InstPath" Content="" Margin="852,698,98,7" OpacityMask="Black" FontSize="24" IsEnabled="False" />
-            
+            <ListBox x:Name="News" ItemsSource="{Binding News}" Margin="624,120,128,35"  Background="#7F000000" Foreground="White" BorderBrush="#7F000000" FontSize="20" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+
             <Image Source="/Asset/Title.png" Margin="0,0,719,366" />
-            <Rectangle x:Name="DisiableOtherButton" Visibility="Collapsed"/>
+            <Rectangle x:Name="DisiableOtherButton" Visibility="Collapsed" Fill="#02000000"/>
             <Grid.Effect>
                 <BlurEffect Radius="0" x:Name="BlurEffect" RenderingBias="Quality" KernelType="Gaussian" />
             </Grid.Effect>
         </Grid>
         <Grid x:Name="OptionGrid" Background="#1A1A1A" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-            <!-- Grid pour les catégories -->
-            <Rectangle Height="500" />
-            <Rectangle Fill="#FF3E3E3E" HorizontalAlignment="Right" Width="600" />
-            <Label Foreground="White" Content="Settings" FontSize="36" Margin="25,10,636,431" />
-            <CheckBox x:Name="MinimizeSysTray" Content="Minimize in system tray" FontSize="20" HorizontalAlignment="Left" Margin="257,110,0,358" Width="256" Checked="MinimizeSysTray_Checked" Background="White" Foreground="White"/>
-            <CheckBox x:Name="CloseApp" HorizontalAlignment="Left" Margin="257,182,0,286" Width="243" Checked="CloseApp_Checked" Content="Always close app" Foreground="White" FontSize="20" />
-            <Label Foreground="White" HorizontalAlignment="Left" Content="Closing" FontSize="24" Margin="250,50,0,395" Width="119" />
-            <Label Foreground="White" HorizontalAlignment="Left" Content="Save" FontSize="24" Margin="250,250,0,207" Width="60" />
-            <Label Foreground="White" HorizontalAlignment="Left" Content="Other" FontSize="24" Margin="250,383,0,73" Width="80" />
-            <CheckBox x:Name="InstSpritePack" HorizontalAlignment="Left" Margin="257,432,0,36" Width="533" Checked="InstSpritePack_Checked" Content="Install Sprite Pack   ⚠️ Only when installing the Game ⚠️" Foreground="White" FontSize="20" />
-            <Button Height="50" Margin="250,310,390,140" Content="Open Save Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="Button_Click" Cursor="Hand"/>
+            <Grid>
+                <Rectangle Height="500" />
+                <Rectangle Fill="#FF3E3E3E" HorizontalAlignment="Right" Width="600" />
+                <Label Foreground="White" Content="Settings" FontSize="36" Margin="30,10,630,431" />
+                <Button x:Name="GeneralTabBtn" Style="{StaticResource NoBorderButton}"  Margin="0,74,600,357" Foreground="White" Background="#FF3E3E3E" Content="General" FontSize="36" Click="GeneralTabBtn_Click" IsEnabled="False" Padding="0,0,0,0" UseLayoutRounding="True" BorderBrush="#FF3E3E3E" BorderThickness="0,0,0,0"/>
+                <Button x:Name="TroubleshootTabBtn" Style="{StaticResource NoBorderButton}"  Margin="0,148,600,283" Foreground="White" Background="#FF333333" FontSize="30" Content="Troubleshoot" Click="TroubleshootTabBtn_Click" BorderThickness="0,0,0,0" Padding="0,0,0,0"/>
+                <Label Content="Game Ver." HorizontalAlignment="Left" Margin="10,429,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Label x:Name="GameVer" Content="1.0" HorizontalAlignment="Left" Margin="70,429,0,0" Foreground="White" Height="31" VerticalAlignment="Top"/>
+                <Label Content="Launcher Ver." HorizontalAlignment="Left" Margin="10,459,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Label x:Name="LaunchVer" Content="1.0" HorizontalAlignment="Left" Margin="85,459,0,0" Foreground="White" Height="31" VerticalAlignment="Top"/>
+            </Grid>
+
+            <Grid x:Name="GeneralGrid" Visibility="Visible">
+                <CheckBox x:Name="MinimizeSysTray" Content="Minimize in system tray" FontSize="20" HorizontalAlignment="Left" Margin="257,110,0,358" Width="256" Checked="MinimizeSysTray_Checked" Background="White" Foreground="White"/>
+                <CheckBox x:Name="CloseApp" HorizontalAlignment="Left" Margin="257,182,0,286" Width="243" Checked="CloseApp_Checked" Content="Always close app" Foreground="White" FontSize="20" />
+                <Label Foreground="White" HorizontalAlignment="Left" Content="Closing" FontSize="24" Margin="250,50,0,395" Width="119" />
+                <Label Foreground="White" HorizontalAlignment="Left" Content="Save" FontSize="24" Margin="250,250,0,207" Width="60" />
+                <Label Foreground="White" HorizontalAlignment="Left" Content="Other" FontSize="24" Margin="250,383,0,73" Width="80" />
+                <CheckBox x:Name="InstSpritePack" HorizontalAlignment="Left" Margin="257,432,0,36" Width="533" Checked="InstSpritePack_Checked" Content="Install Sprite Pack   ⚠️ Only when installing the Game ⚠️" Foreground="White" FontSize="20" />
+                <Button x:Name="SaveBtn" Height="50" Margin="250,310,390,140" Content="Open Save Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="Button_Click" Cursor="Hand"/>
+                <Label x:Name="SaveBtnBlockToolTip" Content="❔" Margin="415,316,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
+                <Rectangle x:Name="SaveBtnBlock" Margin="250,310,335,140" Fill="#00000000" Visibility="Collapsed">
+                    <Rectangle.ToolTip>
+                        <ToolTip Content="Save Folder Not Found"/>
+                    </Rectangle.ToolTip>
+                </Rectangle>
+            </Grid>
+
+            <Grid x:Name="TroubleshootGrid" Visibility="Collapsed">
+                <CheckBox x:Name="ConsoleCheckBox" Content="Enable Console Output" FontSize="20" HorizontalAlignment="Left" Margin="257,110,0,358" Width="256" Click="ConsoleCheckBox_Checked" Background="White" Foreground="White"/>
+                <CheckBox x:Name="AlternateLauncherCheckBox"  HorizontalAlignment="Left" Margin="257,201,0,267" Width="296" Click="AlternateLauncherCheckBox_Checked" Content="Use the Alternate Launcher" Foreground="White" FontSize="20" >
+                    <CheckBox.ToolTip>
+                        <ToolTip Content="[Extremely long black screen while playing] Use this option" Background="White" Foreground="Black" FontSize="16" />
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                <Label Content="❔" Margin="513,194,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top">
+                </Label>
+                <Label Foreground="White" HorizontalAlignment="Left" Content="Launcher" FontSize="24" Margin="250,50,0,395" Width="119" />
+                <Label Foreground="White" HorizontalAlignment="Left" Content="Game" FontSize="24" Margin="250,150,0,305" Width="80" />
+                <Button x:Name="UninstallBtn" Height="50" Margin="472,250,151,200" Content="Uninstall the Game" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="UninstallBtn_Click" Cursor="Hand" Background="#FFBD0000">
+                </Button>
+                <Button x:Name="RepairBtn" Height="50" Margin="257,250,366,200" Content="Repair the Game" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="RepairBtn_Click" Cursor="Hand" />
+                <Label x:Name="UnInstallRepairBtnBlockTooltip" Content="❔" Margin="654,256,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
+                <Rectangle x:Name="UnInstallRepairBtnBlock" Margin="239,238,93,190" Visibility="Collapsed" Fill="#00000000">
+                    <Rectangle.ToolTip>
+                        <ToolTip Content="The Game is not Installed"/>
+                    </Rectangle.ToolTip>
+                </Rectangle>
+                
+            </Grid>
+
+
+
+            <Grid.Effect>
+                <BlurEffect Radius="0" x:Name="BlurEffectOptions" RenderingBias="Quality" KernelType="Gaussian" />
+            </Grid.Effect>
+
             <Grid.RenderTransform>
                 <TranslateTransform X="0" />
             </Grid.RenderTransform>
         </Grid>
 
+        <Grid x:Name="UninstallConfirmation" Visibility="Collapsed">
+            <Rectangle Fill="#33000000" Margin="0,-50,0,0"/>
+            <Rectangle Fill="#001F1F1F" Width="400" Height="300">
+            </Rectangle>
+            <Grid Width="400" Height="300">
+                <Label Content="Are you sure you want to uninstall the game?" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18"/>
+                <Label Content="Game saves will be kept on the computer" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-201,0,0"/>
+                <Button x:Name="YesUninstallConfirmation" Width="100" Height="49" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="35,0,0,20" Content="Yes" FontSize="22" Click="YesUninstallConfirmation_Click"></Button>
+                <Button x:Name="NoUninstallConfirmation" Width="100" Height="49" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,35,20" Content="No" FontSize="22" Click="NoUninstallConfirmation_Click"></Button>
+            </Grid>
+        </Grid>
 
+        <Grid x:Name="ExitBlock" Visibility="Collapsed">
+            <Rectangle Margin="1250,-51,0,749" Fill="#00000000"></Rectangle>
+        </Grid>
 
     </Grid>
 </Window>

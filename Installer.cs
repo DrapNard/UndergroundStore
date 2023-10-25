@@ -3,12 +3,14 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Media;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Pokémon_Infinite_Fusion_Launcher
 {
@@ -20,10 +22,14 @@ namespace Pokémon_Infinite_Fusion_Launcher
         private string InstallfolderPath;
         private long totalFileSize;
 
+        string configFilePath = "config.json";
+        Configuration config;
+
         public Installer()
         {
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("User-Agent", "GithubReleaseDownloader");
+            config = Configuration.Load(configFilePath);
         }
 
         // Method to get the file size asynchronously
@@ -58,8 +64,8 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     // Create the full path of the text file in the executable directory
                     if (owner == "infinitefusion")
                     {
-                        string releaseTxt = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Release_Actual.txt");
-                        File.WriteAllText(releaseTxt, releaseName);
+                        config.GameVersion = releaseName;
+                        config.Save(configFilePath);
                     }
 
                     // Download the source code of the latest release with progress handling
@@ -282,10 +288,10 @@ namespace Pokémon_Infinite_Fusion_Launcher
             mainScript.Statue.Visibility = Visibility.Collapsed;
 
             // Update the Config.ini with the game installation path and graphic pack status
-            string GamePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GamePath.txt");
-            File.WriteAllText(GamePath, exeDirectory);
-            string SpritePack = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SpritePack.txt");
-            File.WriteAllText(SpritePack, "no");
+            config.GamePath = exeDirectory;
+            config.GameSpritePack = "None";
+
+            config.Save(configFilePath);
 
             // Update the main window's status
             mainScript.install = false;
@@ -293,7 +299,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
             mainScript.Install_Update_Play.Content = "Play";
             mainScript.InstPlayButtonStyle(true);
             mainScript.InstSpritePack.IsEnabled = false;
-    }
+
+            SystemSounds.Beep.Play();
+
+            string applicationPath = Process.GetCurrentProcess().MainModule.FileName;
+            Process.Start(applicationPath);
+            System.Windows.Application.Current.Shutdown();
+        }
 
         public async Task GraphicPackInstall(MainWindow mainScript)
         {
@@ -382,79 +394,26 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     Console.WriteLine($"Latest release name: {releaseName}");
                 }
 
-                string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Release_Actual.txt");
-                if (File.Exists(txtFolder))
+                if (config.GameVersion != null)
                 {
-                    string actualRelease = File.ReadAllText(txtFolder);
-                    if (actualRelease != releaseName)
+                    if (config.GameVersion != releaseName)
                     {
                         MessageBoxResult result = MessageBox.Show("A new update is available", "Do you want to install it?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                         // Check the user's response
                         if (result == MessageBoxResult.Yes)
                         {
-                            mainScript.Install_Update_Play.IsEnabled = false;
-                            mainScript.progressBar.Visibility = Visibility.Visible;
-                            mainScript.Statue.Content = "Preparation ...";
-                            mainScript.Statue.Visibility = Visibility.Visible;
+                            string gamePath = Path.Combine(config.GamePath, "InfiniteFusion");
+                            Directory.Delete(gamePath, true);
+                            config.GameVersion = null;
+                            config.Save(configFilePath);
 
-                            IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
-                            string txtPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GamePath.txt");
-                            string appDirectory = File.ReadAllText(txtPath);
-                            string GameDirectory = Path.Combine(appDirectory, "InfiniteFusion");
-                            string tempDirectory = Path.Combine(appDirectory, "UpdateTemp"); // Temporary folder for downloading
 
-                            try
-                            {
-                                // Create the temporary folder if it doesn't exist
-                                if (!Directory.Exists(tempDirectory))
-                                    Directory.CreateDirectory(tempDirectory);
+                            mainScript.UninstallBtn.IsEnabled = false;
+                            mainScript.RepairBtn.IsEnabled = false;
+                            mainScript.ExitBlock.Visibility = Visibility.Visible;
 
-                                mainScript.Statue.Content = "Downloading Update Archive ...";
-                                // Download the update file
-                                await ReleaseDownloaderAsync(progress, "infinitefusion", "infinitefusion-e18", "releases");
-
-                                mainScript.Statue.Content = "Extracting Update File ...";
-
-                                // Extract the update files
-                                await DecompressZip(ZipInstaller, tempDirectory);
-
-                                mainScript.Statue.Content = "Finishing ...";
-
-                                // Replace the application files with the new files
-                                string parentDirectory = tempDirectory;
-                                string partialName = "infinitefusion-e18";
-                                string[] matchingFolders = FindFoldersByPartialName(parentDirectory, partialName);
-
-                                if (matchingFolders.Length > 0)
-                                {
-                                    InstallfolderPath = matchingFolders[0];
-                                }
-
-                                // Copy the update files into the installation directory
-                                CopyFilesRecursively(new DirectoryInfo(InstallfolderPath), new DirectoryInfo(GameDirectory));
-
-                                mainScript.Statue.Content = "Update completed successfully!";
-                            }
-                            catch (Exception ex)
-                            {
-                                mainScript.Statue.Content = "Error during the update: " + ex.Message;
-                            }
-                            finally
-                            {
-                                mainScript.Statue.Content = "Cleaning ...";
-                                // Delete the temporary folder
-                                Directory.Delete(tempDirectory, true);
-                                await DeleteZipFile(ZipInstaller);
-
-                                mainScript.progressBar.IsIndeterminate = false;
-                                mainScript.Install_Update_Play.IsEnabled = true; // Re-enable the button after download
-                                mainScript.progressBar.Visibility = Visibility.Collapsed;
-                                mainScript.Statue.Visibility = Visibility.Collapsed;
-
-                                mainScript.progressBar.Value = 0;
-                                mainScript.Install_Update_Play.Content = "Play";
-                            }
+                            Install(mainScript, config.GamePath);
                         }
                         else if (result == MessageBoxResult.No)
                         {
@@ -470,128 +429,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
             catch (Exception ex)
             {
                 Console.WriteLine($"Error checking for updates: {ex.Message}");
-            }
-        }
-
-        public async Task LauncherUpdateChecker(MainWindow mainScript, string owner, string repo)
-        {
-            try
-            {
-                // Check for updates and prompt the user to install them if available
-                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-                response.EnsureSuccessStatusCode();
-                string releaseName;
-                string releaseInfo = await response.Content.ReadAsStringAsync();
-                using (JsonDocument document = JsonDocument.Parse(releaseInfo))
-                {
-                    JsonElement root = document.RootElement;
-                    releaseName = root.GetProperty("name").GetString();
-                    Console.WriteLine($"Latest release name: {releaseName}");
-                }
-
-                string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LauncherRelease.txt");
-                if (File.Exists(txtFolder))
-                {
-                    string actualRelease = await File.ReadAllTextAsync(txtFolder);
-                    if (actualRelease != releaseName)
-                    {
-                        MessageBoxResult result = MessageBox.Show("A new update is available of launcher", "Do you want to install it?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                        // Check the user's response
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            mainScript.Install_Update_Play.IsEnabled = false;
-                            mainScript.progressBar.Visibility = Visibility.Visible;
-                            mainScript.Statue.Content = "Preparation ...";
-                            mainScript.Statue.Visibility = Visibility.Visible;
-
-                            IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
-                            string GameDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                            string tempDirectory = Path.Combine(GameDirectory, "UpdateTemp"); // Temporary folder for downloading
-
-                            try
-                            {
-                                // Create the temporary folder if it doesn't exist
-                                if (!Directory.Exists(tempDirectory))
-                                    Directory.CreateDirectory(tempDirectory);
-
-                                mainScript.Statue.Content = "Downloading Update Archive ...";
-                                // Download the update file
-                                await ReleaseDownloaderAsync(progress, "DrapNard", "InfiniteFusion-Launcher", "Update");
-                                Thread.Sleep(3000);
-
-                                mainScript.Statue.Content = "Extracting Update File ...";
-
-                                // Extract the update files
-                                await DecompressZip(ZipInstaller, tempDirectory);
-                                Thread.Sleep(3000);
-                                mainScript.Statue.Content = "Finishing ...";
-
-                                // Replace the application files with the new files
-                                string parentDirectory = tempDirectory;
-                                string partialName = "InfiniteFusion-Launcher-Update";
-                                string[] matchingFolders = FindFoldersByPartialName(parentDirectory, partialName);
-
-                                if (matchingFolders.Length > 0)
-                                {
-                                    InstallfolderPath = matchingFolders[0];
-                                }
-
-                                // Copy the update files into the installation directory
-                                CopyFilesRecursively(new DirectoryInfo(InstallfolderPath), new DirectoryInfo(GameDirectory));
-
-                                mainScript.Statue.Content = "Update completed successfully!";
-                                Thread.Sleep(3000);
-
-                            }
-                            catch (Exception ex)
-                            {
-                                mainScript.Statue.Content = "Error during the update: " + ex.Message;
-                            }
-                            finally
-                            {
-                                mainScript.Statue.Content = "Cleaning ...";
-                                // Delete the temporary folder
-                                Directory.Delete(tempDirectory, true);
-                                await DeleteZipFile(ZipInstaller);
-
-                                
-                                string releaseTxt = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LauncherRelease.txt");
-                                File.WriteAllText(releaseTxt, releaseName);
-
-                                mainScript.progressBar.IsIndeterminate = false;
-                                mainScript.Install_Update_Play.IsEnabled = true; // Re-enable the button after download
-                                mainScript.progressBar.Visibility = Visibility.Collapsed;
-                                mainScript.Statue.Visibility = Visibility.Collapsed;
-
-                                mainScript.progressBar.Value = 0;
-                                Thread.Sleep(3000);
-
-                                string appPath = Process.GetCurrentProcess().MainModule.FileName;
-
-                                // Démarrer une nouvelle instance du lanceur
-                                Process.Start(appPath);
-
-                                // Fermer l'instance actuelle du lanceur
-                                System.Windows.Application.Current.Shutdown();
-                            }
-                        }
-                        else if (result == MessageBoxResult.No)
-                        {
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error checking for updates: {ex.Message}");
-                MessageBox.Show($"Error checking for updates: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

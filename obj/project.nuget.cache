@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dTFm2XmkJ4m0EDeEFIa8X5aKY+E3u2gqo42s099jcGnV+x6jMkUXoWZc7dBhfPbGuBS5WkqfWWAVfxsXguv7+g==",
+  "dgSpecHash": "tAbyCJ4asBPFQxCUdtDYPA0n3D33iigYrNhwyM3HQCHaioo6pAHDxQL43DHWF2StYmU/MoqCmSP8yLMt+AAPGQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
+  "projectFilePath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher (WPF)\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Drap\\.nuget\\packages\\discord.net\\3.11.0\\discord.net.3.11.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\discord.net.commands\\3.11.0\\discord.net.commands.3.11.0.nupkg.sha512",
@@ -24,7 +24,8 @@
     "C:\\Users\\Drap\\.nuget\\packages\\system.reactive\\5.0.0\\system.reactive.5.0.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\system.security.accesscontrol\\4.5.0\\system.security.accesscontrol.4.5.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\system.security.principal.windows\\4.5.0\\system.security.principal.windows.4.5.0.nupkg.sha512",
-    "C:\\Users\\Drap\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+    "C:\\Users\\Drap\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
+    "C:\\Users\\Drap\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22621.29\\microsoft.windows.sdk.net.ref.10.0.22621.29.nupkg.sha512"
   ],
   "logs": []
 }

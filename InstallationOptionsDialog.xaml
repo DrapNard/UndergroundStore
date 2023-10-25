@@ -6,7 +6,7 @@
     <Grid Width="400" Height="124">
         <CheckBox x:Name="GraphPackInstall" Content="Install Sprite Pack" HorizontalAlignment="Left" Margin="140,10,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked" IsChecked="True" Visibility="Collapsed"/>
         <TextBox x:Name="InstallPath" HorizontalAlignment="Left" Margin="140,44,0,0" TextWrapping="Wrap" Text="Default Installation Path" VerticalAlignment="Top" Width="188"/>
-        <Button x:Name="BrowsInstallFolder" Content="Browse" HorizontalAlignment="Left" Margin="328,44,0,0" VerticalAlignment="Top" Height="18" Click="BrowsInstallFolder_Click"/>
+        <Button x:Name="BrowsInstallFolder" Content="Browse" HorizontalAlignment="Left" Margin="328,44,0,0" VerticalAlignment="Top" Height="22" Click="BrowsInstallFolder_Click"/>
         <Label Content="Installation Path :" HorizontalAlignment="Left" Margin="20,40,0,0" VerticalAlignment="Top"/>
         <Button x:Name="No" Content="No" HorizontalAlignment="Left" Margin="288,79,0,0" VerticalAlignment="Top" Width="82" Click="No_Click"/>
         <Button x:Name="Ok" Content="Ok" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="82" Click="Ok_Click"/>

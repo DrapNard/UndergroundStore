@@ -1,8 +1,13 @@
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher.exe
+C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\LauncherRelease.txt
+C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\saved.bat
+C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\WindowsBackground.wav
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher.deps.json
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher.runtimeconfig.json
 C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher.dll
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher.csproj.AssemblyReference.cache
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\InstallationOptionsDialog.baml
+C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\InstallationOptionsDialog.g.cs
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\MainWindow.g.cs
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\App.g.cs
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher_MarkupCompile.cache
@@ -18,8 +23,3 @@ C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite F
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\refint\Pokémon Infinite Fusion Launcher.dll
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\Pokémon Infinite Fusion Launcher.genruntimeconfig.cache
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\ref\Pokémon Infinite Fusion Launcher.dll
-C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\InstallationOptionsDialog.baml
-C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher\Pokémon Infinite Fusion Launcher\obj\Debug\net6.0-windows7.0\InstallationOptionsDialog.g.cs
-C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\saved.bat
-C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\WindowsBackground.wav
-C:\Users\Drap\Desktop\Debug\Debug\net6.0-windows7.0\LauncherRelease.txt

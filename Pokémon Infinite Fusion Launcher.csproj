@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
     <RootNamespace>Pokémon_Infinite_Fusion_Launcher</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <BaseOutputPath>C:\Users\Drap\Desktop\Debug</BaseOutputPath>
     <UseWindowsForms>True</UseWindowsForms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -49,8 +50,10 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.11.0" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="3.11.0" />
     <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Octokit" Version="7.1.0" />
   </ItemGroup>
 
@@ -137,14 +140,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="LauncherRelease.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="saved.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="WindowsBackground.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
