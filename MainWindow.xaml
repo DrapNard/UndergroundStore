@@ -272,6 +272,7 @@
                     <Image Source="/Asset/discord-icon x500.png" Stretch="Uniform"></Image>
                 </Button.Content>
             </Button>
+            <Label Margin="1216,85,0,0" Content="Discord" VerticalAlignment="Top" Height="30" Width="69" FontSize="20" Padding="0,0,0,0" HorizontalAlignment="Left"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="Wiki" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,125,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Wiki_Click" Foreground="{x:Null}" Cursor="Hand">
@@ -279,6 +280,7 @@
                     <ImageBrush ImageSource="/Asset/wiki-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
+            <Label Margin="1233,185,0,0" Content="Wiki" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Padding="0,0,0,0" ScrollViewer.CanContentScroll="True"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,220,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="Calcutor" Style="{StaticResource AnimatedButtonStyle}"  HorizontalAlignment="Left" Margin="1223,225,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Calcutor_Click" Foreground="{x:Null}" Cursor="Hand" Background="{x:Null}">
@@ -286,6 +288,7 @@
                     <Image Source="/Asset/calculator-icon.png" Stretch="Uniform"></Image>
                 </Button.Content>
             </Button>
+            <Label Margin="1207,285,0,0" Content="Calculator" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Padding="0,0,0,0" ScrollViewer.CanContentScroll="True"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,320,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="Reddit" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,325,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Reddit_Click" Foreground="{x:Null}" Cursor="Hand">
@@ -293,6 +296,7 @@
                     <ImageBrush ImageSource="/Asset/reddit-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
+            <Label Margin="1222,390,0,0" Content="Reddit" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Padding="0,0,0,0"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,420,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="Pokecommunity" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,425,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Pokecommunity_Click" Foreground="{x:Null}" Cursor="Hand">
@@ -300,6 +304,7 @@
                     <ImageBrush ImageSource="/Asset/pokecommunity-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
+            <Label Margin="1207,490,0,0" Content="PokéComunity" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Padding="0,0,0,0"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,520,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="FusionDex" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,525,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="FusionDex_Click" Foreground="{x:Null}" Cursor="Hand">
@@ -307,6 +312,7 @@
                     <ImageBrush ImageSource="/Asset/pokedex-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
+            <Label Margin="1205,585,0,0" Content="FusionDex" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Padding="0,0,0,0" ScrollViewer.CanContentScroll="True"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,620,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="GitHub" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,625,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="GitHub_Click" Foreground="{x:Null}" Cursor="Hand">
@@ -314,23 +320,19 @@
                     <ImageBrush ImageSource="/Asset/github-icon.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
+            <Label Margin="1219,690,0,0" Content="GitHub" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Padding="0,0,0,0"/>
 
             <Button x:Name="Install_Update_Play" HorizontalAlignment="Left" Margin="44,425,0,0" VerticalAlignment="Top" Height="215" Width="398" Click="Install_Update_Play_Click" FontSize="140" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0,0,0,0" SnapsToDevicePixels="True"/>
             <Button Content="----" HorizontalAlignment="Left" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Top" Height="68" FontSize="20" Margin="1057,630,0,0" Visibility="Collapsed"/>
             <ProgressBar Name="progressBar" Margin="44,663,864,66" Focusable="True" Visibility="Collapsed" />
             <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="44,692,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="#7F000000" Foreground="White" Visibility="Collapsed"/>
             <Label Margin="624,62,480,638" Content="News :" Foreground="White" FontSize="36" Background="#7F000000" />
-            <ListBox x:Name="News" ItemsSource="{Binding News}" Margin="624,120,128,35"  Background="#7F000000" Foreground="White" BorderBrush="#7F000000" FontSize="20" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-
+            <TextBox x:Name="News" Margin="624,120,128,35"  Background="#7F000000" Foreground="White" BorderBrush="#7F000000" FontSize="20" TextWrapping="Wrap" IsReadOnly="True" SelectionTextBrush="{x:Null}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+            
+            
             <Image Source="/Asset/Title.png" Margin="0,0,719,366" />
             <Rectangle x:Name="DisiableOtherButton" Visibility="Collapsed" Fill="#02000000"/>
+            <Button x:Name="OptionsExitBtn" Background="#00010101" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OptionsExitBtn_Click" Visibility="Collapsed"/>
             <Grid.Effect>
                 <BlurEffect Radius="0" x:Name="BlurEffect" RenderingBias="Quality" KernelType="Gaussian" />
             </Grid.Effect>
@@ -338,6 +340,7 @@
         <Grid x:Name="OptionGrid" Background="#1A1A1A" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
             <Grid>
                 <Rectangle Height="500" />
+                <Rectangle Fill="#FF3E3E3E" HorizontalAlignment="Left" Width="200" Margin="0,0,0,426" />
                 <Rectangle Fill="#FF3E3E3E" HorizontalAlignment="Right" Width="600" />
                 <Label Foreground="White" Content="Settings" FontSize="36" Margin="30,10,630,431" />
                 <Button x:Name="GeneralTabBtn" Style="{StaticResource NoBorderButton}"  Margin="0,74,600,357" Foreground="White" Background="#FF3E3E3E" Content="General" FontSize="36" Click="GeneralTabBtn_Click" IsEnabled="False" Padding="0,0,0,0" UseLayoutRounding="True" BorderBrush="#FF3E3E3E" BorderThickness="0,0,0,0"/>
@@ -348,18 +351,25 @@
                 <Label x:Name="LaunchVer" Content="1.0" HorizontalAlignment="Left" Margin="85,459,0,0" Foreground="White" Height="31" VerticalAlignment="Top"/>
             </Grid>
 
-            <Grid x:Name="GeneralGrid" Visibility="Visible">
+            <Grid x:Name="GeneralGrid">
                 <CheckBox x:Name="MinimizeSysTray" Content="Minimize in system tray" FontSize="20" HorizontalAlignment="Left" Margin="257,110,0,358" Width="256" Checked="MinimizeSysTray_Checked" Background="White" Foreground="White"/>
                 <CheckBox x:Name="CloseApp" HorizontalAlignment="Left" Margin="257,182,0,286" Width="243" Checked="CloseApp_Checked" Content="Always close app" Foreground="White" FontSize="20" />
                 <Label Foreground="White" HorizontalAlignment="Left" Content="Closing" FontSize="24" Margin="250,50,0,395" Width="119" />
-                <Label Foreground="White" HorizontalAlignment="Left" Content="Save" FontSize="24" Margin="250,250,0,207" Width="60" />
+                <Label Foreground="White" HorizontalAlignment="Left" Content="Game" FontSize="24" Margin="250,250,0,207" Width="80" />
                 <Label Foreground="White" HorizontalAlignment="Left" Content="Other" FontSize="24" Margin="250,383,0,73" Width="80" />
                 <CheckBox x:Name="InstSpritePack" HorizontalAlignment="Left" Margin="257,432,0,36" Width="533" Checked="InstSpritePack_Checked" Content="Install Sprite Pack   ⚠️ Only when installing the Game ⚠️" Foreground="White" FontSize="20" />
                 <Button x:Name="SaveBtn" Height="50" Margin="250,310,390,140" Content="Open Save Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="Button_Click" Cursor="Hand"/>
-                <Label x:Name="SaveBtnBlockToolTip" Content="❔" Margin="415,316,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
+                <Button x:Name="GamePathBtn" Height="50" Margin="450,310,175,140" Content="Open Game Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Cursor="Hand" Click="GamePathBtn_Click"/>
+                <Label x:Name="SaveBtnBlockToolTip" Content="❔" Margin="410,316,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
+                <Label x:Name="GamePathBtnBlockToolTip" Content="❔" Margin="625,316,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
                 <Rectangle x:Name="SaveBtnBlock" Margin="250,310,335,140" Fill="#00000000" Visibility="Collapsed">
                     <Rectangle.ToolTip>
                         <ToolTip Content="Save Folder Not Found"/>
+                    </Rectangle.ToolTip>
+                </Rectangle>
+                <Rectangle x:Name="GamePathBtnBlock" Margin="450,310,135,140" Fill="#00000000" Visibility="Collapsed">
+                    <Rectangle.ToolTip>
+                        <ToolTip Content="The Game is not Installed"/>
                     </Rectangle.ToolTip>
                 </Rectangle>
             </Grid>
@@ -384,7 +394,7 @@
                         <ToolTip Content="The Game is not Installed"/>
                     </Rectangle.ToolTip>
                 </Rectangle>
-                
+
             </Grid>
 
 

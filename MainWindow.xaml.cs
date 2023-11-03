@@ -61,6 +61,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
             GameVer.Content = "Not Installed";
             UninstallBtn.IsEnabled = false;
             RepairBtn.IsEnabled = false;
+            GamePathBtn.IsEnabled = false;
+            GamePathBtnBlock.Visibility = Visibility.Visible;
+            GamePathBtnBlockToolTip.Visibility = Visibility.Visible;
             UnInstallRepairBtnBlock.Visibility = Visibility.Visible;
             UnInstallRepairBtnBlockTooltip.Visibility = Visibility.Visible;
         }
@@ -204,6 +207,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             if (OptionGrid.Visibility == Visibility.Visible)
             {
                 DisiableOtherButton.Visibility = Visibility.Collapsed;
+                OptionsExitBtn.Visibility = Visibility.Collapsed;
                 // Cacher le menu d'options et appliquer l'animation de flou
                 DoubleAnimation blurAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
                 BlurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurAnimation);
@@ -215,6 +219,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             else
             {
                 DisiableOtherButton.Visibility = Visibility.Visible;
+                OptionsExitBtn.Visibility = Visibility.Visible;
                 // Afficher le menu d'options et appliquer l'animation de flou
                 DoubleAnimation blurAnimation = new DoubleAnimation(10, TimeSpan.FromSeconds(0.3));
                 BlurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurAnimation);
@@ -241,7 +246,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private void MenuItemCalculator_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://aegide.github.io/")
+            Process.Start(new ProcessStartInfo("https://aegide.gitlab.io/")
             {
                 UseShellExecute = true
             });
@@ -642,6 +647,25 @@ namespace Pokémon_Infinite_Fusion_Launcher
             Process.Start(applicationPath);
             System.Windows.Application.Current.Shutdown();
         }
+
+        private async void OptionsExitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DisiableOtherButton.Visibility = Visibility.Collapsed;
+            OptionsExitBtn.Visibility = Visibility.Collapsed;
+            // Cacher le menu d'options et appliquer l'animation de flou
+            DoubleAnimation blurAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
+            BlurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurAnimation);
+
+            DoubleAnimation fadeOutAnimation = (DoubleAnimation)FindResource("FadeOutAnimation");
+            await ApplyAnimationAsync(OptionGrid, fadeOutAnimation, true);
+        }
+
+        private void GamePathBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string SaveFolder = Path.Combine(config.GamePath, "InfiniteFusion");
+
+            Process.Start("explorer.exe", SaveFolder);
+        }
     }
 
     public class Configuration
@@ -677,10 +701,10 @@ namespace Pokémon_Infinite_Fusion_Launcher
     {
         private DiscordSocketClient discordClient;
         private ulong channelId;
-        private ListBox News;
+        private TextBox News; // Change the type to TextBox
         private string TOKEN;
 
-        public DiscordBot(ulong channelId, string token, ListBox news)
+        public DiscordBot(ulong channelId, string token, TextBox news) // Change the type to TextBox
         {
             this.channelId = channelId;
             this.TOKEN = token;
@@ -721,13 +745,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 // Retrieve past messages in the channel
                 var messages = await channel.GetMessagesAsync().FlattenAsync();
 
-                // Display past messages in the ListBox
+                // Display past messages in the TextBox
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     foreach (var message in messages)
                     {
                         string formattedMessage = FormatDiscordMessage(message);
-                        News.Items.Add(formattedMessage);
+                        News.AppendText(formattedMessage + Environment.NewLine + Environment.NewLine);
                     }
                 });
             }
@@ -737,7 +761,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MessageBoxResult result = System.Windows.MessageBox.Show(ex.Message, "Message Retrieval Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    News.Items.Add("Message Retrieval Failed: " + ex.Message);
+                    News.AppendText("Message Retrieval Failed: " + ex.Message + Environment.NewLine);
                 });
             }
         }
@@ -748,10 +772,10 @@ namespace Pokémon_Infinite_Fusion_Launcher
             {
                 string formattedMessage = FormatDiscordMessage(message);
 
-                // Display the formatted message in the ListBox
+                // Display the formatted message in the TextBox
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    News.Items.Add(formattedMessage);
+                    News.AppendText(formattedMessage + Environment.NewLine);
                 });
             }
             await Task.CompletedTask;
@@ -789,8 +813,8 @@ namespace Pokémon_Infinite_Fusion_Launcher
                         Source = image
                     };
 
-                    // Add the image to the ListBox
-                    News.Items.Add(imageControl);
+                    // Add the image to the TextBox
+                    News.AppendText(imageControl + Environment.NewLine);
                 }
                 else
                 {
@@ -801,8 +825,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
             return formattedMessage;
         }
-
-
     }
 
 

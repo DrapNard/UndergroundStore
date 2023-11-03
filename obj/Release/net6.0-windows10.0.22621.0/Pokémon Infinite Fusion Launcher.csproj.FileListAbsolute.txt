@@ -1,5 +1,4 @@
 C:\Users\Drap\Desktop\Debug\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.exe
-C:\Users\Drap\Desktop\Debug\Release\net6.0-windows10.0.22621.0\WindowsBackground.wav
 C:\Users\Drap\Desktop\Debug\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.deps.json
 C:\Users\Drap\Desktop\Debug\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.runtimeconfig.json
 C:\Users\Drap\Desktop\Debug\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.dll
@@ -40,4 +39,3 @@ C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infi
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.genruntimeconfig.cache
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\ref\Pokémon Infinite Fusion Launcher.dll
 C:\Users\Drap\Desktop\Debug\Release\net6.0-windows10.0.22621.0\config.json
-C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\GeneratedInternalTypeHelper.g.cs
