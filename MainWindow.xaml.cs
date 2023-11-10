@@ -282,7 +282,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private void Calcutor_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://aegide.github.io/")
+            Process.Start(new ProcessStartInfo("https://aegide.gitlab.io/")
             {
                 UseShellExecute= true
             });
