@@ -45,8 +45,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
         {
             string archiveFormat = "zip";
 
-            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
-
+            try
+            {
+                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
             try
             {
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -97,7 +98,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error downloading the source code: {ex.Message}");
+                MessageBox.Show($"Error downloading the Game: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"The Server return a error: {ex.Message}" , "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
         }
 
@@ -145,7 +152,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error decompressing the .zip file: {ex.Message}");
+                MessageBox.Show($"Error extracting the Game: {ex.Message}", "Extraction Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -249,13 +256,27 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
             mainScript.Statue.Content = "Downloading Game Archive ...";
             // Download the latest release archive
-            await ReleaseDownloaderAsync(progress, "infinitefusion", "infinitefusion-e18", "releases");
+            try
+            {
+                await ReleaseDownloaderAsync(progress, "infinitefusion", "infinitefusion-e18", "releases");
+            }
+            catch
+            {
+                return;
+            }
 
             mainScript.Statue.Content = "Extracting Game File ...";
             mainScript.progressBar.IsIndeterminate = true;
 
             // Extract the downloaded archive to the executable directory
-            await DecompressZip(ZipInstaller, exeDirectory);
+            try
+            {
+                await DecompressZip(ZipInstaller, exeDirectory);
+            }
+            catch
+            {
+                return;
+            }
 
             mainScript.Statue.Content = "Cleaning ...";
 

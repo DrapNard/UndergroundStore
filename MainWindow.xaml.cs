@@ -363,7 +363,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 }
                 else
                 {
-                    GameExecution = Path.Combine(config.GamePath, "InfiniteFusion/Alternate Launcher.exe");
+                    GameExecution = Path.Combine(config.GamePath, "InfiniteFusion/Game-preloaded.exe");
                 }
 
                 Hide();

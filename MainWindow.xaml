@@ -376,9 +376,9 @@
 
             <Grid x:Name="TroubleshootGrid" Visibility="Collapsed">
                 <CheckBox x:Name="ConsoleCheckBox" Content="Enable Console Output" FontSize="20" HorizontalAlignment="Left" Margin="257,110,0,358" Width="256" Click="ConsoleCheckBox_Checked" Background="White" Foreground="White"/>
-                <CheckBox x:Name="AlternateLauncherCheckBox"  HorizontalAlignment="Left" Margin="257,201,0,267" Width="296" Click="AlternateLauncherCheckBox_Checked" Content="Use the Alternate Launcher" Foreground="White" FontSize="20" >
+                <CheckBox x:Name="AlternateLauncherCheckBox"  HorizontalAlignment="Left" Margin="257,201,0,267" Width="296" Click="AlternateLauncherCheckBox_Checked" Content="Use the Preloaded Version" Foreground="White" FontSize="20" >
                     <CheckBox.ToolTip>
-                        <ToolTip Content="[Extremely long black screen while playing] Use this option" Background="White" Foreground="Black" FontSize="16" />
+                        <ToolTip Content="Use this option for use Preloaded Sprite" Background="White" Foreground="Black" FontSize="16" />
                     </CheckBox.ToolTip>
                 </CheckBox>
                 <Label Content="❔" Margin="513,194,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top">
