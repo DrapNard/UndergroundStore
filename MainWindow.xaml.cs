@@ -1,23 +1,23 @@
-﻿using System;
-using System.Windows;
+﻿using Discord;
+using Discord.WebSocket;
+using DiscordRPC;
+using Hardcodet.Wpf.TaskbarNotification;
+using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Media;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Application = System.Windows.Application;
-using Hardcodet.Wpf.TaskbarNotification;
-using System.Media;
-using DiscordRPC;
-using Discord.WebSocket;
-using Discord;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using Newtonsoft.Json;
-using System.Runtime.InteropServices;
-using System.Security;
+using System.Windows.Media.Imaging;
+using Application = System.Windows.Application;
 using Color = System.Windows.Media.Color;
 using Window = System.Windows.Window;
 
@@ -284,7 +284,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
         {
             Process.Start(new ProcessStartInfo("https://aegide.gitlab.io/")
             {
-                UseShellExecute= true
+                UseShellExecute = true
             });
         }
 
@@ -298,7 +298,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private void Pokecommunity_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://www.pokecommunity.com/showthread.php?t=347883")
+            Process.Start(new ProcessStartInfo("https://play.pokeathlon.com/")
             {
                 UseShellExecute = true
             });
@@ -322,7 +322,8 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private async void Install_Update_Play_Click(object sender, RoutedEventArgs e)
         {
-            
+            await InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", false);
+
             if (install)
             {
                 // Créer une boîte de dialogue personnalisée (peut être un UserControl ou une autre fenêtre WPF)
@@ -346,11 +347,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
                         string SelectFolder = optionsDialog.selectedFolderPath;
                         SystemSounds.Beep.Play();
                         ExitBlock.Visibility = Visibility.Visible;
-                        await InstallerInstance.Install(this, SelectFolder);
+                        await InstallerInstance.Install(this, SelectFolder, false);
                     }
                 }
-
-                SystemSounds.Beep.Play();
                 return;
             }
             if (!install)
@@ -380,8 +379,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     // Attendre que le logiciel soit lancé
                     process.WaitForInputIdle();
 
+                    Install_Update_Play.IsEnabled = false;
                     // Attendre la fin du processus (si nécessaire)
-                    process.WaitForExit();
+                    await process.WaitForExitAsync();
                 }
                 catch (Exception ex)
                 {
@@ -392,6 +392,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     // Libérer les ressources du processus
                     process.Dispose();
                     DiscordRpc("On the Launcher of Infinite Fusion", "Idle");
+                    Install_Update_Play.IsEnabled = true;
                     Show();
 
                     string SaveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "infinitefusion");
@@ -433,13 +434,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private async Task InstallButon(string _path)
         {
-            await InstallerInstance.Install(this, _path);
+            await InstallerInstance.Install(this, _path, false);
             await InstallerInstance.GraphicPackInstall(this);
         }
 
         private async void Updater()
         {
-            await InstallerInstance.UpdateChecker(this,"infinitefusion","infinitefusion-e18");            
+            await InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", false);
             StartUpdater();
             //await UD.LauncherUpdateChecker("DrapNard", "InfiniteFusion-Launcher");
         }
@@ -448,7 +449,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
         {
             Main.Visibility = Visibility.Hidden;
 
-            string baseDirectory = System.IO.Path.Combine(exeDirectory, "Updater.exe");
+            string baseDirectory = Path.Combine(exeDirectory, "Updater.exe");
 
             // Créez un processus pour exécuter le programme externe
             Process externalProcess = new Process();
@@ -486,7 +487,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private void CloseApp_Checked(object sender, RoutedEventArgs e)
         {
-            if(CloseApp.IsChecked == true)
+            if (CloseApp.IsChecked == true)
             {
                 MinimizeSysTray.IsChecked = false;
             }
@@ -515,12 +516,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
             if (Install)
             {
                 Install_Update_Play.Style = (Style)FindResource("PlayImageButtonStyle");
-            }else
+            }
+            else
             {
                 Install_Update_Play.Style = (Style)FindResource("InstallImageButtonStyle");
             }
-        }        
-        
+        }
+
         private void TabManager(int TabIndex)
         {
             if (TabIndex == 0)
@@ -555,7 +557,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private void ConsoleCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if(ConsoleCheckBox.IsChecked == true)
+            if (ConsoleCheckBox.IsChecked == true)
             {
                 config.EnableConsole = true;
                 ConsoleManager.Show();
@@ -570,7 +572,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private void AlternateLauncherCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if(AlternateLauncherCheckBox.IsChecked == true)
+            if (AlternateLauncherCheckBox.IsChecked == true)
             {
                 config.AlternateLauncherEnable = true;
             }
@@ -599,7 +601,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             UninstallBtn.IsEnabled = false;
             RepairBtn.IsEnabled = false;
             ExitBlock.Visibility = Visibility.Visible;
-            InstallerInstance.Install(this, config.GamePath);
+            InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", true);
         }
 
         private async void UninstallBtn_Click(object sender, RoutedEventArgs e)
@@ -894,5 +896,4 @@ namespace Pokémon_Infinite_Fusion_Launcher
             Console.SetError(TextWriter.Null);
         }
     }
-
 }

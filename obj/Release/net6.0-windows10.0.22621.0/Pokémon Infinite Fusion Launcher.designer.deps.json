@@ -155,14 +155,6 @@
           }
         }
       },
-      "Octokit/7.1.0": {
-        "runtime": {
-          "lib/netstandard2.0/Octokit.dll": {
-            "assemblyVersion": "7.1.0.0",
-            "fileVersion": "7.1.0.0"
-          }
-        }
-      },
       "System.Collections.Immutable/5.0.0": {
         "runtime": {
           "lib/netstandard2.0/System.Collections.Immutable.dll": {
@@ -337,13 +329,6 @@
       "sha512": "sha512-R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
       "path": "newtonsoft.json/13.0.2",
       "hashPath": "newtonsoft.json.13.0.2.nupkg.sha512"
-    },
-    "Octokit/7.1.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-v2qhKBe1Zlssa4XOmpOXNDFBrOAMw2tBmr8L8YMSrEi+PlF/L/PboZcXHSkZuhIxIeOGxEFiwkuJLkvG4aHNHQ==",
-      "path": "octokit/7.1.0",
-      "hashPath": "octokit.7.1.0.nupkg.sha512"
     },
     "System.Collections.Immutable/5.0.0": {
       "type": "package",

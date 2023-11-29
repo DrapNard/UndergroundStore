@@ -191,6 +191,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="UpdateImageButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Image x:Name="buttonImage" Source="/Asset/PlayButton/update_button_hover.png" Width="398" Height="215"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="buttonImage" Property="Source" Value="/Asset/PlayButton/install_button_base.png"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="buttonImage" Property="Source" Value="/Asset/PlayButton/install_button_pressed.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <DoubleAnimation x:Key="FadeInAnimation"
                      From="0" To="1" Duration="0:0:0.25" />
@@ -301,10 +322,10 @@
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,420,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="Pokecommunity" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,425,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="Pokecommunity_Click" Foreground="{x:Null}" Cursor="Hand">
                 <Button.Background>
-                    <ImageBrush ImageSource="/Asset/pokecommunity-icon.png" Stretch="Uniform"/>
+                    <ImageBrush ImageSource="/Asset/PokemonShowdown.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
-            <Label Margin="1207,490,0,0" Content="PokéComunity" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Padding="0,0,0,0"/>
+            <Label Margin="1214,485,0,0" Content="Infinite Fusion &#xD;&#xA;Showdown" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Padding="0,0,0,0" Width="74" Height="30"/>
 
             <Ellipse HorizontalAlignment="Left" Height="70" Margin="1216,520,0,0" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="Black" Opacity="0.5"/>
             <Button x:Name="FusionDex" Content="" HorizontalAlignment="Left" Style="{StaticResource AnimatedButtonStyle}" Margin="1223,525,0,0" VerticalAlignment="Top" Height="60" Width="56" BorderBrush="{x:Null}" Click="FusionDex_Click" Foreground="{x:Null}" Cursor="Hand">
@@ -328,8 +349,8 @@
             <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="44,692,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="#7F000000" Foreground="White" Visibility="Collapsed"/>
             <Label Margin="624,62,480,638" Content="News :" Foreground="White" FontSize="36" Background="#7F000000" />
             <TextBox x:Name="News" Margin="624,120,128,35"  Background="#7F000000" Foreground="White" BorderBrush="#7F000000" FontSize="20" TextWrapping="Wrap" IsReadOnly="True" SelectionTextBrush="{x:Null}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-            
-            
+
+
             <Image Source="/Asset/Title.png" Margin="0,0,719,366" />
             <Rectangle x:Name="DisiableOtherButton" Visibility="Collapsed" Fill="#02000000"/>
             <Button x:Name="OptionsExitBtn" Background="#00010101" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OptionsExitBtn_Click" Visibility="Collapsed"/>

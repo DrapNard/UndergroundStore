@@ -212,19 +212,6 @@
           }
         }
       },
-      "Octokit/7.1.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Octokit.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Octokit.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "System.Collections.Immutable/5.0.0": {
         "type": "package",
         "compile": {
@@ -632,20 +619,6 @@
         "packageIcon.png"
       ]
     },
-    "Octokit/7.1.0": {
-      "sha512": "v2qhKBe1Zlssa4XOmpOXNDFBrOAMw2tBmr8L8YMSrEi+PlF/L/PboZcXHSkZuhIxIeOGxEFiwkuJLkvG4aHNHQ==",
-      "type": "package",
-      "path": "octokit/7.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/Octokit.dll",
-        "lib/netstandard2.0/Octokit.xml",
-        "octokit.7.1.0.nupkg.sha512",
-        "octokit.nuspec",
-        "octokit.png"
-      ]
-    },
     "System.Collections.Immutable/5.0.0": {
       "sha512": "FXkLXiK0sVVewcso0imKQoOxjoPAj42R8HtjjbSjVPAzwDfzoyoznWxgA3c38LDbN9SJux1xXoXYAhz98j7r2g==",
       "type": "package",
@@ -880,11 +853,9 @@
   "projectFileDependencyGroups": {
     "net6.0-windows10.0.22621": [
       "Discord.Net >= 3.11.0",
-      "Discord.Net.WebSocket >= 3.11.0",
       "DiscordRichPresence >= 1.2.1.24",
       "Hardcodet.NotifyIcon.Wpf >= 1.1.0",
-      "Newtonsoft.Json >= 13.0.2",
-      "Octokit >= 7.1.0"
+      "Newtonsoft.Json >= 13.0.2"
     ]
   },
   "packageFolders": {
@@ -938,10 +909,6 @@
             "target": "Package",
             "version": "[3.11.0, )"
           },
-          "Discord.Net.WebSocket": {
-            "target": "Package",
-            "version": "[3.11.0, )"
-          },
           "DiscordRichPresence": {
             "target": "Package",
             "version": "[1.2.1.24, )"
@@ -953,10 +920,6 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.2, )"
-          },
-          "Octokit": {
-            "target": "Package",
-            "version": "[7.1.0, )"
           }
         },
         "imports": [

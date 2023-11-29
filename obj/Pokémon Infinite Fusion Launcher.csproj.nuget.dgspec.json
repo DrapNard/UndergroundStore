@@ -50,10 +50,6 @@
               "target": "Package",
               "version": "[3.11.0, )"
             },
-            "Discord.Net.WebSocket": {
-              "target": "Package",
-              "version": "[3.11.0, )"
-            },
             "DiscordRichPresence": {
               "target": "Package",
               "version": "[1.2.1.24, )"
@@ -65,10 +61,6 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.2, )"
-            },
-            "Octokit": {
-              "target": "Package",
-              "version": "[7.1.0, )"
             }
           },
           "imports": [

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Xi3Ug0zWRvSI44VqwKxPwOi5eJbg5/2Qa6RpMcrxbuOJBLXleduwjEGJEZ/1J70ZU+N2KbstZo/VbwxHwckq4A==",
+  "dgSpecHash": "eV3Ii15b8pngxFCoG2sPB+38Lb5mOldwWRpurGc207HVAZwVuTNhHrSGVyObYF+XPub5YxnAPnGMSnK7eoRssQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Drap\\source\\repos\\Pokémon Infinite Fusion Launcher (WPF)\\Pokémon Infinite Fusion Launcher\\Pokémon Infinite Fusion Launcher.csproj",
   "expectedPackageFiles": [
@@ -17,7 +17,6 @@
     "C:\\Users\\Drap\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
-    "C:\\Users\\Drap\\.nuget\\packages\\octokit\\7.1.0\\octokit.7.1.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\system.interactive.async\\5.0.0\\system.interactive.async.5.0.0.nupkg.sha512",
     "C:\\Users\\Drap\\.nuget\\packages\\system.linq.async\\5.0.0\\system.linq.async.5.0.0.nupkg.sha512",

@@ -1,7 +1,9 @@
 {
   "CloseMode": "Close",
-  "LauncherVersion": "Release 1.6",
+  "Version": "Release 1.6.4",
   "GamePath": null,
   "GameVersion": null,
-  "GameSpritePack": null
+  "GameSpritePack": null,
+  "AlternateLauncherEnable": false,
+  "EnableConsole": false
 }

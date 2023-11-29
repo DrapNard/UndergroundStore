@@ -35,8 +35,12 @@
     <None Remove="Asset\PlayButton\play_button_base.png" />
     <None Remove="Asset\PlayButton\play_button_hover.png" />
     <None Remove="Asset\PlayButton\play_button_pressed.png" />
+    <None Remove="Asset\PlayButton\pressed_button_pressed.png" />
+    <None Remove="Asset\PlayButton\update_button_base.png" />
+    <None Remove="Asset\PlayButton\update_button_hover.png" />
     <None Remove="Asset\pokecommunity-icon.png" />
     <None Remove="Asset\pokedex-icon.png" />
+    <None Remove="Asset\PokemonShowdown.png" />
     <None Remove="Asset\reddit-icon.png" />
     <None Remove="Asset\SmallButton.png" />
     <None Remove="Asset\Title x300.jpg" />
@@ -50,11 +54,9 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.11.0" />
-    <PackageReference Include="Discord.Net.WebSocket" Version="3.11.0" />
     <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Octokit" Version="7.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -100,12 +102,16 @@
     <Resource Include="Asset\PlayButton\play_button_pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Asset\PlayButton\pressed_button_pressed.png" />
+    <Resource Include="Asset\PlayButton\update_button_base.png" />
+    <Resource Include="Asset\PlayButton\update_button_hover.png" />
     <Resource Include="Asset\pokecommunity-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Asset\pokedex-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Asset\PokemonShowdown.png" />
     <Resource Include="Asset\reddit-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

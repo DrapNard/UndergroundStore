@@ -1,16 +1,12 @@
-﻿using Octokit;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Media;
-using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Pokémon_Infinite_Fusion_Launcher
 {
@@ -35,9 +31,16 @@ namespace Pokémon_Infinite_Fusion_Launcher
         // Method to get the file size asynchronously
         public async Task<long> GetFileSizeAsync(string url)
         {
-            HttpResponseMessage response = await httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            return response.Content.Headers.ContentLength ?? 0;
+            try
+            {
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                return response.Content.Headers.ContentLength ?? 0;
+            }
+            catch
+            {
+                return totalFileSize = 563200000;
+            }
         }
 
         // Method to download the latest release asynchronously
@@ -48,62 +51,62 @@ namespace Pokémon_Infinite_Fusion_Launcher
             try
             {
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
-            try
-            {
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-                response.EnsureSuccessStatusCode();
-
-                string releaseInfo = await response.Content.ReadAsStringAsync();
-                using (JsonDocument document = JsonDocument.Parse(releaseInfo))
+                try
                 {
-                    JsonElement root = document.RootElement;
-                    string releaseName = root.GetProperty("name").GetString();
-                    Console.WriteLine($"Latest release name: {releaseName}");
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+                    response.EnsureSuccessStatusCode();
 
-                    Stream archiveStream = await httpClient.GetStreamAsync($"https://github.com/{owner}/{repo}/archive/refs/heads/{tree}.{archiveFormat}");
-
-                    // Create the full path of the text file in the executable directory
-                    if (owner == "infinitefusion")
+                    string releaseInfo = await response.Content.ReadAsStringAsync();
+                    using (JsonDocument document = JsonDocument.Parse(releaseInfo))
                     {
-                        config.GameVersion = releaseName;
-                        config.Save(configFilePath);
-                    }
+                        JsonElement root = document.RootElement;
+                        string releaseName = root.GetProperty("name").GetString();
+                        Console.WriteLine($"Latest release name: {releaseName}");
 
-                    // Download the source code of the latest release with progress handling
-                    string archiveFilePath = Path.Combine(exeDirectory, $"{repo}-latest.{archiveFormat}");
-                    ZipInstaller = archiveFilePath;
-                    Console.WriteLine($"Downloading the latest release source code of {owner} has begun");
-                    using (FileStream fileStream = new FileStream(archiveFilePath, System.IO.FileMode.Create))
-                    {
-                        const int bufferSize = 8192;
-                        var buffer = new byte[bufferSize];
-                        int bytesRead;
-                        long totalBytesRead = 0;
+                        Stream archiveStream = await httpClient.GetStreamAsync($"https://github.com/{owner}/{repo}/archive/refs/heads/{tree}.{archiveFormat}");
 
-                        while ((bytesRead = await archiveStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        // Create the full path of the text file in the executable directory
+                        if (owner == "infinitefusion")
                         {
-                            await fileStream.WriteAsync(buffer, 0, bytesRead);
-
-                            totalBytesRead += bytesRead;
-
-                            // Update the progress via the IProgress<int> object
-                            int progressPercentage = (int)((double)totalBytesRead / totalFileSize * 100);
-                            progress.Report(progressPercentage);
+                            config.GameVersion = releaseName;
+                            config.Save(configFilePath);
                         }
-                    }
 
-                    Console.WriteLine($"The latest release source code has been downloaded: {archiveFilePath}");
-                    Console.WriteLine($"The name of the latest release has been saved in: {releaseName}");
+                        // Download the source code of the latest release with progress handling
+                        string archiveFilePath = Path.Combine(exeDirectory, $"{repo}-latest.{archiveFormat}");
+                        ZipInstaller = archiveFilePath;
+                        Console.WriteLine($"Downloading the latest release source code of {owner} has begun");
+                        using (FileStream fileStream = new FileStream(archiveFilePath, System.IO.FileMode.Create))
+                        {
+                            const int bufferSize = 8192;
+                            var buffer = new byte[bufferSize];
+                            int bytesRead;
+                            long totalBytesRead = 0;
+
+                            while ((bytesRead = await archiveStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            {
+                                await fileStream.WriteAsync(buffer, 0, bytesRead);
+
+                                totalBytesRead += bytesRead;
+
+                                // Update the progress via the IProgress<int> object
+                                int progressPercentage = (int)((double)totalBytesRead / totalFileSize * 100);
+                                progress.Report(progressPercentage);
+                            }
+                        }
+
+                        Console.WriteLine($"The latest release source code has been downloaded: {archiveFilePath}");
+                        Console.WriteLine($"The name of the latest release has been saved in: {releaseName}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error downloading the Game: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error downloading the Game: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"The Server return a error: {ex.Message}" , "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"The Server return a error: {ex.Message}", "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
@@ -239,29 +242,34 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
         }
 
-        public async Task Install(MainWindow mainScript, string _path)
+        public async Task Install(MainWindow mainScript, string _path, bool Update)
         {
             exeDirectory = _path;
             // Disable the Install/Update/Play button, show progress bar, and status message
             mainScript.Install_Update_Play.IsEnabled = false;
             mainScript.progressBar.Visibility = Visibility.Visible;
-            mainScript.Statue.Content = "Preparation ...";
-            mainScript.Statue.Visibility = Visibility.Visible;
 
-            // Use IProgress<int> to report progress during the download
-            IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
-
-            // Get the total file size of the latest release for progress tracking
-            totalFileSize = await GetFileSizeAsync($"https://github.com/infinitefusion/infinitefusion-e18/archive/refs/heads/releases.zip");
-
-            mainScript.Statue.Content = "Downloading Game Archive ...";
             // Download the latest release archive
             try
             {
+                mainScript.progressBar.IsIndeterminate = true;
+                mainScript.Statue.Content = "Preparation ...";
+                mainScript.Statue.Visibility = Visibility.Visible;
+
+                // Use IProgress<int> to report progress during the download
+                IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
+
+                // Get the total file size of the latest release for progress tracking
+                totalFileSize = await GetFileSizeAsync($"https://github.com/infinitefusion/infinitefusion-e18/archive/refs/heads/releases.zip");
+
+                mainScript.Statue.Content = "Downloading Game Archive ...";
+                mainScript.progressBar.IsIndeterminate = false;
+
                 await ReleaseDownloaderAsync(progress, "infinitefusion", "infinitefusion-e18", "releases");
             }
-            catch
+            catch(Exception ex)
             {
+                MessageBox.Show($"Error downloading the Game: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -271,7 +279,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             // Extract the downloaded archive to the executable directory
             try
             {
-                await DecompressZip(ZipInstaller, exeDirectory);
+                await Task.Run(() => DecompressZip(ZipInstaller, exeDirectory));
             }
             catch
             {
@@ -289,9 +297,17 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 InstallfolderPath = matchingFolders[0];
             }
 
-            // Rename the folder after decompression
-            string folderInstallRename = Path.Combine(exeDirectory, InstallfolderPath);
-            RenameFolder(folderInstallRename, "InfiniteFusion");
+            if (!Update)
+            {
+                // Rename the folder after decompression
+                string folderInstallRename = Path.Combine(exeDirectory, InstallfolderPath);
+                RenameFolder(folderInstallRename, "InfiniteFusion");
+            }
+            else if (Update) 
+            {
+                await Task.Run(() => CopyFilesRecursively(new DirectoryInfo(Path.Combine(exeDirectory, InstallfolderPath)), new DirectoryInfo(Path.Combine(config.GamePath, "InfiniteFusion"))));
+                Directory.Delete(Path.Combine(exeDirectory, InstallfolderPath), true);
+            }
 
             // Clean up by deleting the downloaded archive
             await DeleteZipFile(ZipInstaller);
@@ -398,12 +414,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
         }
 
-        public async Task UpdateChecker(MainWindow mainScript, string owner, string repo)
+        public async Task UpdateChecker(MainWindow mainScript, string owner, string repo, bool ignoredUpdateCheck)
         {
             // Check for updates and prompt the user to install them if available
-            string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
             try
             {
+                string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode();
                 string releaseName;
@@ -414,7 +431,31 @@ namespace Pokémon_Infinite_Fusion_Launcher
                     releaseName = root.GetProperty("name").GetString();
                     Console.WriteLine($"Latest release name: {releaseName}");
                 }
+                if (ignoredUpdateCheck)
+                {
+                    string gamePath = Path.Combine(config.GamePath, "InfiniteFusion");
+                    foreach (string SubFolder in Directory.GetDirectories(gamePath))
+                    {
+                        if (Path.GetFileName(SubFolder) != "Graphics")
+                        {
+                            Directory.Delete(SubFolder, true); // true indique de supprimer récursivement
+                        }
+                    }
+                    foreach (string fichier in Directory.GetFiles(gamePath))
+                    {
+                        File.Delete(fichier);
+                    }
+                    config.GameVersion = null;
+                    config.Save(configFilePath);
 
+
+                    mainScript.UninstallBtn.IsEnabled = false;
+                    mainScript.RepairBtn.IsEnabled = false;
+                    mainScript.ExitBlock.Visibility = Visibility.Visible;
+
+                    Install(mainScript, config.GamePath, true);
+                    return;
+                }
                 if (config.GameVersion != null)
                 {
                     if (config.GameVersion != releaseName)
@@ -424,8 +465,19 @@ namespace Pokémon_Infinite_Fusion_Launcher
                         // Check the user's response
                         if (result == MessageBoxResult.Yes)
                         {
+                            mainScript.Install_Update_Play.Style = (Style)mainScript.FindResource("UpdateImageButtonStyle");
                             string gamePath = Path.Combine(config.GamePath, "InfiniteFusion");
-                            Directory.Delete(gamePath, true);
+                            foreach (string SubFolder in Directory.GetDirectories(gamePath))
+                            {
+                                if (Path.GetFileName(SubFolder) != "Graphics")
+                                {
+                                    Directory.Delete(SubFolder, true); // true indique de supprimer récursivement
+                                }
+                            }
+                            foreach (string fichier in Directory.GetFiles(gamePath))
+                            {
+                                File.Delete(fichier);
+                            }
                             config.GameVersion = null;
                             config.Save(configFilePath);
 
@@ -434,7 +486,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                             mainScript.RepairBtn.IsEnabled = false;
                             mainScript.ExitBlock.Visibility = Visibility.Visible;
 
-                            Install(mainScript, config.GamePath);
+                            Install(mainScript, config.GamePath, true);
                         }
                         else if (result == MessageBoxResult.No)
                         {
@@ -453,7 +505,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
         }
 
-        private static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo destination)
+        private static async Task CopyFilesRecursively(DirectoryInfo source, DirectoryInfo destination)
         {
             if (!destination.Exists)
             {
@@ -471,7 +523,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
             foreach (DirectoryInfo subDirectory in source.GetDirectories())
             {
                 string destinationSubDirectoryPath = Path.Combine(destination.FullName, subDirectory.Name);
-                CopyFilesRecursively(subDirectory, new DirectoryInfo(destinationSubDirectoryPath));
+                await Task.Run(() => CopyFilesRecursively(subDirectory, new DirectoryInfo(destinationSubDirectoryPath)));
             }
         }
     }
