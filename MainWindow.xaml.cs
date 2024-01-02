@@ -4,11 +4,13 @@ using DiscordRPC;
 using Hardcodet.Wpf.TaskbarNotification;
 using Newtonsoft.Json;
 using System;
+using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,18 +31,13 @@ namespace Pokémon_Infinite_Fusion_Launcher
     /// 
     public partial class MainWindow : Window
     {
-        InstallationOptionsDialog InstOptDiag = new InstallationOptionsDialog();
         public bool install;
         private string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
         Installer InstallerInstance = new Installer();
         private TaskbarIcon taskbarIcon;
         private DiscordRpcClient client;
-        private string InstallFolder;
-        private DiscordSocketClient discordClient;
         private ulong channelId = 302158319886532618;
         private TOKEN TOKEN = new TOKEN();
-        System.Windows.Controls.ProgressBar progressBarInstance = new System.Windows.Controls.ProgressBar();
-        System.Windows.Controls.Button Install_Update_PlayInstance = new System.Windows.Controls.Button();
 
         string configFilePath = "config.json";
         Configuration config;
@@ -49,28 +46,87 @@ namespace Pokémon_Infinite_Fusion_Launcher
         {
             InitializeComponent();
             Initialisation();
-            Updater();
         }
 
         private void FirstInitialisation()
         {
             Install_Update_Play.Style = (Style)FindResource("InstallImageButtonStyle");
-            InstSpritePack.IsEnabled = true;
             install = true;
             News.Width = 730;
             GameVer.Content = "Not Installed";
             UninstallBtn.IsEnabled = false;
             RepairBtn.IsEnabled = false;
             GamePathBtn.IsEnabled = false;
+            InstSpritePack.IsEnabled = false;
             GamePathBtnBlock.Visibility = Visibility.Visible;
             GamePathBtnBlockToolTip.Visibility = Visibility.Visible;
             UnInstallRepairBtnBlock.Visibility = Visibility.Visible;
             UnInstallRepairBtnBlockTooltip.Visibility = Visibility.Visible;
+            InsSpritePackBtnBlock.Visibility = Visibility.Visible;
+            InsSpritePackBtnBlockToolTip.Visibility= Visibility.Visible;
         }
 
-        private void Initialisation()
+        private async void Initialisation()
         {
             config = Configuration.Load(configFilePath);
+            config.Save(configFilePath);
+            Main.Visibility = Visibility.Hidden;
+
+            client = new DiscordRpcClient("1136234506857226410");
+            client.Initialize();
+
+            TaskBarInitialize();
+
+            if (App.Args.Length > 0)
+            {
+                for (int i = 0; i < App.Args.Length; i++)
+                {
+                    string arg = App.Args[i];
+
+                    if (arg == "{f6bab8a7-1324-4221-85e2-4041ca01b96f}")
+                    {
+                        await InstallerInstance.UpdaterUpdater(this);
+                    }
+
+                    if (arg == "-DirectPlay")
+                    {
+                        if (i + 1 < App.Args.Length)
+                        {
+                            string DirectPlayOptions = App.Args[i + 1];
+
+                            if (DirectPlayOptions == "Preloaded")
+                            {
+                                Hide();
+                                await Install_Update_Play_Action(true);
+                            }
+                            else
+                            {
+                                Hide();
+                                await Install_Update_Play_Action(false);
+                            }
+
+                            i++;
+                        }
+                        else
+                        {
+                            Hide();
+                            await Install_Update_Play_Action(false);
+                        }
+                    }
+                }
+            }
+
+            if (config.UID == null || config.UID == 0)
+            {
+                config.UID = Configuration.GenerateUserId();
+                config.Save(configFilePath);
+                string applicationPath = Process.GetCurrentProcess().MainModule.FileName;
+                Process.Start(applicationPath);
+                Application.Current.Shutdown();
+            }
+
+            await Updater();
+
             LaunchVer.Content = config.Version;
             Main.Visibility = Visibility.Hidden;
             AlternateLauncherCheckBox.IsChecked = config.AlternateLauncherEnable;
@@ -87,7 +143,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 GameVer.Content = config.GameVersion;
                 install = false;
                 News.Width = 640;
-                InstSpritePack.IsEnabled = false;
             }
             else
             {
@@ -127,11 +182,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 SaveBtnBlockToolTip.Visibility = Visibility.Visible;
             }
 
-            client = new DiscordRpcClient("1136234506857226410");
-            client.Initialize();
-
-            TaskBarInitialize();
             DiscordRpc("On the Launcher of Infinite Fusion", "Idle");
+
+            Main.Visibility = Visibility.Visible;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -320,7 +373,38 @@ namespace Pokémon_Infinite_Fusion_Launcher
             });
         }
 
+        private async void InstSpritePack_Click(object sender, RoutedEventArgs e)
+        {
+            DisiableOtherButton.Visibility = Visibility.Collapsed;
+            OptionsExitBtn.Visibility = Visibility.Collapsed;
+            // Cacher le menu d'options et appliquer l'animation de flou
+            DoubleAnimation blurAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
+            BlurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurAnimation);
+
+            DoubleAnimation fadeOutAnimation = (DoubleAnimation)FindResource("FadeOutAnimation");
+            await ApplyAnimationAsync(OptionGrid, fadeOutAnimation, true);
+
+            Install_Update_Play.IsEnabled = false;
+            UninstallBtn.IsEnabled = false;
+            RepairBtn.IsEnabled = false;
+            InstSpritePack.IsEnabled = false;
+            ExitBlock.Visibility = Visibility.Visible;
+            await InstallerInstance.GraphicPackInstall(this);
+        }
+
         private async void Install_Update_Play_Click(object sender, RoutedEventArgs e)
+        {
+            if (!config.AlternateLauncherEnable || config.AlternateLauncherEnable == null)
+            {
+                Install_Update_Play_Action(false);
+            }
+            else
+            {
+                Install_Update_Play_Action(true);
+            }
+        }
+
+        private async Task Install_Update_Play_Action(bool Preloaded)
         {
             await InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", false);
 
@@ -335,80 +419,77 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 // Vérifier si l'utilisateur a cliqué sur le bouton OK
                 if (result == true)
                 {
-                    if (InstSpritePack.IsChecked == true)
-                    {
-                        string SelectFolder = optionsDialog.selectedFolderPath;
-                        SystemSounds.Beep.Play();
-                        ExitBlock.Visibility = Visibility.Visible;
-                        await InstallButon(SelectFolder);
-                    }
-                    else
-                    {
                         string SelectFolder = optionsDialog.selectedFolderPath;
                         SystemSounds.Beep.Play();
                         ExitBlock.Visibility = Visibility.Visible;
                         await InstallerInstance.Install(this, SelectFolder, false);
-                    }
+                    
                 }
                 return;
             }
             if (!install)
             {
-                string GameExecution;
+                await GamePlay(Preloaded);
+            }
+        }
 
-                if (!config.AlternateLauncherEnable || config.AlternateLauncherEnable == null)
+        private async Task GamePlay(bool Preloaded)
+        {
+            string GameExecution;
+
+            if (!Preloaded)
+            {
+                GameExecution = Path.Combine(config.GamePath, "InfiniteFusion/Game.exe");
+            }
+            else
+            {
+                GameExecution = Path.Combine(config.GamePath, "InfiniteFusion/Game-preloaded.exe");
+            }
+
+            Hide();
+
+            Process process = new Process();
+            process.StartInfo.FileName = GameExecution;
+
+            DiscordRpc("Playing Pokémon Infinite Fusion", "In Game");
+            try
+            {
+                // Démarrer le processus
+                process.Start();
+
+                // Attendre que le logiciel soit lancé
+                process.WaitForInputIdle();
+
+                Install_Update_Play.IsEnabled = false;
+
+                // Attendre la fin du processus (si nécessaire)
+                await process.WaitForExitAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur lors du démarrage du logiciel : " + ex.Message);
+            }
+            finally
+            {
+                // Libérer les ressources du processus
+                process.Dispose();
+                DiscordRpc("On the Launcher of Infinite Fusion", "Idle");
+                Install_Update_Play.IsEnabled = true;
+                Show();
+
+                string SaveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "infinitefusion");
+
+                if (!Directory.Exists(SaveFolder))
                 {
-                    GameExecution = Path.Combine(config.GamePath, "InfiniteFusion/Game.exe");
+                    SaveBtn.IsEnabled = false;
+                    SaveBtnBlock.Visibility = Visibility.Visible;
+                    SaveBtnBlockToolTip.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    GameExecution = Path.Combine(config.GamePath, "InfiniteFusion/Game-preloaded.exe");
-                }
-
-                Hide();
-
-                Process process = new Process();
-                process.StartInfo.FileName = GameExecution;
-
-                DiscordRpc("Playing Pokémon Infinite Fusion", "In Game");
-                try
-                {
-                    // Démarrer le processus
-                    process.Start();
-
-                    // Attendre que le logiciel soit lancé
-                    process.WaitForInputIdle();
-
-                    Install_Update_Play.IsEnabled = false;
-                    // Attendre la fin du processus (si nécessaire)
-                    await process.WaitForExitAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Erreur lors du démarrage du logiciel : " + ex.Message);
-                }
-                finally
-                {
-                    // Libérer les ressources du processus
-                    process.Dispose();
-                    DiscordRpc("On the Launcher of Infinite Fusion", "Idle");
-                    Install_Update_Play.IsEnabled = true;
-                    Show();
-
-                    string SaveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "infinitefusion");
-
-                    if (!Directory.Exists(SaveFolder))
-                    {
-                        SaveBtn.IsEnabled = false;
-                        SaveBtnBlock.Visibility = Visibility.Visible;
-                        SaveBtnBlockToolTip.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        SaveBtn.IsEnabled = true;
-                        SaveBtnBlock.Visibility = Visibility.Collapsed;
-                        SaveBtnBlockToolTip.Visibility = Visibility.Collapsed;
-                    }
+                    SaveBtn.IsEnabled = true;
+                    SaveBtnBlock.Visibility = Visibility.Collapsed;
+                    SaveBtnBlockToolTip.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -432,23 +513,15 @@ namespace Pokémon_Infinite_Fusion_Launcher
             client.SetPresence(presence);
         }
 
-        private async Task InstallButon(string _path)
-        {
-            await InstallerInstance.Install(this, _path, false);
-            await InstallerInstance.GraphicPackInstall(this);
-        }
-
-        private async void Updater()
+        private async Task Updater()
         {
             await InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", false);
             StartUpdater();
             //await UD.LauncherUpdateChecker("DrapNard", "InfiniteFusion-Launcher");
         }
 
-        public void StartUpdater()
+        public async Task StartUpdater()
         {
-            Main.Visibility = Visibility.Hidden;
-
             string baseDirectory = Path.Combine(exeDirectory, "Updater.exe");
 
             // Créez un processus pour exécuter le programme externe
@@ -460,8 +533,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
             // Attendez que le processus externe se termine
             externalProcess.WaitForExit();
-
-            Main.Visibility = Visibility.Visible;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -499,18 +570,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
             config.CloseMode = "Close";
         }
 
-        private void InstSpritePack_Checked(object sender, RoutedEventArgs e)
-        {
-            if (InstSpritePack.IsChecked == true)
-            {
-                InstOptDiag.GraphPackInstall.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                InstOptDiag.GraphPackInstall.Visibility = Visibility.Collapsed;
-            }
-        }
-
         public void InstPlayButtonStyle(bool Install)
         {
             if (Install)
@@ -529,15 +588,15 @@ namespace Pokémon_Infinite_Fusion_Launcher
             {
                 TroubleshootTabBtn.IsEnabled = true;
                 GeneralTabBtn.IsEnabled = false;
-                GeneralTabBtn.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF3E3E3E"));
-                TroubleshootTabBtn.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF333333"));
+                GeneralTabBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3E3E3E"));
+                TroubleshootTabBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF333333"));
             }
             else if (TabIndex == 1)
             {
                 TroubleshootTabBtn.IsEnabled = false;
                 GeneralTabBtn.IsEnabled = true;
-                TroubleshootTabBtn.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF3E3E3E"));
-                GeneralTabBtn.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF333333"));
+                TroubleshootTabBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3E3E3E"));
+                GeneralTabBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF333333"));
             }
         }
 
@@ -585,12 +644,8 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         private async void RepairBtn_Click(object sender, RoutedEventArgs e)
         {
-            string gamePath = Path.Combine(config.GamePath, "InfiniteFusion");
-            Directory.Delete(gamePath, true);
-            config.GameVersion = null;
-            config.Save(configFilePath);
-
             DisiableOtherButton.Visibility = Visibility.Collapsed;
+            OptionsExitBtn.Visibility = Visibility.Collapsed;
             // Cacher le menu d'options et appliquer l'animation de flou
             DoubleAnimation blurAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.3));
             BlurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurAnimation);
@@ -598,10 +653,11 @@ namespace Pokémon_Infinite_Fusion_Launcher
             DoubleAnimation fadeOutAnimation = (DoubleAnimation)FindResource("FadeOutAnimation");
             await ApplyAnimationAsync(OptionGrid, fadeOutAnimation, true);
 
+            Install_Update_Play.IsEnabled = false;
             UninstallBtn.IsEnabled = false;
             RepairBtn.IsEnabled = false;
             ExitBlock.Visibility = Visibility.Visible;
-            InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", true);
+            await InstallerInstance.UpdateChecker(this, "infinitefusion", "infinitefusion-e18", true);
         }
 
         private async void UninstallBtn_Click(object sender, RoutedEventArgs e)
@@ -635,19 +691,37 @@ namespace Pokémon_Infinite_Fusion_Launcher
             }
         }
 
-        private void YesUninstallConfirmation_Click(object sender, RoutedEventArgs e)
+        private async void YesUninstallConfirmation_Click(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation blurAnimation = new DoubleAnimation(10, TimeSpan.FromSeconds(0.3));
+            BlurEffectUnistall.BeginAnimation(BlurEffect.RadiusProperty, blurAnimation);
+
+            AppBlock.Visibility = Visibility.Visible;
+
+            Task.Run(() => UnistallDeleteMultiThread());
+        }
+
+        private async void UnistallDeleteMultiThread()
         {
             string gamePath = Path.Combine(config.GamePath, "InfiniteFusion");
+            foreach (string SubFolder in Directory.GetDirectories(gamePath))
+            {
+                Directory.Delete(SubFolder, true); // true indique de supprimer récursivement
+
+                foreach (string fichier in Directory.GetFiles(gamePath))
+                {
+                    File.Delete(fichier);
+                }
+            }
             Directory.Delete(gamePath, true);
             config.GamePath = null;
             config.GameVersion = null;
-            config.GameSpritePack = null;
             config.Save(configFilePath);
 
-            MessageBoxResult result = System.Windows.MessageBox.Show("The launcher will restart when this window is closed", "Uninstall Complete", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxResult result = MessageBox.Show("The launcher will restart when this window is closed", "Uninstall Complete", MessageBoxButton.OK, MessageBoxImage.Information);
             string applicationPath = Process.GetCurrentProcess().MainModule.FileName;
             Process.Start(applicationPath);
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private async void OptionsExitBtn_Click(object sender, RoutedEventArgs e)
@@ -676,9 +750,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
         public string Version { get; set; }
         public string GamePath { get; set; }
         public string GameVersion { get; set; }
-        public string GameSpritePack { get; set; }
         public bool AlternateLauncherEnable { get; set; }
         public bool EnableConsole { get; set; }
+        public long UID { get; set; }
 
         public static Configuration Load(string filePath)
         {
@@ -696,6 +770,32 @@ namespace Pokémon_Infinite_Fusion_Launcher
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(filePath, json);
         }
+
+
+        public static long GenerateUserId()
+        {
+            // Obtenez le nom de l'ordinateur
+            string machineName = Environment.MachineName;
+            // Utiliser SHA256 pour créer un hash unique à partir du nom de l'ordinateur
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(machineName));
+                long hashedComputerName = BitConverter.ToInt64(hashBytes, 0);
+
+                // Utiliser l'horodatage actuel comme graine pour Random
+                long seed = DateTime.Now.Ticks;
+                Random random = new Random((int)seed);
+
+                // Obtenir une partie aléatoire sous forme d'entier long
+                long randomNumber = random.Next();
+
+                // Combinaison du nom de l'ordinateur hashé et de la partie aléatoire
+                long uid = Math.Abs(hashedComputerName ^ randomNumber);
+
+                return uid;
+            }
+        }
+
     }
 
     // Initialisation du client Discord

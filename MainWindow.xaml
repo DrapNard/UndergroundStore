@@ -3,9 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Pokémon_Infinite_Fusion_Launcher"
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
         Title="Pokémon Infinite Fusion Launcher" Height="800" Width="1300" ResizeMode="CanMinimize" Icon="/icon.png" WindowStyle="None" VerticalAlignment="Top">
 
@@ -345,15 +342,15 @@
 
             <Button x:Name="Install_Update_Play" HorizontalAlignment="Left" Margin="44,425,0,0" VerticalAlignment="Top" Height="215" Width="398" Click="Install_Update_Play_Click" FontSize="140" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0,0,0,0" SnapsToDevicePixels="True"/>
             <Button Content="----" HorizontalAlignment="Left" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Top" Height="68" FontSize="20" Margin="1057,630,0,0" Visibility="Collapsed"/>
-            <ProgressBar Name="progressBar" Margin="44,663,864,66" Focusable="True" Visibility="Collapsed" />
-            <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="44,692,0,0" VerticalAlignment="Top" Width="356" FontSize="24" Background="#7F000000" Foreground="White" Visibility="Collapsed"/>
+            <ProgressBar Name="progressBar" Margin="44,663,864,66" Focusable="True" Background="#7F010101" Visibility="Collapsed" />
+            <Label x:Name="Statue" Content="Statue" HorizontalAlignment="Left" Margin="44,692,0,0" VerticalAlignment="Top" Width="392" FontSize="24" Background="#7F000000" Foreground="White" Visibility="Collapsed"/>
             <Label Margin="624,62,480,638" Content="News :" Foreground="White" FontSize="36" Background="#7F000000" />
             <TextBox x:Name="News" Margin="624,120,128,35"  Background="#7F000000" Foreground="White" BorderBrush="#7F000000" FontSize="20" TextWrapping="Wrap" IsReadOnly="True" SelectionTextBrush="{x:Null}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
 
             <Image Source="/Asset/Title.png" Margin="0,0,719,366" />
             <Rectangle x:Name="DisiableOtherButton" Visibility="Collapsed" Fill="#02000000"/>
-            <Button x:Name="OptionsExitBtn" Background="#00010101" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OptionsExitBtn_Click" Visibility="Collapsed"/>
+            <Button x:Name="OptionsExitBtn" Style="{StaticResource ButtonStyleNoFocus}" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="OptionsExitBtn_Click" Visibility="Collapsed"/>
             <Grid.Effect>
                 <BlurEffect Radius="0" x:Name="BlurEffect" RenderingBias="Quality" KernelType="Gaussian" />
             </Grid.Effect>
@@ -378,17 +375,23 @@
                 <Label Foreground="White" HorizontalAlignment="Left" Content="Closing" FontSize="24" Margin="250,50,0,395" Width="119" />
                 <Label Foreground="White" HorizontalAlignment="Left" Content="Game" FontSize="24" Margin="250,250,0,207" Width="80" />
                 <Label Foreground="White" HorizontalAlignment="Left" Content="Other" FontSize="24" Margin="250,383,0,73" Width="80" />
-                <CheckBox x:Name="InstSpritePack" HorizontalAlignment="Left" Margin="257,432,0,36" Width="533" Checked="InstSpritePack_Checked" Content="Install Sprite Pack   ⚠️ Only when installing the Game ⚠️" Foreground="White" FontSize="20" />
+                <Button x:Name="InstSpritePack" Style="{StaticResource DarkButtonStyle}" HorizontalAlignment="Left" Margin="257,432,0,36" Width="499" Click="InstSpritePack_Click" Content="Install Sprite Pack" FontSize="20" Cursor="Hand" />
                 <Button x:Name="SaveBtn" Height="50" Margin="250,310,390,140" Content="Open Save Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Click="Button_Click" Cursor="Hand"/>
                 <Button x:Name="GamePathBtn" Height="50" Margin="450,310,175,140" Content="Open Game Folder" Style="{StaticResource DarkButtonStyle}" FontSize="20" Cursor="Hand" Click="GamePathBtn_Click"/>
                 <Label x:Name="SaveBtnBlockToolTip" Content="❔" Margin="410,316,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
                 <Label x:Name="GamePathBtnBlockToolTip" Content="❔" Margin="625,316,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
+                <Label x:Name="InsSpritePackBtnBlockToolTip" Content="❔" Margin="750,429,0,0" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="22" RenderTransformOrigin="0.5,0.553" Foreground="#FFE6E6E6" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed"/>
                 <Rectangle x:Name="SaveBtnBlock" Margin="250,310,335,140" Fill="#00000000" Visibility="Collapsed">
                     <Rectangle.ToolTip>
                         <ToolTip Content="Save Folder Not Found"/>
                     </Rectangle.ToolTip>
                 </Rectangle>
                 <Rectangle x:Name="GamePathBtnBlock" Margin="450,310,135,140" Fill="#00000000" Visibility="Collapsed">
+                    <Rectangle.ToolTip>
+                        <ToolTip Content="The Game is not Installed"/>
+                    </Rectangle.ToolTip>
+                </Rectangle>
+                <Rectangle x:Name="InsSpritePackBtnBlock" Margin="257,432,10,36" Fill="#00000000" Visibility="Collapsed">
                     <Rectangle.ToolTip>
                         <ToolTip Content="The Game is not Installed"/>
                     </Rectangle.ToolTip>
@@ -439,11 +442,24 @@
                 <Button x:Name="YesUninstallConfirmation" Width="100" Height="49" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="35,0,0,20" Content="Yes" FontSize="22" Click="YesUninstallConfirmation_Click"></Button>
                 <Button x:Name="NoUninstallConfirmation" Width="100" Height="49" Style="{StaticResource DarkButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,35,20" Content="No" FontSize="22" Click="NoUninstallConfirmation_Click"></Button>
             </Grid>
+            
+            <Grid.Effect>
+                <BlurEffect Radius="0" x:Name="BlurEffectUnistall" RenderingBias="Quality" KernelType="Gaussian" />
+            </Grid.Effect>
+
+            <Grid.RenderTransform>
+                <TranslateTransform X="0" />
+            </Grid.RenderTransform>
         </Grid>
 
         <Grid x:Name="ExitBlock" Visibility="Collapsed">
             <Rectangle Margin="1250,-51,0,749" Fill="#00000000"></Rectangle>
         </Grid>
 
+        <Grid x:Name="AppBlock" Margin="0,-51,0,0" Visibility="Collapsed">
+            <ProgressBar Margin="470,382,470,383" Background="#7F000000" IsIndeterminate="True" />
+            <Label Margin="470,421,470,345" Background="#7F000000" Content="Uninstallation in progress" FontSize="18" HorizontalAlignment="Center"/>
+            <Rectangle Fill="#00000000"></Rectangle>
+        </Grid>
     </Grid>
 </Window>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Media;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -23,8 +24,9 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
         public Installer()
         {
+            config = Configuration.Load(configFilePath);
             httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "GithubReleaseDownloader");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", config.UID.ToString());
             config = Configuration.Load(configFilePath);
         }
 
@@ -44,69 +46,66 @@ namespace Pokémon_Infinite_Fusion_Launcher
         }
 
         // Method to download the latest release asynchronously
-        public async Task ReleaseDownloaderAsync(IProgress<int> progress, string owner, string repo, string tree)
+        public async Task ReleaseDownloaderAsync(IProgress<int> progress, string owner, string repo, string tree, string Service)
         {
             string archiveFormat = "zip";
 
             try
             {
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+
                 try
                 {
-                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-                    response.EnsureSuccessStatusCode();
+                    string releaseName = null;
 
-                    string releaseInfo = await response.Content.ReadAsStringAsync();
-                    using (JsonDocument document = JsonDocument.Parse(releaseInfo))
+                    if (Service == "GitHub")
                     {
-                        JsonElement root = document.RootElement;
-                        string releaseName = root.GetProperty("name").GetString();
-                        Console.WriteLine($"Latest release name: {releaseName}");
+                        HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+                        response.EnsureSuccessStatusCode();
 
-                        Stream archiveStream = await httpClient.GetStreamAsync($"https://github.com/{owner}/{repo}/archive/refs/heads/{tree}.{archiveFormat}");
-
-                        // Create the full path of the text file in the executable directory
-                        if (owner == "infinitefusion")
+                        string releaseInfo = await response.Content.ReadAsStringAsync();
+                        using (JsonDocument document = JsonDocument.Parse(releaseInfo))
                         {
-                            config.GameVersion = releaseName;
-                            config.Save(configFilePath);
+                            JsonElement root = document.RootElement;
+                            releaseName = root.GetProperty("name").GetString();
+                            Console.WriteLine($"Latest release name: {releaseName}");
                         }
-
-                        // Download the source code of the latest release with progress handling
-                        string archiveFilePath = Path.Combine(exeDirectory, $"{repo}-latest.{archiveFormat}");
-                        ZipInstaller = archiveFilePath;
-                        Console.WriteLine($"Downloading the latest release source code of {owner} has begun");
-                        using (FileStream fileStream = new FileStream(archiveFilePath, System.IO.FileMode.Create))
-                        {
-                            const int bufferSize = 8192;
-                            var buffer = new byte[bufferSize];
-                            int bytesRead;
-                            long totalBytesRead = 0;
-
-                            while ((bytesRead = await archiveStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                            {
-                                await fileStream.WriteAsync(buffer, 0, bytesRead);
-
-                                totalBytesRead += bytesRead;
-
-                                // Update the progress via the IProgress<int> object
-                                int progressPercentage = (int)((double)totalBytesRead / totalFileSize * 100);
-                                progress.Report(progressPercentage);
-                            }
-                        }
-
-                        Console.WriteLine($"The latest release source code has been downloaded: {archiveFilePath}");
-                        Console.WriteLine($"The name of the latest release has been saved in: {releaseName}");
                     }
+
+                    // Choose the appropriate URL based on the service
+                    string archiveUrl = (Service == "GitHub")
+                        ? $"https://github.com/{owner}/{repo}/archive/refs/heads/{tree}.{archiveFormat}"
+                        : $"https://gitlab.com/{owner}/{repo}/-/archive/{tree}/{repo}-{tree}.{archiveFormat}";
+
+                    // Create the full path of the archive file in the executable directory
+                    string archiveFilePath = Path.Combine(exeDirectory, $"{repo}-latest.{archiveFormat}");
+                    ZipInstaller = archiveFilePath;
+
+                    Console.WriteLine($"Downloading the latest release source code of {owner} has begun");
+
+                    // Use WebClient for downloading with progress handling
+                    using (var client = new WebClient())
+                    {
+                        // Report progress from WebClient
+                        client.DownloadProgressChanged += (s, e) => progress.Report(e.ProgressPercentage);
+
+                        // Download the file asynchronously
+                        await client.DownloadFileTaskAsync(archiveUrl, archiveFilePath);
+                    }
+
+                    config.GameVersion = releaseName;
+
+                    Console.WriteLine($"The latest release source code has been downloaded: {archiveFilePath}");
+                    Console.WriteLine($"The name of the latest release has been saved in: {releaseName}");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error downloading the Game: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error downloading the Game: {ex.Message}", "Download Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"The Server return a error: {ex.Message}", "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"The Server returned an error: {ex.Message}", "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
@@ -265,7 +264,7 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 mainScript.Statue.Content = "Downloading Game Archive ...";
                 mainScript.progressBar.IsIndeterminate = false;
 
-                await ReleaseDownloaderAsync(progress, "infinitefusion", "infinitefusion-e18", "releases");
+                await ReleaseDownloaderAsync(progress, "infinitefusion", "infinitefusion-e18", "releases", "GitHub");
             }
             catch(Exception ex)
             {
@@ -326,7 +325,6 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
             // Update the Config.ini with the game installation path and graphic pack status
             config.GamePath = exeDirectory;
-            config.GameSpritePack = "None";
 
             config.Save(configFilePath);
 
@@ -341,82 +339,102 @@ namespace Pokémon_Infinite_Fusion_Launcher
 
             string applicationPath = Process.GetCurrentProcess().MainModule.FileName;
             Process.Start(applicationPath);
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         public async Task GraphicPackInstall(MainWindow mainScript)
         {
-            // Install the graphic pack
+            mainScript.Install_Update_Play.Style = (Style)mainScript.FindResource("UpdateImageButtonStyle");
+            exeDirectory = Path.Combine(config.GamePath, "InfiniteFusion/Graphics");
+            mainScript.UninstallBtn.IsEnabled = false;
+            mainScript.RepairBtn.IsEnabled = false;
+            mainScript.ExitBlock.Visibility = Visibility.Visible;
+
+            // Disable the Install/Update/Play button, show progress bar, and status message
             mainScript.Install_Update_Play.IsEnabled = false;
             mainScript.progressBar.Visibility = Visibility.Visible;
-            mainScript.Statue.Content = "Preparation ...";
-            mainScript.Statue.Visibility = Visibility.Visible;
 
-            IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
-            string SpritePack = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SpritePack.txt");
-            File.WriteAllText(SpritePack, "yes");
-            string txtFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GamePath.txt");
-            string appDirectory = File.ReadAllText(txtFolder);
-
-            string GameDirectory = Path.Combine(appDirectory, "InfiniteFusion");
-            string tempDirectory = Path.Combine(appDirectory, "GraphickPackTemp"); // Temporary folder for downloading
-
+            // Download the latest release archive
             try
             {
-                // Create the temporary folder if it doesn't exist
-                if (!Directory.Exists(tempDirectory))
-                    Directory.CreateDirectory(tempDirectory);
+                mainScript.progressBar.IsIndeterminate = true;
+                mainScript.Statue.Content = "Preparation ...";
+                mainScript.Statue.Visibility = Visibility.Visible;
 
-                mainScript.Statue.Content = "Downloading Sprite Archive ...";
-                // Download the sprite pack file
-                await ReleaseDownloaderAsync(progress, "DrapNard", "InfiniteFusion-Launcher", "SpritePack");
+                // Use IProgress<int> to report progress during the download
+                IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
 
-                mainScript.Statue.Content = "Extracting Sprite File ...";
+                // Get the total file size of the latest release for progress tracking
+                totalFileSize = await GetFileSizeAsync($"https://gitlab.com/pokemoninfinitefusion/customsprites/-/archive/master/customsprites-master.zip");
 
-                // Extract the sprite pack files
-                await DecompressZip(ZipInstaller, tempDirectory);
+                mainScript.Statue.Content = "Downloading Sprite Pack Archive ...";
+                mainScript.progressBar.IsIndeterminate = false;
 
-                mainScript.Statue.Content = "Finishing ...";
-
-                // Replace the application files with the new sprite pack files
-                string parentDirectory = tempDirectory;
-                string partialName = "InfiniteFusion-Launcher-";
-                string[] matchingFolders = FindFoldersByPartialName(parentDirectory, partialName);
-
-                if (matchingFolders.Length > 0)
-                {
-                    InstallfolderPath = matchingFolders[0];
-                }
-
-                // Copy the sprite pack files into the installation directory
-                CopyFilesRecursively(new DirectoryInfo(InstallfolderPath), new DirectoryInfo(GameDirectory));
-
-                mainScript.Statue.Content = "Graphic pack installed successfully!";
+                await ReleaseDownloaderAsync(progress, "pokemoninfinitefusion", "customsprites", "master", "GitLab");
             }
             catch (Exception ex)
             {
-                mainScript.Statue.Content = "Error during graphic pack installation: " + ex.Message;
+                MessageBox.Show($"Error downloading the Sprite Pack: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            finally
+
+            mainScript.Statue.Content = "Extracting Sprite File ...";
+            mainScript.progressBar.IsIndeterminate = true;
+
+            // Extract the downloaded archive to the executable directory
+            try
             {
-                mainScript.Statue.Content = "Cleaning ...";
-                // Delete the temporary folder
-                Directory.Delete(tempDirectory, true);
-                await DeleteZipFile(ZipInstaller);
-
-                mainScript.progressBar.IsIndeterminate = false;
-                mainScript.Install_Update_Play.IsEnabled = true; // Re-enable the button after download
-                mainScript.progressBar.Visibility = Visibility.Collapsed;
-                mainScript.Statue.Visibility = Visibility.Collapsed;
-
-                mainScript.progressBar.Value = 0;
-                mainScript.Install_Update_Play.Content = "Play";
+                await Task.Run(() => DecompressZip(ZipInstaller, exeDirectory));
             }
+            catch
+            {
+                return;
+            }
+
+            mainScript.Statue.Content = "Cleaning ...";
+
+            string parentDirectory = exeDirectory;
+            string partialName = "customsprites-master";
+            string[] matchingFolders = FindFoldersByPartialName(parentDirectory, partialName);
+
+            if (matchingFolders.Length > 0)
+            {
+                InstallfolderPath = matchingFolders[0];
+            }
+
+            // Clean up by deleting the downloaded archive
+            await DeleteZipFile(ZipInstaller);
+
+            mainScript.Statue.Content = "Finishing ...";
+
+            await Task.Run(() => CopyFilesRecursively(new DirectoryInfo(Path.Combine(exeDirectory, InstallfolderPath)), new DirectoryInfo(Path.Combine(config.GamePath, "InfiniteFusion/Graphics"))));
+            await Task.Run(() => CopyFilesRecursively(new DirectoryInfo(Path.Combine(exeDirectory, InstallfolderPath, "Other")), new DirectoryInfo(Path.Combine(config.GamePath, "InfiniteFusion/Graphics"))));
+            Directory.Delete(Path.Combine(exeDirectory, InstallfolderPath), true);
+
+            mainScript.progressBar.IsIndeterminate = false;
+            mainScript.Install_Update_Play.IsEnabled = true;
+            mainScript.progressBar.Visibility = Visibility.Collapsed;
+            mainScript.Statue.Visibility = Visibility.Collapsed;
+
+
+            config.Save(configFilePath);
+
+            // Update the main window's status
+            mainScript.install = false;
+            mainScript.progressBar.Value = 0;
+            mainScript.Install_Update_Play.Content = "Play";
+            mainScript.InstPlayButtonStyle(true);
+            mainScript.InstSpritePack.IsEnabled = false;
+
+            SystemSounds.Beep.Play();
+
+            string applicationPath = Process.GetCurrentProcess().MainModule.FileName;
+            Process.Start(applicationPath);
+            Application.Current.Shutdown();
         }
 
         public async Task UpdateChecker(MainWindow mainScript, string owner, string repo, bool ignoredUpdateCheck)
         {
-            // Check for updates and prompt the user to install them if available
             try
             {
                 string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
@@ -433,17 +451,19 @@ namespace Pokémon_Infinite_Fusion_Launcher
                 }
                 if (ignoredUpdateCheck)
                 {
+                    mainScript.Install_Update_Play.Style = (Style)mainScript.FindResource("UpdateImageButtonStyle");
                     string gamePath = Path.Combine(config.GamePath, "InfiniteFusion");
                     foreach (string SubFolder in Directory.GetDirectories(gamePath))
                     {
                         if (Path.GetFileName(SubFolder) != "Graphics")
                         {
                             Directory.Delete(SubFolder, true); // true indique de supprimer récursivement
+
+                            foreach (string fichier in Directory.GetFiles(gamePath))
+                            {
+                                File.Delete(fichier);
+                            }
                         }
-                    }
-                    foreach (string fichier in Directory.GetFiles(gamePath))
-                    {
-                        File.Delete(fichier);
                     }
                     config.GameVersion = null;
                     config.Save(configFilePath);
@@ -472,11 +492,12 @@ namespace Pokémon_Infinite_Fusion_Launcher
                                 if (Path.GetFileName(SubFolder) != "Graphics")
                                 {
                                     Directory.Delete(SubFolder, true); // true indique de supprimer récursivement
+
+                                    foreach (string fichier in Directory.GetFiles(gamePath))
+                                    {
+                                        File.Delete(fichier);
+                                    }
                                 }
-                            }
-                            foreach (string fichier in Directory.GetFiles(gamePath))
-                            {
-                                File.Delete(fichier);
                             }
                             config.GameVersion = null;
                             config.Save(configFilePath);
@@ -502,6 +523,137 @@ namespace Pokémon_Infinite_Fusion_Launcher
             catch (Exception ex)
             {
                 Console.WriteLine($"Error checking for updates: {ex.Message}");
+            }
+        }
+
+        public async Task UpdaterUpdater(MainWindow mainScript)
+        {
+            try
+            {
+                string LauncherDir = AppDomain.CurrentDomain.BaseDirectory;
+
+                exeDirectory = LauncherDir;
+
+                mainScript.Install_Update_Play.Style = (Style)mainScript.FindResource("UpdateImageButtonStyle");
+                    
+                    
+                mainScript.UninstallBtn.IsEnabled = false;
+                mainScript.RepairBtn.IsEnabled = false;
+                mainScript.ExitBlock.Visibility = Visibility.Visible;
+
+                await DelLauncherFile();
+
+                // Disable the Install/Update/Play button, show progress bar, and status message
+                mainScript.Install_Update_Play.IsEnabled = false;
+                mainScript.progressBar.Visibility = Visibility.Visible;
+
+                mainScript.progressBar.IsIndeterminate = true;
+                mainScript.Statue.Content = "Preparation ...";
+                mainScript.Statue.Visibility = Visibility.Visible;
+
+                // Download the latest release archive
+                try
+                { 
+                    // Use IProgress<int> to report progress during the download
+                    IProgress<int> progress = new Progress<int>(value => mainScript.progressBar.Value = value);
+
+                    // Get the total file size of the latest release for progress tracking
+                    totalFileSize = await GetFileSizeAsync($"https://github.com/DrapNard/InfiniteFusion-Launcher/archive/refs/heads/Updater(Binairies).zip");
+
+                    mainScript.Statue.Content = "Downloading Launcher Archive ...";
+                    mainScript.progressBar.IsIndeterminate = false;
+
+                    await ReleaseDownloaderAsync(progress, "DrapNard", "InfiniteFusion-Launcher", "Updater(Binairies)", "GitHub");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error downloading the Updater: {ex.Message}", "Donwload Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                mainScript.Statue.Content = "Extracting Launcher File ...";
+                mainScript.progressBar.IsIndeterminate = true;
+
+                // Extract the downloaded archive to the executable directory
+                try
+                {
+                    await Task.Run(() => DecompressZip(ZipInstaller, exeDirectory));
+                }
+                catch
+                {
+                    return;
+                }
+
+                mainScript.Statue.Content = "Cleaning ...";
+
+                string parentDirectory = LauncherDir;
+                string partialName = "InfiniteFusion-Launcher-Updater-Binairies-";
+                string[] matchingFolders = FindFoldersByPartialName(parentDirectory, partialName);
+
+                if (matchingFolders.Length > 0)
+                {
+                    InstallfolderPath = matchingFolders[0];
+                }
+
+                await Task.Run(() => CopyFilesRecursively(new DirectoryInfo(Path.Combine(exeDirectory, InstallfolderPath)), new DirectoryInfo(LauncherDir)));
+                Directory.Delete(Path.Combine(exeDirectory, InstallfolderPath), true);
+                
+
+                // Clean up by deleting the downloaded archive
+                await DeleteZipFile(ZipInstaller);
+
+                mainScript.Statue.Content = "Finishing ...";
+
+                mainScript.progressBar.IsIndeterminate = false;
+                mainScript.Install_Update_Play.IsEnabled = true;
+                mainScript.progressBar.Visibility = Visibility.Collapsed;
+                mainScript.Statue.Visibility = Visibility.Collapsed;
+
+                // Update the main window's status
+                mainScript.install = false;
+                mainScript.progressBar.Value = 0;
+                mainScript.Install_Update_Play.Content = "Play";
+                mainScript.InstPlayButtonStyle(true);
+                mainScript.InstSpritePack.IsEnabled = false;
+
+                SystemSounds.Beep.Play();
+
+                string applicationPath = Process.GetCurrentProcess().MainModule.FileName;
+                Process.Start(applicationPath);
+                Application.Current.Shutdown();
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking for updates: {ex.Message}");
+            }
+        }
+
+        private async Task DelLauncherFile()
+        {
+            string LauncherDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            try
+            {
+                string[] files = Directory.GetFiles(LauncherDir);
+
+                string[] UpdaterFiles = { "Updater.exe", "Updater.dll", "Updater.deps.json", "Updater.runtimeconfig.json" };
+
+                foreach (string file in files)
+                {
+                    // Vérifiez si le nom du fichier est dans la liste des fichiers à supprimer
+                    if (Array.IndexOf(UpdaterFiles, Path.GetFileName(file)) != -1)
+                    {
+                        // Supprimez le fichier
+                        File.Delete(file);
+                        Console.WriteLine($"Le fichier {file} a été supprimé.");
+                    }
+                }
+            }
+            catch (Exception ex )
+            {
+                MessageBox.Show($"Error Updating the launcher: {ex.Message}", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
         }
 

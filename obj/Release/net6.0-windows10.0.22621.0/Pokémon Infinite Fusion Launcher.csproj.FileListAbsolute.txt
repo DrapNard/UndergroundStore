@@ -26,7 +26,6 @@ C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infi
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\MainWindow.g.cs
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\App.g.cs
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher_MarkupCompile.cache
-C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher_MarkupCompile.lref
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\MainWindow.baml
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.g.resources
 C:\Users\Drap\source\repos\Pokémon Infinite Fusion Launcher (WPF)\Pokémon Infinite Fusion Launcher\obj\Release\net6.0-windows10.0.22621.0\Pokémon Infinite Fusion Launcher.GeneratedMSBuildEditorConfig.editorconfig

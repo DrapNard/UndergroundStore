@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Pokémon Infinite Fusion Launcher": {
+      "commandName": "Project",
+      "commandLineArgs": "-DirectPlay\r\n-DirectPlay Preloaded\r\n{f6bab8a7-1324-4221-85e2-4041ca01b96f}"
+    }
+  }
+}
