@@ -136,7 +136,21 @@ namespace Pokémon_Infinite_Fusion_Launcher
             DiscordBot discordBot = new DiscordBot(channelId, TOKEN.token, this.News);
             discordBot.Initialize();
 
+            string GameDir;
+            string GameFile;
+
             if (config.GamePath != null)
+            {
+                GameDir = Path.Combine(config.GamePath, "InfiniteFusion");
+                GameFile = Path.Combine(GameDir, "Game.exe");
+            }
+            else
+            {
+                GameDir = exeDirectory;
+                GameFile = exeDirectory;
+            }
+
+            if (config.GamePath != null && Directory.Exists(GameDir) && File.Exists(GameFile))
             {
                 Install_Update_Play.Style = (Style)FindResource("PlayImageButtonStyle");
                 Install_Update_Play.Content = "Play";

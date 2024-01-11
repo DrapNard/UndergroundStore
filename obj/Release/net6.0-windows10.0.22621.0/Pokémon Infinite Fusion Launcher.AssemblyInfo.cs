@@ -13,7 +13,7 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("Pokémon Infinite Fusion Launcher")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.6.5")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.7.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Pokémon Infinite Fusion Launcher")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Pokémon Infinite Fusion Launcher")]

@@ -101,7 +101,8 @@ namespace Pokémon_Infinite_Fusion_Launcher {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Pokémon Infinite Fusion Launcher;component/installationoptionsdialog.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Pokémon Infinite Fusion Launcher;V1.0.0.0;component/installationoptionsdialog.xa" +
+                    "ml", System.UriKind.Relative);
             
             #line 1 "..\..\..\InstallationOptionsDialog.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
