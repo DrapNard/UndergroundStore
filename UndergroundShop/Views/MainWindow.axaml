@@ -6,7 +6,6 @@
         xmlns:views="clr-namespace:UndergroundShop.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UndergroundShop.Views.MainWindow"
-        Icon="/Assets/Image/icon.ico"
         Title="UndergroundShop">
         <views:MainView />
 </Window>

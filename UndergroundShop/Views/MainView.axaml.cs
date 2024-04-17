@@ -19,21 +19,22 @@ public partial class MainView : UserControl
 
     public void GetFile()
     {
-        string url = "https://github.com/DrapNard/InfiniteFusion-Launcher/releases/download/1.7.2/Pokemon.Infinite.Fusion.Launcher.Setup.Windows.exe";
+        string url = "";
         Downloader downloader = new Downloader(url);
 
         downloader.GetFileLengthAsync().ContinueWith(task =>
         {
             if (task.IsCompletedSuccessfully)
             {
-                long size = task.Result;
-                MainViewModel.FileSize = size.ToString();
+                string size = task.Result.ToString();
                 Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, "Size of the File : " + size);
+                MainViewModel.FileSize = size + "byte";
             }
             else
             {
                 // Handle any errors that might occur during download
                 Console.WriteLine("Error getting file size!");
+                MainViewModel.FileSize = "Unknowd";
             }
         });
     }

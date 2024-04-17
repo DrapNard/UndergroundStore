@@ -9,7 +9,7 @@ namespace UndergroundShop.ViewModels;
 
 public partial class MainViewModel : ViewModelBase, INotifyPropertyChanged
 {
-    public static string? FileSize { get; set; }
+    public static string? FileSize {  get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

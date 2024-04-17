@@ -57,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Image\" />
     <Folder Include="Module\Rom\Emulator\" />
   </ItemGroup>
 </Project>
