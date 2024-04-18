@@ -1,6 +1,6 @@
 # Underground Store
 ----
-Underground store is a store for Rom Hack and Fan Game written in C# 
+Underground store is a store for Rom Hack, Mods and Fan Game written in C# 
 ----
 ## Feature:
 
