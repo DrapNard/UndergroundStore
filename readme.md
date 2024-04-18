@@ -13,6 +13,8 @@ Underground store is a store for Rom Hack and Fan Game written in C#
 |✅|Included|
 |⚠️|Not complete|
 |❌|Planed|
+|❔|Planed but No research|
+|⭕️|Not Planed|
 |🚫|Will **Newer** Included|
 
 </details>
@@ -20,7 +22,7 @@ Underground store is a store for Rom Hack and Fan Game written in C#
 ### Base System:
 ||C# Native|UI|Included|
 |:---|:---:|:---:|:---:|
-|UX/UI|❌ (AXAML)|❌|❌|
+|UX/UI|🚫 (AXAML)|❌|❌|
 |File Management|✅|❌|✅|
 |Donwload|✅|❌|⚠️(In Work)|
 |Configuration (Options Save)|✅|❌|⚠️(In Work)|
@@ -28,3 +30,39 @@ Underground store is a store for Rom Hack and Fan Game written in C#
 |Source (Verified or Untrusted)|✅|❌|❌|
 |Update (Store Only)|✅|🚫|❌|
 |Update (Game / Rom Hack Only)|✅|❌|❌|
+
+### Emulator:
+||C# Native|UI|Core|Included|
+|:---|:---:|:---:|:---:|:---:|
+|Nintendo Home Console|
+|NES|❔|❌|❔|❌|
+|SNES|❔|❌|❔|❌|
+|N64|🚫 (C++)|❌|Muppen64|⚠️(In Work)|
+|GameCube|❔|❌|❔|❌|
+|Wii|❔|❌|❔(Dolphin?)|❌|
+|Wii U|🚫 (C++)|❌|Cemu|❌|
+|Switch|✅|❌|Riujinx|❌|
+|Nintendo Portable Console|
+|GB/GBC/GBA|🚫 (C & C++)|❌|mGBA|❌|
+|DS|🚫 (C & C++)|❌|MelonDS|❌|
+|3DS|❔|❌|❔(A Citra Successor?)|❌|
+|Sega Console|
+|Master System|⭕️|
+|Mega Drive/CD...|❔|❌|❔|❌|
+|Saturn|⭕️|
+|DreamCast|❔|❌|❔|❌|
+|GameGear|⭕️|
+|Playstation Home Console|
+|PS1|❔|❌|❔|❌|
+|PS2|❔|❌|❔|❌|
+|PS3|❔|❌|❔|❌|
+|PS4|⭕️|
+|PS5|⭕️|
+|Playstation Portable Console|
+|PSP|❔|❌|❔|❌|
+|PS Vita|⭕️|
+|Xbox Console|
+|Xbox Clasic|❔|❌|❔|❌|
+|360|❔|❌|❔|❌|
+|One|🚫|
+|Series|🚫|
