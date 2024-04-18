@@ -43,8 +43,8 @@ Underground store is a store for Rom Hack and Fan Game written in C#
 |Wii U|🚫 (C++)|❌|Cemu|❌|
 |Switch|✅|❌|Riujinx|❌|
 |Nintendo Portable Console|
-|GB/GBC/GBA|🚫 (C & C++)|❌|mGBA|❌|
-|DS|🚫 (C & C++)|❌|MelonDS|❌|
+|GB/GBC/GBA|🚫 (C & C++)|❌|mGBA|⚠️(In Work)|
+|DS|🚫 (C & C++)|❌|MelonDS|⚠️(In Work)|
 |3DS|❔|❌|❔(A Citra Successor?)|❌|
 |Sega Console|
 |Master System|⭕️|
