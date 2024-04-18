@@ -37,14 +37,14 @@ Underground store is a store for Rom Hack, Mods and Fan Game written in C#
 |Nintendo Home Console|
 |NES|❔|❌|❔|❌|
 |SNES|❔|❌|❔|❌|
-|N64|🚫 (C++)|❌|Muppen64|⚠️(In Work)|
+|N64|🚫 (C++)|❌|[Mupen64plus](https://github.com/mupen64plus/mupen64plus-core)|⚠️(In Work)|
 |GameCube|❔|❌|❔|❌|
 |Wii|❔|❌|❔(Dolphin?)|❌|
-|Wii U|🚫 (C++)|❌|Cemu|❌|
-|Switch|✅|❌|Riujinx|❌|
+|Wii U|🚫 (C++)|❌|[Cemu](https://github.com/cemu-project/Cemu)|❌|
+|Switch|✅|❌|[Ryujinx](https://github.com/Ryujinx/Ryujinx)|❌|
 |Nintendo Portable Console|
-|GB/GBC/GBA|🚫 (C & C++)|❌|mGBA|⚠️(In Work)|
-|DS|🚫 (C & C++)|❌|MelonDS|⚠️(In Work)|
+|GB/GBC/GBA|🚫 (C & C++)|❌|[mGBA](https://github.com/mgba-emu/mgba)|⚠️(In Work)|
+|DS|🚫 (C & C++)|❌|[MelonDS](https://github.com/melonDS-emu/melonDS)|⚠️(In Work)|
 |3DS|❔|❌|❔(A Citra Successor?)|❌|
 |Sega Console|
 |Master System|⭕️|
