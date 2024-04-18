@@ -3,6 +3,7 @@
 Underground store is a store for Rom Hack and Fan Game written in C# 
 ----
 ## Feature:
+
 <details>
 <summary>Explanations of symbols<summary/>
 |Symbols|Explanations|
@@ -12,6 +13,7 @@ Underground store is a store for Rom Hack and Fan Game written in C#
 |❌|Planed|
 |🚫|Will **Newer** Included|
 <details/>
+
 ### Base System:
 ||C# Native|UI|Included|
 |:---|:---:|:---:|:---:|
