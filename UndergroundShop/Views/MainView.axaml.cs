@@ -20,15 +20,16 @@ public partial class MainView : UserControl
     public void GetFile()
     {
         string url = "";
-        Downloader downloader = new Downloader(url);
+        WebFile cdn = new WebFile(url);
 
-        downloader.GetFileLengthAsync().ContinueWith(task =>
+        cdn.GetFileLengthAsync().ContinueWith(task =>
         {
             if (task.IsCompletedSuccessfully)
             {
-                string size = task.Result.ToString();
-                Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, "Size of the File : " + size);
-                MainViewModel.FileSize = size + "byte";
+                long size = task.Result;
+                string msg = "Size of the File : " + size;
+                Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, msg);
+                MainViewModel.FileSize = msg;
             }
             else
             {
@@ -37,5 +38,7 @@ public partial class MainView : UserControl
                 MainViewModel.FileSize = "Unknowd";
             }
         });
+
+        cdn.Download(AppDomain.CurrentDomain.BaseDirectory);
     }
 }

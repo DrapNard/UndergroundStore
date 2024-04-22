@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Logging;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -6,15 +7,76 @@ using System.Threading.Tasks;
 
 namespace UndergroundShop.Management
 {
-    public class Downloader
+    public class WebFile
     {
         static readonly HttpClient client = new();
 
         private readonly string url;
 
-        public Downloader(string url)
+        public WebFile(string url)
         {
             this.url = url;
+        }
+
+        public async Task Download(string path)
+        {
+            try
+            {
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
+
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+                using var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var fileName = GetFileNameFromUrl(url);
+                    var filePath = Path.Combine(path, fileName);
+
+                    long totalBytes = response.Content.Headers.ContentLength ?? 0; // Handle missing ContentLength
+                    long downloadedBytes = 0;
+
+                    using (var contentStream = await response.Content.ReadAsStreamAsync())
+                    using (var fileStream = new FileStream(filePath, FileMode.CreateNew))
+                    {
+                        var buffer = new byte[4096]; // Efficient buffer size
+                        int bytesRead;
+
+                        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            downloadedBytes += bytesRead;
+                            double percentage = (double)downloadedBytes / totalBytes * 100;
+
+                            // Update percentage and counter using preferred logging mechanism (replace with your implementation)
+                            UpdateDownloadProgress(percentage, downloadedBytes);
+
+                            await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Downloaded file to: {path}");
+                }
+                else
+                {
+                    Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Failed to download file: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Error downloading file: {ex.Message}");
+            }
+        }
+
+        private void UpdateDownloadProgress(double percentage, long downloadedBytes)
+        {
+            // Example using Console:
+            Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Download progress: {percentage:F2}% ({downloadedBytes} bytes downloaded)");
+        }
+
+        private string GetFileNameFromUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            return Path.GetFileName(uri.LocalPath);
         }
 
         public async Task<long> GetFileLengthAsync()

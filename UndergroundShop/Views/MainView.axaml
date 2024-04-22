@@ -18,7 +18,6 @@
 
 	<Grid>
 		<TextBlock>
-			<Run Text="File Size : "/>
 			<Run Text="{Binding FileSize}"/>
 		</TextBlock>
 	</Grid>
