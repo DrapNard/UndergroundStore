@@ -11,7 +11,8 @@ public partial class MainView : UserControl
 {
     public MainView()
     {
-        Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, "Avalonia Infrastructure");
+        var Config = new Configuration();
+
         InitializeComponent();
 
         GetFile();
@@ -28,13 +29,13 @@ public partial class MainView : UserControl
             {
                 long size = task.Result;
                 string msg = "Size of the File : " + size;
-                Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, msg);
+                Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, msg);
                 MainViewModel.FileSize = msg;
             }
             else
             {
                 // Handle any errors that might occur during download
-                Console.WriteLine("Error getting file size!");
+                Logger.TryGet(LogEventLevel.Error, LogArea.Control)?.Log(this, "Error getting file size!");
                 MainViewModel.FileSize = "Unknowd";
             }
         });
