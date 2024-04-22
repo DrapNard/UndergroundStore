@@ -26,9 +26,9 @@ Underground store is a store for Rom Hack, Mods and Fan Game written in C#
 |File Management|✅|❌|✅|
 |Donwload|✅|❌|✅|
 |Configuration (Options Save)|✅|❌|✅|
-|Loggin & Error Management (Debuging)|✅|❌|❌|
-|Source (Verified or Untrusted)|✅|❌|❌|
-|Update (Store Only)|✅|🚫|❌|
+|Loggin & Error Management (Debuging)|✅|❌|⚠️(In Work)|
+|Source (Verified or Untrusted)|✅|❌|⚠️(In Work)|
+|Update (Store Only)|✅|🚫|⚠️(In Work)|
 |Update (Game / Rom Hack / Mods Only)|✅|❌|❌|
 |Api (Achivement, Friend ...)|✅|❌|❌|
 |Paid (Fan Game / Rom Hack / Mods)|🚫|🚫|🚫|
