@@ -3,9 +3,9 @@ using BpsNet;
 
 namespace UndergroundShop.Module.Rom.Patcher
 {
-    internal class bps
+    internal class Bps
     {
-        public bps(string Rom, string Patch)
+        public Bps(string Rom, string Patch)
         {
             byte[] original = File.ReadAllBytes(Rom);
             var patch = new BpsPatch(File.ReadAllBytes(Patch));

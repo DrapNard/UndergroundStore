@@ -1,21 +1,37 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 using System;
 using System.IO;
 using System.Reflection;
-using Avalonia.Logging;
-using System.Diagnostics;
+using Avalonia;
+using Newtonsoft.Json;
 
 namespace UndergroundShop.Management
 {
     internal class Configuration
     {
-        public string[] Path { get; set; }
-        public string Channel { get; set; }
+        public string[]? Path { get; set; }
+        public string? Channel { get; set; }
         public bool Debug { get; set; }
-        public string Version { get; set; }
+        public bool LogFile { get; set; } = false;
+        public string? Version { get; set; }
+        public string? Lang { get; set; }
 
-        public Configuration()
+        public static Configuration? Instance { get; private set; } // Singleton Instance
+
+        private Configuration() // Private constructor to enforce singleton pattern
+        {
+            LoadConfiguration();
+        }
+
+        public static void Load() // Static method to access and load configuration
+        {
+            if (Instance == null)
+            {
+                Instance = new Configuration(); // Create instance on first call
+            }
+        }
+
+        private void LoadConfiguration() // Helper method for loading from file (private)
         {
             string ExeDir = AppDomain.CurrentDomain.BaseDirectory;
             string ConfDir = System.IO.Path.Combine(ExeDir, "Config/");
@@ -23,41 +39,39 @@ namespace UndergroundShop.Management
 
             if (!File.Exists(ConfFile))
             {
-                Console.WriteLine("Creating config" + "\n");
+                //MessageManagement.ConsoleMessage("Creating config" + "\n", 3);
                 Channel = "Stable";
                 Path = null;
                 Debug = false;
+                LogFile = false;
+                Lang = "En";
                 Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                string jsonString = JsonSerializer.Serialize(this);
+                string jsonString = JsonConvert.SerializeObject(this, Formatting.Indented); // Use Newtonsoft.Json for better formatting
 
                 Directory.CreateDirectory(ConfDir);
                 File.WriteAllText(ConfFile, jsonString);
 
-                Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, "Config generated please compleate and restart" + "\n");
+                //MessageManagement.ConsoleMessage("Config generated please compleate and restart" + "\n", 3);
                 return;
             }
 
-            Console.WriteLine("Config Loading" + "\n");
+            //MessageManagement.ConsoleMessage("Config Loading" + "\n", 2);
             IConfigurationRoot config = new ConfigurationBuilder()
-                .AddJsonFile("Config/config.json")
-                .Build();
+              .AddJsonFile("Config/config.json")
+              .Build();
 
             Path = config.GetValue<string[]>("Path");
-            Channel = config.GetValue<string>("Channel");
-            Debug = config.GetValue<bool>("Debug", false);
-            Version = config.GetValue<string>("Version", null);
+            Channel = config.GetValue("Channel", "Stable");
+            Debug = config.GetValue("Debug", false);
+            LogFile = config.GetValue("LogFile", false);
+            Lang = config.GetValue<string>("Lang");
+            Version = config.GetValue<string>("Version");
 
-            Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, "Path : " + Path);
-            Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, "Channel : " + Channel);
-            Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, "Debug : " + Debug);
-            Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, "Version : " + Version);
-
-            if (Version == null)
+            if (Version is null || Path is null || Lang is null)
             {
-                Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, "Config Corrupt. Exiting." + "\n");
+                MessageManagement.ConsoleMessage("Config Corrupt. Exiting.\n", 5);
                 Environment.Exit(0);
-                return;
             }
         }
     }

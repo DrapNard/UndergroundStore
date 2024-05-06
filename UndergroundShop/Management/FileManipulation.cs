@@ -1,5 +1,4 @@
-﻿using Avalonia.Logging;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -54,23 +53,23 @@ namespace UndergroundShop.Management
                         }
                     }
 
-                    Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Downloaded file to: {path}");
+                    MessageManagement.ConsoleMessage($"Downloaded file to: {path}", 2);
                 }
                 else
                 {
-                    Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Failed to download file: {response.StatusCode}");
+                    MessageManagement.ConsoleMessage($"Failed to download file: {response.StatusCode}", 4);
                 }
             }
             catch (Exception ex)
             {
-                Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Error downloading file: {ex.Message}");
+                MessageManagement.ConsoleMessage($"Error downloading file: {ex.Message}", 4);
             }
         }
 
         private void UpdateDownloadProgress(double percentage, long downloadedBytes)
         {
             // Example using Console:
-            Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, $"Download progress: {percentage:F2}% ({downloadedBytes} bytes downloaded)");
+            MessageManagement.ConsoleMessage($"Download progress: {percentage:F2}% ({downloadedBytes} bytes downloaded)", 1);
         }
 
         private string GetFileNameFromUrl(string url)
@@ -92,18 +91,18 @@ namespace UndergroundShop.Management
                 if (response.IsSuccessStatusCode)
                 {
                     long contentLength = (long)response.Content.Headers.ContentLength;
-                    Console.WriteLine($"File Length: {contentLength} bytes");
+                    MessageManagement.ConsoleMessage($"File Length: {contentLength} bytes", 2);
                     return contentLength;
                 }
                 else
                 {
-                    Console.WriteLine($"Failed to get file length: {response.StatusCode}");
+                    MessageManagement.ConsoleMessage($"Failed to get file length: {response.StatusCode}", 4);
                     return 0;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                MessageManagement.ConsoleMessage($"Error: {ex.Message}", 4);
                 return 0;
             }
         }
@@ -116,7 +115,7 @@ namespace UndergroundShop.Management
             // Ensure the current folder exists
             if (!Directory.Exists(currentFolderPath))
             {
-                Console.WriteLine(MessageManagement.DirNotEx);
+                MessageManagement.ConsoleMessage(MessageManagement.DirNotEx, 4);
                 return;
             }
 
@@ -133,7 +132,7 @@ namespace UndergroundShop.Management
             // Check if a folder with the new name already exists
             if (Directory.Exists(newFolderPath))
             {
-                Console.WriteLine("A folder with the new name already exists.");
+                MessageManagement.ConsoleMessage("A folder with the new name already exists.", 3);
                 return;
             }
 
@@ -141,11 +140,11 @@ namespace UndergroundShop.Management
             try
             {
                 Directory.Move(currentFolderPath, newFolderPath);
-                Console.WriteLine("Folder renamed successfully.");
+                MessageManagement.ConsoleMessage("Folder renamed successfully.", 2);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error renaming the folder: {ex.Message}");
+                MessageManagement.ConsoleMessage($"Error renaming the folder: {ex.Message}", 4);
             }
         }
 
@@ -153,7 +152,7 @@ namespace UndergroundShop.Management
         {
             if (!Directory.Exists(parentDirectory))
             {
-                Console.WriteLine(MessageManagement.DirNotEx);
+                MessageManagement.ConsoleMessage(MessageManagement.DirNotEx, 4);
                 return new string[0];
             }
 
@@ -164,7 +163,7 @@ namespace UndergroundShop.Management
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error searching for folders: {ex.Message}");
+                MessageManagement.ConsoleMessage($"Error searching for folders: {ex.Message}", 4);
                 return new string[0];
             }
         }
@@ -193,13 +192,13 @@ namespace UndergroundShop.Management
         {
             if (!File.Exists(zipFilePath))
             {
-                Console.WriteLine("The .zip file does not exist.");
+                MessageManagement.ConsoleMessage("The .zip file does not exist.", 3);
                 return Task.CompletedTask;
             }
 
             if (!Directory.Exists(extractPath))
             {
-                Console.WriteLine(MessageManagement.DirNotEx);
+                MessageManagement.ConsoleMessage(MessageManagement.DirNotEx, 4);
                 return Task.CompletedTask;
             }
 
@@ -222,13 +221,13 @@ namespace UndergroundShop.Management
                     }
                 }
                 string extractedDirectoryName = Path.GetFileName(extractPath);
-                Console.WriteLine("Decompression completed.");
+                MessageManagement.ConsoleMessage("Decompression completed.", 2);
 
                 return Task.CompletedTask;
             }
             catch (Exception ex)
             {
-                Console.WriteLine();
+                MessageManagement.ConsoleMessage($"Error when decompress the .zip: {ex.Message}", 4);
             }
             return Task.CompletedTask;
         }
@@ -266,13 +265,13 @@ namespace UndergroundShop.Management
                     if (!isExcluded)
                     {
                         File.Delete(file);
-                        Console.WriteLine($"The file {file} has been deleted.");
+                        MessageManagement.ConsoleMessage($"The file {file} has been deleted.", 2);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting files: {ex.Message}");
+                MessageManagement.ConsoleMessage($"Error deleting files: {ex.Message}", 4);
             }
         }
     }

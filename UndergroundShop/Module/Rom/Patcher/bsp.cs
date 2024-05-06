@@ -4,7 +4,7 @@ namespace UndergroundShop.Module.Rom.Patcher
 {
     // JS Script make by aaaaaa123456789
 
-    internal class bsp
+    internal class Bsp
     {
         public void Patcher()
         {

@@ -1,19 +1,19 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using PleOps.XdeltaSharp.Decoder;
+using UndergroundShop.Management;
 
 namespace UndergroundShop.Module.Rom.Patcher
 {
-    internal class xdelta
+    internal class Xdelta
     {
-        public xdelta(string Rom, string Patch, string outputPath) 
+        public Xdelta(string Rom, string Patch, string outputPath) 
         {
             var input = new FileStream(Rom, FileMode.Open);
             var patch = new FileStream(Patch, FileMode.Open);
             var output = new FileStream(outputPath, FileMode.Create);
 
             var decoder = new Decoder(input, patch, output);
-            decoder.ProgressChanged += progress => Console.WriteLine($"Patching progress: {progress}");
+            decoder.ProgressChanged += progress => MessageManagement.ConsoleMessage($"Patching progress: {progress}", 2);
 
             decoder.Run();
         }

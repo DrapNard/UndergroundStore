@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Logging;
 using UndergroundShop.Management;
 using UndergroundShop.ViewModels;
 using System;
@@ -11,14 +10,14 @@ public partial class MainView : UserControl
 {
     public MainView()
     {
-        var Config = new Configuration();
+        Configuration.Load();
 
         InitializeComponent();
 
         GetFile();
     }
 
-    public void GetFile()
+    public static void GetFile()
     {
         string url = "";
         WebFile cdn = new WebFile(url);
@@ -29,13 +28,13 @@ public partial class MainView : UserControl
             {
                 long size = task.Result;
                 string msg = "Size of the File : " + size;
-                Logger.TryGet(LogEventLevel.Information, LogArea.Control)?.Log(this, msg);
+                MessageManagement.ConsoleMessage(msg, 2);
                 MainViewModel.FileSize = msg;
             }
             else
             {
                 // Handle any errors that might occur during download
-                Logger.TryGet(LogEventLevel.Error, LogArea.Control)?.Log(this, "Error getting file size!");
+                MessageManagement.ConsoleMessage("Error getting file size!", 3);
                 MainViewModel.FileSize = "Unknowd";
             }
         });
