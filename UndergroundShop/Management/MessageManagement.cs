@@ -34,7 +34,7 @@ namespace UndergroundShop.Management
                 Console.WriteLine($"[{logLevelAndColor.level}] {message}");
                 Logger.TryGet(logLevelAndColor.level, LogArea.Visual)?.Log(null, $"[{logLevelAndColor.level}] {message}");
 
-                if (Configuration.Instance.LogFile)
+                if (Configuration.Instance.LogFile != null || Configuration.Instance.LogFile)
                 {
                     WriteLogToFile(logLevelAndColor.level.ToString(), message);
                 }

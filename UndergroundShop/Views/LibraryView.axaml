@@ -1,0 +1,23 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:UndergroundShop.ViewModels"
+    x:Class="UndergroundShop.Views.Main.LibraryView"
+    x:DataType="vm:LibraryViewModel">
+
+	<StackPanel>
+		<TextBlock Text="Library" FontSize="20" Margin="10"/>
+		<ListBox ItemsSource="{Binding LibraryItems}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Vertical" Margin="10">
+						<TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+						<TextBlock Text="{Binding Description}"/>
+						<TextBlock Text="{Binding DevelopmentTeamName}" FontStyle="Italic"/>
+						<!-- Bind other properties as needed -->
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</StackPanel>
+</UserControl>

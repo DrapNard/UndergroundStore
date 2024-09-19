@@ -1,0 +1,12 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:UndergroundShop.ViewModels"
+    x:Class="UndergroundShop.Views.SettingsView"
+    x:DataType="vm:SettingsViewModel">
+
+	<StackPanel>
+		<TextBlock Text="Settings" FontSize="20" Margin="10"/>
+		<!-- Add your settings controls here -->
+	</StackPanel>
+</UserControl>
