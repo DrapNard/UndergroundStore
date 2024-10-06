@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using BpsNet;
 
-namespace UndergroundShop.Module.Rom.Patcher
+namespace UndergroundShop.Modules.Rom.Patcher
 {
     internal class Bps
     {

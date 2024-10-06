@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using UndergroundShop.ViewModels;
 
-namespace UndergroundShop.ViewModels
+namespace UndergroundShop.UI.ViewModels
 {
     public class MainViewModel : ObservableObject
     {

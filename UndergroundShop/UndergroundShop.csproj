@@ -48,7 +48,7 @@
 
   <ItemGroup>
     <Folder Include="Assets\Image\" />
-    <Folder Include="Module\Rom\Emulator\" />
-    <Folder Include="Views\Main\" />
+    <Folder Include="Modules\Rom\Emulator\" />
+    <Folder Include="UI\Views\Main\" />
   </ItemGroup>
 </Project>

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UndergroundShop.Core.Source;
+using UndergroundShop.UI.Models;
 
-namespace UndergroundShop.ViewModels
+namespace UndergroundShop.UI.ViewModels
 {
     public class BrowseViewModel : ObservableObject
     {

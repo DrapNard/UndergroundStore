@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using UndergroundShop.Core.Source;
 
-namespace UndergroundShop.Core.Source
+namespace UndergroundShop.UI.Models
 {
     public class GameItem : ObservableObject
     {

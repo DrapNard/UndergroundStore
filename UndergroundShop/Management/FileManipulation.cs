@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -8,52 +9,77 @@ namespace UndergroundShop.Management
 {
     public class WebFile
     {
-        static readonly HttpClient client = new();
+        private static readonly HttpClient client;
+        private readonly Uri uri;
 
-        private readonly string url;
+        static WebFile()
+        {
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) =>
+                {
+                    // Log and verify SSL certificate here
+                    if (sslPolicyErrors == System.Net.Security.SslPolicyErrors.None)
+                    {
+                        return true; // Certificate is valid
+                    }
+
+                    // Log or handle invalid certificates here
+                    MessageManagement.ConsoleMessage($"SSL certificate error: {sslPolicyErrors}", 4);
+                    return false; // Reject invalid certificates
+                },
+                SslProtocols = System.Security.Authentication.SslProtocols.Tls12 | System.Security.Authentication.SslProtocols.Tls13
+            };
+
+            client = new HttpClient(handler)
+            {
+                DefaultRequestVersion = HttpVersion.Version20,
+                Timeout = TimeSpan.FromSeconds(30)
+            };
+        }
 
         public WebFile(string url)
         {
-            this.url = url;
+            uri = new Uri(url);
+
+            if (uri.Scheme != Uri.UriSchemeHttps)
+                throw new ArgumentException("Only HTTPS protocol is allowed.");
         }
 
-        public async Task Download(string path)
+        public async Task DownloadAsync(string path)
         {
             try
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
 
-                var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-                using var response = await client.SendAsync(request);
+                using var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var fileName = GetFileNameFromUrl(url);
+                    var fileName = GetFileNameFromUrl(uri);
                     var filePath = Path.Combine(path, fileName);
 
-                    long totalBytes = response.Content.Headers.ContentLength ?? 0; // Handle missing ContentLength
+                    var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                    await using var contentStream = await response.Content.ReadAsStreamAsync();
+                    await using var fileStream = new FileStream(filePath, FileMode.CreateNew);
+
+                    var buffer = new byte[8192];
                     long downloadedBytes = 0;
+                    int bytesRead;
 
-                    using (var contentStream = await response.Content.ReadAsStreamAsync())
-                    using (var fileStream = new FileStream(filePath, FileMode.CreateNew))
+                    while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
-                        var buffer = new byte[4096]; // Efficient buffer size
-                        int bytesRead;
+                        downloadedBytes += bytesRead;
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
 
-                        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        if (totalBytes != -1)
                         {
-                            downloadedBytes += bytesRead;
                             double percentage = (double)downloadedBytes / totalBytes * 100;
-
-                            // Update percentage and counter using preferred logging mechanism (replace with your implementation)
                             UpdateDownloadProgress(percentage, downloadedBytes);
-
-                            await fileStream.WriteAsync(buffer, 0, bytesRead);
                         }
                     }
 
-                    MessageManagement.ConsoleMessage($"Downloaded file to: {path}", 2);
+                    MessageManagement.ConsoleMessage($"Downloaded file to: {filePath}", 2);
                 }
                 else
                 {
@@ -68,13 +94,11 @@ namespace UndergroundShop.Management
 
         private void UpdateDownloadProgress(double percentage, long downloadedBytes)
         {
-            // Example using Console:
             MessageManagement.ConsoleMessage($"Download progress: {percentage:F2}% ({downloadedBytes} bytes downloaded)", 1);
         }
 
-        private string GetFileNameFromUrl(string url)
+        private static string GetFileNameFromUrl(Uri uri)
         {
-            Uri uri = new Uri(url);
             return Path.GetFileName(uri.LocalPath);
         }
 
@@ -84,13 +108,11 @@ namespace UndergroundShop.Management
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
 
-                var request = new HttpRequestMessage(HttpMethod.Head, url);
+                using var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, uri));
 
-                using var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && response.Content.Headers.ContentLength.HasValue)
                 {
-                    long contentLength = (long)response.Content.Headers.ContentLength;
+                    var contentLength = response.Content.Headers.ContentLength.Value;
                     MessageManagement.ConsoleMessage($"File Length: {contentLength} bytes", 2);
                     return contentLength;
                 }

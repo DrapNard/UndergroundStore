@@ -2,7 +2,7 @@
 using PleOps.XdeltaSharp.Decoder;
 using UndergroundShop.Management;
 
-namespace UndergroundShop.Module.Rom.Patcher
+namespace UndergroundShop.Modules.Rom.Patcher
 {
     internal class Xdelta
     {

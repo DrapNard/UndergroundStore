@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UndergroundShop.Module.Api
+namespace UndergroundShop.Modules.Api
 {
     internal class Github
     {

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace UndergroundShop.ViewModels;
+namespace UndergroundShop.UI.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {
