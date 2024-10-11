@@ -66,7 +66,7 @@ Underground store is a store for Rom Hack, Mods and Fan Game written in C#
 |Xbox Console|
 |Xbox Clasic|❔|❌|❔|❌|
 |360|❔|❌|❔|❌|
-|One|🚫|
+|One|❔|
 |Series|🚫|
 
 ### Rom Patcher
