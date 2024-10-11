@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using UndergroundShop.Management;
 
 namespace UndergroundShop.Modules.Rom.Patcher
 {
@@ -27,23 +28,22 @@ namespace UndergroundShop.Modules.Rom.Patcher
         }
 
         private void Initialize(byte[] input)
-{
-    fileBuffer = new ResizableMemoryBlock(input.Length);
-    currentFilePointer = 0;
-    currentFilePointerLocked = false;
-    uint position = currentFilePointer;
+        {
+            fileBuffer = new ResizableMemoryBlock(input.Length);
+            currentFilePointer = 0;
+            currentFilePointerLocked = false;
+            uint position = currentFilePointer;
 
-    for (int i = 0; i < input.Length; i++)
-        fileBuffer.SetByte((int)position + i, input[i]);  // Use input[i] as the byte value
+            for (int i = 0; i < input.Length; i++)
+                fileBuffer.SetByte((int)position + i, input[i]);  // Use input[i] as the byte value
 
-    initialized = true;
-    dirty = true;
-}
-
+            initialized = true;
+            dirty = true;
+        }
 
         public void Run(uint? param = null)
         {
-            if (!initialized) throw new InvalidOperationException("BSP Patcher not initialized!");
+            if (!initialized) MessageManagement.ConsoleMessage("BSP Patcher not initialized!", 3);
 
             while (!done)
             {
@@ -99,7 +99,8 @@ namespace UndergroundShop.Modules.Rom.Patcher
                 // Add other opcodes similarly as per their argument types...
 
                 default:
-                    throw new InvalidOperationException($"Undefined opcode {opcode:X2}");
+                    MessageManagement.ConsoleMessage($"Undefined opcode {opcode:X2}", 3);
+                    return new Action[] { () => NextPatchWord() };
             }
         }
 
@@ -127,7 +128,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
             catch (Exception ex)
             {
                 done = true;
-                Console.WriteLine($"Error in BSPPatcher: {ex.Message}");
+                MessageManagement.ConsoleMessage($"Error in BSPPatcher: {ex.Message}", 4);
             }
         }
 
@@ -178,7 +179,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
 
         private bool PrintBufOpcode()
         {
-            Console.WriteLine(frames[0].MessageBuffer);
+            MessageManagement.ConsoleMessage(frames[0].MessageBuffer, 0);
             frames[0].MessageBuffer = ""; // Clear the buffer after printing.
             return true;
         }
@@ -217,7 +218,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
         private bool PopOpcode(uint variable)
         {
             if (frames[0].Stack.Count == 0)
-                throw new InvalidOperationException("Stack is empty");
+                MessageManagement.ConsoleMessage("Stack is empty", 4);
 
             uint value = frames[0].Stack[0];
             frames[0].Stack.RemoveAt(0);  // Remove the top of the stack
@@ -277,7 +278,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
         {
             uint address = NextPatchWord();
             string message = UTF8Decode(address);
-            Console.WriteLine(message);
+            MessageManagement.ConsoleMessage(message, 0);
         }
 
         private bool GetStackSizeOpcode(uint variable)
@@ -376,7 +377,8 @@ namespace UndergroundShop.Modules.Rom.Patcher
                 case 0xD0: WriteDataOpcode(); return true;
                 case 0xE0: IPSPatchOpcode(); return true;
                 default:
-                    throw new InvalidOperationException($"Undefined opcode {opcode:X2}");
+                    MessageManagement.ConsoleMessage($"Undefined opcode {opcode:X2}", 3);
+                    return false;
             }
         }
 
@@ -548,7 +550,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
             {
                 if (fileBuffer.GetByte((int)currentAddress++) != header[i])
                 {
-                    throw new InvalidOperationException("Invalid IPS header.");
+                    MessageManagement.ConsoleMessage("Invalid IPS header.", 4);
                 }
             }
 
@@ -615,7 +617,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
                 ">=" => first >= second,
                 "==" => first == second,
                 "!=" => first != second,
-                _ => throw new InvalidOperationException("Unknown condition"),
+                _ => false,
             };
         }
 
@@ -740,7 +742,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
         public uint Pop()
         {
             if (stackList.Count == 0)
-                throw new InvalidOperationException("Stack is empty");
+                MessageManagement.ConsoleMessage("Stack is empty", 3);
             uint value = stackList[0];
             stackList.RemoveAt(0);
             return value;
