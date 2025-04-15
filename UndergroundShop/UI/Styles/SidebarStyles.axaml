@@ -3,63 +3,43 @@
         xmlns:styling="clr-namespace:Avalonia.Styling;assembly=Avalonia.Styling"
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions">
-	<Style Selector="ListBox">
-		<Setter Property="Background" Value="#333333"/>
-		<Setter Property="Foreground" Value="White"/>
-		<Setter Property="BorderThickness" Value="0"/>
-		<Setter Property="ItemContainerStyle">
-			<Style>
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate>
-							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-								<ContentPresenter />
-							</Border>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-				<Setter Property="Padding" Value="10,5"/>
-				<Setter Property="Background" Value="#444444"/>
-				<Setter Property="BorderBrush" Value="Transparent"/>
-				<Setter Property="BorderThickness" Value="0"/>
-				<Setter Property="Margin" Value="0,2,0,2"/>
-				<Setter Property="FontSize" Value="14"/>
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="HorizontalContentAlignment" Value="Left"/>
-				<Setter Property="VerticalContentAlignment" Value="Center"/>
-				<Setter Property="Cursor" Value="Hand"/>
-				<Setter Property="Selector.IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-			</Style>
-		</Setter>
-	</Style>
-	<Style Selector="ListBoxItem">
-		<Setter Property="Background" Value="Transparent"/>
-		<Setter Property="BorderBrush" Value="Transparent"/>
-		<Setter Property="BorderThickness" Value="1"/>
-		<Setter Property="Margin" Value="0"/>
-		<Setter Property="Padding" Value="10"/>
-		<Setter Property="FontSize" Value="14"/>
-		<Setter Property="Foreground" Value="White"/>
-		<Setter Property="HorizontalContentAlignment" Value="Left"/>
-		<Setter Property="VerticalContentAlignment" Value="Center"/>
-		<Setter Property="Cursor" Value="Hand"/>
-		<Setter Property="IsHitTestVisible" Value="True"/>
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate>
-					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-						<ContentPresenter/>
-					</Border>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-		<Style.Triggers>
-			<ia:EventTriggerBehavior EventName="PointerEntered">
-				<ia:InvokeCommandAction Command="{Binding PointerEnteredCommand}" />
-			</ia:EventTriggerBehavior>
-			<ia:EventTriggerBehavior EventName="PointerExited">
-				<ia:InvokeCommandAction Command="{Binding PointerExitedCommand}" />
-			</ia:EventTriggerBehavior>
-		</Style.Triggers>
-	</Style>
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="#333333"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem">
+        <Setter Property="Background" Value="#444444"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Margin" Value="0,2,0,2"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Padding="{TemplateBinding Padding}"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ListBoxItem:pointerover">
+        <Setter Property="Background" Value="#555555"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem:selected">
+        <Setter Property="Background" Value="#666666"/>
+    </Style>
 </Styles>

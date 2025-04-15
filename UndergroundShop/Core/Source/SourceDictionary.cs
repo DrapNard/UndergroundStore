@@ -12,7 +12,7 @@ namespace UndergroundShop.Core.Source
 
     public class GameList
     {
-        public List<string> Info { get; set; }
-        public List<GameInfo> Games { get; set; } // Changed to List
+        public required List<string> Info { get; set; }
+        public required List<GameInfo> Games { get; set; } // Changed to List
     }
 }

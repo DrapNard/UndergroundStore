@@ -5,6 +5,6 @@
              RequestedThemeVariant="Default">
 	<Application.Styles>
 		<FluentTheme />
-		<StyleInclude Source="avares://UndergroundShop/Styles/SidebarStyles.axaml"/>
+		
 	</Application.Styles>
 </Application>

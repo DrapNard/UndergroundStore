@@ -2,8 +2,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="clr-namespace:UndergroundShop.ViewModels"
-    x:Class="UndergroundShop.Views.Main.HomeView"
-    x:DataType="vm:HomeViewModel">
+    x:Class="UndergroundShop.Views.BrowseView"
+    x:DataType="vm:BrowseViewModel">
 
 	<ScrollViewer>
 		<StackPanel>

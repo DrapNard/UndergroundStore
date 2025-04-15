@@ -1,21 +1,18 @@
 {
-  "Error": [
-    {
-      "FileManagement": [
-        {
-          "Commun": [
-            {
-              "DirNotEx": "The destination folder does not exist. (0fc0001)"
-
-            }
-          ],
-          "RenameMethode": [
-            {
-              ""
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  "Messages": {
+    "0fc0001": "The destination folder does not exist.",
+    "0fc0002": "The specified file could not be found.",
+    "1fr0003": "The new folder name is invalid.",
+    "1fr0004": "A folder with the new name already exists.",
+    "2fc0005": "An error occurred while decompressing the file.",
+    "3ss0001": "The SSL certificate is invalid.",
+    "3ss0002": "SSL handshake failed.",
+    "3ss0003": "SSL protocol mismatch occurred.",
+    "DownloadedFile": "Downloaded file to: {0}",
+    "FolderRenamed": "Folder renamed successfully to: {0}",
+    "DecompressionCompleted": "Decompression completed successfully.",
+    "FileDeleted": "The file {0} has been deleted.",
+    "ErrorRenamingFolder": "Error renaming folder: {0}",
+    "GenericError": "Error: {0}"
+  }
 }

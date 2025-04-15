@@ -41,13 +41,13 @@ namespace UndergroundShop.Modules.Rom.Patcher
         // Method to parse the UPS patch file structure
         private static PatchInfo ParseUPSPatch(byte[] patchData, int originalRomSize)
         {
-            PatchInfo patchInfo = new PatchInfo();
+            PatchInfo patchInfo = new();
 
             // The patchData should start with the 'UPS1' header, check for that
             if (patchData[0] != 'U' || patchData[1] != 'P' || patchData[2] != 'S' || patchData[3] != '1')
             {
                 MessageManagement.ConsoleMessage("Invalid UPS file header.", 4); // Error
-                return null;
+                return new PatchInfo(); // Retourne un objet vide au lieu de null
             }
 
             // Read sizes from patch
@@ -60,7 +60,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
             if (inputSize != originalRomSize)
             {
                 MessageManagement.ConsoleMessage("Input ROM size does not match the expected size in the UPS patch.", 4); // Error
-                return null;
+                return new PatchInfo(); // Retourne un objet vide au lieu de null
             }
 
             // Now extract CRC32 checksums (input, output, and patch CRC)
@@ -114,12 +114,10 @@ namespace UndergroundShop.Modules.Rom.Patcher
         // Method to verify CRC32 checksum of the patched ROM
         private static bool VerifyCRC32(byte[] data, uint expectedCRC)
         {
-            using (var crc32 = new Crc32())
-            {
-                uint computedCRC = crc32.ComputeChecksum(data);
-                MessageManagement.ConsoleMessage($"Computed CRC: {computedCRC}, Expected CRC: {expectedCRC}", 1); // Debug
-                return computedCRC == expectedCRC;
-            }
+            using var crc32 = new Crc32();
+            uint computedCRC = crc32.ComputeChecksum(data);
+            MessageManagement.ConsoleMessage($"Computed CRC: {computedCRC}, Expected CRC: {expectedCRC}", 1); // Debug
+            return computedCRC == expectedCRC;
         }
     }
 
@@ -129,6 +127,6 @@ namespace UndergroundShop.Modules.Rom.Patcher
         public uint CRC32Original { get; set; }
         public uint CRC32Patched { get; set; }
         public uint CRC32Patch { get; set; }
-        public byte[] Differences { get; set; }
+        public byte[] Differences { get; set; } = []; // Initialisation avec un tableau vide
     }
 }

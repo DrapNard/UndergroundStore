@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 using UndergroundShop.Management;
 
@@ -11,13 +12,32 @@ namespace UndergroundShop.Core.Source
             var gameList = JsonConvert.DeserializeObject<GameList>(json);
 
             // Handle potential parsing errors...
+            if (gameList?.Games == null)
+            {
+                MessageManagement.ConsoleMessage("Error: Failed to parse game list or games collection is null", 3);
+                return new GameList { Games = [], Info = [] };
+            }
 
             foreach (var gameRef in gameList.Games)
             {
+                if (gameRef == null) continue;
+                
                 try
                 {
-                    dynamic gameData = JsonConvert.DeserializeObject(gameRef.ToString());
-                    Task.Run( () => ParseIndividualGameJson(WebConnection.LoadJsonFromWeb(gameData)));
+                    string gameRefString = gameRef?.ToString() ?? string.Empty;
+                    if (string.IsNullOrEmpty(gameRefString)) continue;
+                    
+                    dynamic? gameData = JsonConvert.DeserializeObject(gameRefString);
+                    if (gameData != null)
+                    {
+                        Task.Run(async () => {
+                            string? jsonData = await WebConnection.LoadJsonFromWeb(gameData?.ToString() ?? "");
+                            if (!string.IsNullOrEmpty(jsonData))
+                            {
+                                ParseIndividualGameJson(JsonConvert.DeserializeObject(jsonData));
+                            }
+                        });
+                    }
                 }
                 catch (JsonSerializationException ex)
                 {
@@ -28,14 +48,29 @@ namespace UndergroundShop.Core.Source
             return gameList;
         }
 
-        private static void ParseIndividualGameJson(dynamic gameData)
+        private static void ParseIndividualGameJson(dynamic? gameData)
         {
-            var gameInfo = gameData.GameInfo;
-            var functionalities = gameData.Functionalities;
-            var languageSupport = gameData.LanguageSupport;
-            var socialLink = gameData.SocialLink;
-            var picture = gameData.Picture;
-            var store = gameData.Store;
+            if (gameData == null)
+            {
+                MessageManagement.ConsoleMessage("Error: Game data is null", 3);
+                return;
+            }
+
+            try
+            {
+                var gameInfo = gameData.GameInfo;
+                var functionalities = gameData.Functionalities;
+                var languageSupport = gameData.LanguageSupport;
+                var socialLink = gameData.SocialLink;
+                var picture = gameData.Picture;
+                var store = gameData.Store;
+
+                // Traitement des données du jeu...
+            }
+            catch (Exception ex)
+            {
+                MessageManagement.ConsoleMessage($"Error processing game data: {ex.Message}", 3);
+            }
         }
     }
 }

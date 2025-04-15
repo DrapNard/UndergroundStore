@@ -71,8 +71,27 @@ namespace UndergroundShop.UI.Models
 
         public GameItem()
         {
-            Languages = new List<LanguageSupport>();
-            SocialLinks = new List<SocialLink>();
+            _name = string.Empty;
+            _description = string.Empty;
+            _type = string.Empty;
+            _developmentTeamName = string.Empty;
+            _function = new Functionalities();
+            _languages = [];
+            _socialLinks = [];
+            _pictures = new Picture
+            {
+                Thumbnail = string.Empty,
+                LargeThumbnail = string.Empty,
+                Video = string.Empty,
+                Ilustration = []
+            };
+            _store = new Store
+            {
+                Checksum = string.Empty,
+                Platform = string.Empty,
+                VersionLink = string.Empty,
+                Host = string.Empty
+            };
         }
     }
 }

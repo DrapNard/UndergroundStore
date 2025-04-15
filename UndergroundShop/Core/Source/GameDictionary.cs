@@ -8,12 +8,12 @@ namespace UndergroundShop.Core.Source
 
     public class GameInfo
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Type { get; set; }
-        public string DevelopementTeamName { get; set; }
-        public Functionalities Function { get; set; }
-        public List<LanguageSupport> Languages { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+        public required string Type { get; set; }
+        public required string DevelopementTeamName { get; set; }
+        public required Functionalities Function { get; set; }
+        public required List<LanguageSupport> Languages { get; set; }
     }
 
     public class Functionalities
@@ -25,8 +25,8 @@ namespace UndergroundShop.Core.Source
 
     public class LanguageSupport
     {
-        public string LanguageCode { get; set; } // Use an enum for supported languages later
-        public List<LanguageDetails> Details { get; set; }
+        public required string LanguageCode { get; set; } // Use an enum for supported languages later
+        public required List<LanguageDetails> Details { get; set; }
     }
 
     public class LanguageDetails
@@ -38,22 +38,22 @@ namespace UndergroundShop.Core.Source
 
     public class SocialLink
     {
-        public string Link { get; set; }
+        public required string Link { get; set; }
     }
 
     public class Picture
     {
-        public string Thumbnail { get; set; }
-        public string LargeThumbnail { get; set; }
-        public string Video { get; set; }
-        public List<string> Ilustration { get; set; }
+        public required string Thumbnail { get; set; }
+        public required string LargeThumbnail { get; set; }
+        public required string Video { get; set; }
+        public required List<string> Ilustration { get; set; }
     }
 
     public class Store
     {
-        public string Checksum { get; set; }
-        public string Platform { get; set; }
-        public string VersionLink { get; set; }
-        public string Host { get; set; }
+        public required string Checksum { get; set; }
+        public required string Platform { get; set; }
+        public required string VersionLink { get; set; }
+        public required string Host { get; set; }
     }
 }

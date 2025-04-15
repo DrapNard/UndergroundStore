@@ -6,44 +6,62 @@ using UndergroundShop.Management;
 
 namespace UndergroundShop.Modules.Rom.Patcher
 {
+    /// <summary>
+    /// Implements a Binary Script Patch (BSP) format patcher for ROM files.
+    /// </summary>
     public class BspPatcher
     {
-        private ResizableMemoryBlock? fileBuffer;
-        private List<Frame> frames;
+        private readonly ResizableMemoryBlock fileBuffer;
+        private readonly List<Frame> frames = [];
         private uint currentFilePointer;
-        private bool currentFilePointerLocked;
         private bool initialized;
         private bool done;
         private uint exitStatus;
-        private byte[]? sha1Hash;
-        private bool dirty;
-        private uint selectionRangeCheck;
+        private bool currentFilePointerLocked;
+        
+        /// <summary>
+        /// Gets the SHA1 hash of the patched file after successful execution.
+        /// </summary>
+        public string? SHA1Hash { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the BspPatcher class.
+        /// </summary>
+        /// <param name="bsp">The BSP patch data.</param>
+        /// <param name="input">The input ROM data to be patched.</param>
         public BspPatcher(byte[] bsp, byte[] input)
         {
             fileBuffer = new ResizableMemoryBlock(input.Length);
-            frames = new List<Frame> { new Frame(bsp) };
-            sha1Hash = new byte[20]; // Initialize the hash array
+            frames = [new Frame(bsp)];
             Initialize(input);
         }
 
+        /// <summary>
+        /// Initializes the patcher with the input data.
+        /// </summary>
+        /// <param name="input">The input ROM data to be patched.</param>
         private void Initialize(byte[] input)
         {
-            fileBuffer = new ResizableMemoryBlock(input.Length);
             currentFilePointer = 0;
             currentFilePointerLocked = false;
             uint position = currentFilePointer;
 
             for (int i = 0; i < input.Length; i++)
-                fileBuffer.SetByte((int)position + i, input[i]);  // Use input[i] as the byte value
+                fileBuffer.SetByte((int)position + i, input[i]);
 
             initialized = true;
-            dirty = true;
         }
 
-        public void Run(uint? param = null)
+        /// <summary>
+        /// Runs the patch process until completion.
+        /// </summary>
+        public void Run()
         {
-            if (!initialized) MessageManagement.ConsoleMessage("BSP Patcher not initialized!", 3);
+            if (!initialized) 
+            {
+                MessageManagement.ConsoleMessage("BSP Patcher not initialized!", 3);
+                return;
+            }
 
             while (!done)
             {
@@ -65,7 +83,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
                 case 0x04: // CALL: Needs a word (address)
                 case 0x60: // SEEK: Needs a word (file position)
                 case 0x1E: // TRUNCATE: Needs a word (file size)
-                    return new Action[] { () => NextPatchWord() };
+                    return [() => NextPatchWord()];
 
                 case 0x03: // JUMP by variable
                 case 0x05: // CALL by variable
@@ -76,34 +94,37 @@ namespace UndergroundShop.Modules.Rom.Patcher
                 case 0x61: // SEEKFORWARD by variable
                 case 0x62: // SEEKBACK by variable
                 case 0x83: // JUMP by variable table
-                    return new Action[] { () => NextPatchVariable() };
+                    return [() => NextPatchVariable()];
 
                 case 0x10: // GETBYTE (byte address)
                 case 0x12: // GETHALFWORD (byte address)
                 case 0x14: // GETWORD (byte address)
-                    return new Action[] { () => NextPatchByte(), () => NextPatchWord() };
+                    return [() => NextPatchByte(), () => NextPatchWord()];
 
                 case 0x11: // GETBYTE (variable address)
                 case 0x13: // GETHALFWORD (variable address)
                 case 0x15: // GETWORD (variable address)
-                    return new Action[] { () => NextPatchByte(), () => NextPatchVariable() };
+                    return [() => NextPatchByte(), () => NextPatchVariable()];
 
                 case 0xA0: // BUFSTRING: Needs byte (address)
                 case 0xA1: // BUFCHAR: Needs byte (character)
-                    return new Action[] { () => NextPatchByte() };
+                    return [() => NextPatchByte()];
 
                 case 0x40: // CONDITIONAL JUMP (condition, variables, address)
                 case 0x41: // CONDITIONAL JUMP with condition check
-                    return new Action[] { () => NextPatchVariable(), () => NextPatchVariable(), () => NextPatchWord() };
+                    return [() => NextPatchVariable(), () => NextPatchVariable(), () => NextPatchWord()];
 
                 // Add other opcodes similarly as per their argument types...
 
                 default:
                     MessageManagement.ConsoleMessage($"Undefined opcode {opcode:X2}", 3);
-                    return new Action[] { () => NextPatchWord() };
+                    return [() => NextPatchWord()];
             }
         }
 
+        /// <summary>
+        /// Executes a single step of the patch process.
+        /// </summary>
         private void Step()
         {
             try
@@ -121,7 +142,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
                     done = true;
                     if (exitStatus == 0)
                     {
-                        sha1Hash = fileBuffer.CalculateSHA1();
+                        SHA1Hash = fileBuffer?.CalculateSHA1();
                     }
                 }
             }
@@ -132,12 +153,17 @@ namespace UndergroundShop.Modules.Rom.Patcher
             }
         }
 
+        /// <summary>
+        /// Decodes a null-terminated UTF-8 string from the specified address in the file buffer.
+        /// </summary>
+        /// <param name="address">The starting address of the string.</param>
+        /// <returns>The decoded UTF-8 string.</returns>
         private string UTF8Decode(uint address)
         {
-            List<byte> byteList = new List<byte>();
+            List<byte> byteList = [];
             while (true)
             {
-                byte nextByte = fileBuffer.GetByte((int)address++);
+                byte nextByte = fileBuffer?.GetByte((int)address++) ?? 0;
                 if (nextByte == 0) break;  // Stop when encountering a null terminator
                 byteList.Add(nextByte);
             }
@@ -190,16 +216,20 @@ namespace UndergroundShop.Modules.Rom.Patcher
             return true;
         }
 
-        private bool LockPosOpcode()
+        /// <summary>
+        /// Locks the current file pointer position.
+        /// </summary>
+        private void LockPosOpcode()
         {
             currentFilePointerLocked = true;
-            return true;
         }
 
-        private bool UnlockPosOpcode()
+        /// <summary>
+        /// Unlocks the current file pointer position.
+        /// </summary>
+        private void UnlockPosOpcode()
         {
             currentFilePointerLocked = false;
-            return true;
         }
 
         private bool SetStackSizeOpcode()
@@ -228,21 +258,21 @@ namespace UndergroundShop.Modules.Rom.Patcher
 
         private bool ReadByteOpcode(uint variable)
         {
-            frames[0].Variables[variable] = fileBuffer.GetByte((int)currentFilePointer);
+            frames[0].Variables[variable] = fileBuffer?.GetByte((int)currentFilePointer) ?? 0;
             currentFilePointer++;
             return true;
         }
 
         private bool ReadHalfWordOpcode(uint variable)
         {
-            frames[0].Variables[variable] = fileBuffer.GetHalfWord((int)currentFilePointer);
+            frames[0].Variables[variable] = fileBuffer?.GetHalfWord((int)currentFilePointer) ?? 0;
             currentFilePointer += 2;
             return true;
         }
 
         private bool ReadWordOpcode(uint variable)
         {
-            frames[0].Variables[variable] = fileBuffer.GetWord((int)currentFilePointer);
+            frames[0].Variables[variable] = fileBuffer?.GetWord((int)currentFilePointer) ?? 0;
             currentFilePointer += 4;
             return true;
         }
@@ -250,21 +280,21 @@ namespace UndergroundShop.Modules.Rom.Patcher
         private void WriteByteOpcode()
         {
             uint value = NextPatchVariable();
-            fileBuffer.SetByte((int)currentFilePointer, (byte)(value & 0xFF));
+            fileBuffer?.SetByte((int)currentFilePointer, (byte)(value & 0xFF));
             currentFilePointer++;
         }
 
         private void WriteHalfWordOpcode()
         {
             uint value = NextPatchVariable();
-            fileBuffer.SetHalfWord((int)currentFilePointer, (ushort)(value & 0xFFFF));
+            fileBuffer?.SetHalfWord((int)currentFilePointer, (ushort)(value & 0xFFFF));
             currentFilePointer += 2;
         }
 
         private void WriteWordOpcode()
         {
             uint value = NextPatchVariable();
-            fileBuffer.SetWord((int)currentFilePointer, value);
+            fileBuffer?.SetWord((int)currentFilePointer, value);
             currentFilePointer += 4;
         }
 
@@ -289,33 +319,33 @@ namespace UndergroundShop.Modules.Rom.Patcher
 
         private bool GetFileByteOpcode(uint variable)
         {
-            frames[0].Variables[variable] = fileBuffer.GetByte((int)currentFilePointer);
+            frames[0].Variables[variable] = fileBuffer?.GetByte((int)currentFilePointer) ?? 0;
             currentFilePointer++;
             return true;
         }
 
         private bool GetFileHalfWordOpcode(uint variable)
         {
-            frames[0].Variables[variable] = fileBuffer.GetHalfWord((int)currentFilePointer);
+            frames[0].Variables[variable] = fileBuffer?.GetHalfWord((int)currentFilePointer) ?? 0;
             currentFilePointer += 2;
             return true;
         }
 
         private bool GetFileWordOpcode(uint variable)
         {
-            frames[0].Variables[variable] = fileBuffer.GetWord((int)currentFilePointer);
+            frames[0].Variables[variable] = fileBuffer?.GetWord((int)currentFilePointer) ?? 0;
             currentFilePointer += 4;
             return true;
         }
         private bool LengthOpcode(uint variable)
         {
-            frames[0].Variables[variable] = (uint)fileBuffer.Size;  // Assuming fileBuffer has a Size property
+            frames[0].Variables[variable] = fileBuffer != null ? (uint)fileBuffer.Size : 0;  // Assuming fileBuffer has a Size property
             return true;
         }
         private bool TruncatePosOpcode()
         {
-            fileBuffer.Resize((int)currentFilePointer);  // Assuming fileBuffer has a Resize method
-            dirty = true;
+            fileBuffer?.Resize((int)currentFilePointer);  // Assuming fileBuffer has a Resize method
+            // Variable dirty supprimée car jamais utilisée
             return true;
         }
         private bool GetVariableOpcode(uint targetVariable, uint sourceVariable)
@@ -326,60 +356,125 @@ namespace UndergroundShop.Modules.Rom.Patcher
 
 
 
+        /// <summary>
+        /// Executes the specified opcode.
+        /// </summary>
+        /// <param name="opcode">The opcode to execute.</param>
+        /// <returns>True if execution should continue, false if it should pause.</returns>
         private bool ExecuteOpcode(uint opcode)
         {
-            switch (opcode)
+            try
             {
-                case 0x00: return true;  // NOP
-                case 0x01: return ReturnOpcode();
-                case 0x02: return JumpOpcode(NextPatchWord());
-                case 0x03: return CallOpcode(NextPatchWord());
-                case 0x04: return ExitOpcode(NextPatchWord());
-                case 0x08: return PushOpcode(NextPatchVariable());
-                case 0x0A: return PopOpcode(NextPatchVariable());
-                case 0x0B: return LengthOpcode(NextPatchVariable());
-                case 0x0C: return ReadByteOpcode(NextPatchVariable());
-                case 0x0D: return ReadHalfWordOpcode(NextPatchVariable());
-                case 0x0E: return ReadWordOpcode(NextPatchVariable());
-                case 0x18: WriteByteOpcode(); return true;
-                case 0x1A: WriteHalfWordOpcode(); return true;
-                case 0x1C: WriteWordOpcode(); return true;
-                case 0x20: AddOpcode(); return true;
-                case 0x28: MultiplyOpcode(); return true;
-                case 0x2C: DivideOpcode(); return true;
-                case 0x40: return ConditionalJumpOpcode("<");
-                case 0x50: return ConditionalJumpOpcode("==");
-                case 0x58: return JumpIfZeroOpcode(true);
-                case 0x60: SeekOpcode(); return true;
-                case 0x68: PrintOpcode(); return false;
-                case 0x80: LockPosOpcode(); return true;
-                case 0x81: UnlockPosOpcode(); return true;
-                case 0x82: TruncatePosOpcode(); return true;
-                case 0x90: return ReturnIfZeroOpcode(true);
-                case 0x92: PushPosOpcode(); return true;
-                case 0x93: PopPosOpcode(); return true;
-                case 0xA0: return BufStringOpcode();
-                case 0xA2: BufCharOpcode(); return true;
-                case 0xA4: BufNumberOpcode(); return true;
-                case 0xA6: PrintBufOpcode(); return false;
-                case 0xA7: ClearBufOpcode(); return true;
-                case 0xA8: SetStackSizeOpcode(); return true;
-                case 0xAA: GetStackSizeOpcode(NextPatchVariable()); return true;
-                case 0xAC: GetFileByteOpcode(NextPatchVariable()); return true;
-                case 0xAD: GetFileHalfWordOpcode(NextPatchVariable()); return true;
-                case 0xAE: GetFileWordOpcode(NextPatchVariable()); return true;
-                case 0xAF: GetVariableOpcode(NextPatchVariable(), NextPatchVariable()); return true;
-                case 0xB0: AddCarryOpcode(); return true;
-                case 0xB4: SubBorrowOpcode(); return true;
-                case 0xB8: LongMulOpcode(); return true;
-                case 0xBC: LongMulAccumOpcode(); return true;
-                case 0xC0: XORDataOpcode(); return true;
-                case 0xD0: WriteDataOpcode(); return true;
-                case 0xE0: IPSPatchOpcode(); return true;
-                default:
-                    MessageManagement.ConsoleMessage($"Undefined opcode {opcode:X2}", 3);
-                    return false;
+                return opcode switch
+                {
+                    // Control flow opcodes
+                    0x00 => true,                                  // NOP
+                    0x01 => ReturnOpcode(),                        // RETURN
+                    0x02 => JumpOpcode(NextPatchWord()),          // JUMP
+                    0x03 => CallOpcode(NextPatchWord()),          // CALL
+                    0x04 => ExitOpcode(NextPatchWord()),          // EXIT
+                    
+                    // Stack manipulation opcodes
+                    0x08 => PushOpcode(NextPatchVariable()),      // PUSH
+                    0x0A => PopOpcode(NextPatchVariable()),       // POP
+                    0x92 => PushPosOpcode(),                      // PUSHPOS
+                    0x93 => PopPosOpcode(),                       // POPPOS
+                    0xA8 => SetStackSizeOpcode(),                 // SETSTACKSIZE
+                    0xAA => GetStackSizeOpcode(NextPatchVariable()), // GETSTACKSIZE
+                    
+                    // File information opcodes
+                    0x0B => LengthOpcode(NextPatchVariable()),    // LENGTH
+                    
+                    // Read opcodes
+                    0x0C => ReadByteOpcode(NextPatchVariable()),     // READBYTE
+                    0x0D => ReadHalfWordOpcode(NextPatchVariable()), // READHALFWORD
+                    0x0E => ReadWordOpcode(NextPatchVariable()),     // READWORD
+                    0xAC => GetFileByteOpcode(NextPatchVariable()),  // GETFILEBYTE
+                    0xAD => GetFileHalfWordOpcode(NextPatchVariable()), // GETFILEHALFWORD
+                    0xAE => GetFileWordOpcode(NextPatchVariable()),  // GETFILEWORD
+                    
+                    // Write opcodes
+                    0x18 => ExecuteAndContinue(WriteByteOpcode),     // WRITEBYTE
+                    0x1A => ExecuteAndContinue(WriteHalfWordOpcode), // WRITEHALFWORD
+                    0x1C => ExecuteAndContinue(WriteWordOpcode),     // WRITEWORD
+                    0xD0 => ExecuteAndContinue(WriteDataOpcode),     // WRITEDATA
+                    
+                    // Arithmetic opcodes
+                    0x20 => ExecuteAndContinue(AddOpcode),         // ADD
+                    0x28 => ExecuteAndContinue(MultiplyOpcode),    // MULTIPLY
+                    0x2C => ExecuteAndContinue(DivideOpcode),      // DIVIDE
+                    0xB0 => ExecuteAndContinue(AddCarryOpcode),    // ADDCARRY
+                    0xB4 => ExecuteAndContinue(SubBorrowOpcode),   // SUBBORROW
+                    0xB8 => ExecuteAndContinue(LongMulOpcode),     // LONGMUL
+                    0xBC => ExecuteAndContinue(LongMulAccumOpcode), // LONGMULACCUM
+                    0xAF => GetVariableOpcode(NextPatchVariable(), NextPatchVariable()), // GETVARIABLE
+                    
+                    // Conditional opcodes
+                    0x40 => ConditionalJumpOpcode("<"),           // JUMPLT
+                    0x50 => ConditionalJumpOpcode("=="),         // JUMPEQ
+                    0x58 => JumpIfZeroOpcode(true),               // JUMPIFZERO
+                    0x90 => ReturnIfZeroOpcode(true),             // RETURNIFZERO
+                    
+                    // File pointer opcodes
+                    0x60 => ExecuteAndContinue(SeekOpcode),        // SEEK
+                    0x80 => ExecuteAndContinue(LockPosOpcode),     // LOCKPOS
+                    0x81 => ExecuteAndContinue(UnlockPosOpcode),   // UNLOCKPOS
+                    0x82 => TruncatePosOpcode(),                  // TRUNCATEPOS
+                    
+                    // Output opcodes
+                    0x68 => ExecuteWithPause(PrintOpcode),         // PRINT
+                    0xA0 => BufStringOpcode(),                     // BUFSTRING
+                    0xA2 => ExecuteAndContinue(BufCharOpcode),     // BUFCHAR
+                    0xA4 => ExecuteAndContinue(BufNumberOpcode),   // BUFNUMBER
+                    0xA6 => PrintBufOpcode(),                      // PRINTBUF
+                    0xA7 => ClearBufOpcode(),                      // CLEARBUF
+                    
+                    // Data manipulation opcodes
+                    0xC0 => ExecuteAndContinue(XORDataOpcode),     // XORDATA
+                    0xE0 => ExecuteAndContinue(IPSPatchOpcode),    // IPSPATCH
+                    
+                    // Default case for undefined opcodes
+                    _ => HandleUndefinedOpcode(opcode)
+                };
             }
+            catch (Exception ex)
+            {
+                MessageManagement.ConsoleMessage($"Error executing opcode {opcode:X2}: {ex.Message}", 3);
+                return false;
+            }
+        }
+        
+        /// <summary>
+        /// Handles an undefined opcode by logging an error message.
+        /// </summary>
+        /// <param name="opcode">The undefined opcode.</param>
+        /// <returns>False to indicate execution should stop.</returns>
+        private bool HandleUndefinedOpcode(uint opcode)
+        {
+            MessageManagement.ConsoleMessage($"Undefined opcode {opcode:X2}", 3);
+            return false;
+        }
+        
+        /// <summary>
+        /// Executes an action and returns true to continue execution.
+        /// </summary>
+        /// <param name="action">The action to execute.</param>
+        /// <returns>True to indicate execution should continue.</returns>
+        private bool ExecuteAndContinue(Action action)
+        {
+            action();
+            return true;
+        }
+        
+        /// <summary>
+        /// Executes an action and returns false to pause execution.
+        /// </summary>
+        /// <param name="action">The action to execute.</param>
+        /// <returns>False to indicate execution should pause.</returns>
+        private bool ExecuteWithPause(Action action)
+        {
+            action();
+            return false;
         }
 
         private bool ReturnOpcode()
@@ -512,7 +607,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
             frames[0].Variables[high] += result.high;
         }
 
-        private (uint high, uint low) LongMultiply(uint first, uint second)
+        private static (uint high, uint low) LongMultiply(uint first, uint second)
         {
             ulong result = (ulong)first * (ulong)second;
             uint low = (uint)(result & 0xFFFFFFFF);
@@ -524,9 +619,12 @@ namespace UndergroundShop.Modules.Rom.Patcher
         {
             uint start = NextPatchVariable();
             uint len = NextPatchVariable();
-            for (uint i = 0; i < len; i++)
+            if (fileBuffer is not null)
             {
-                fileBuffer.SetByte((int)(currentFilePointer + i), (byte)(fileBuffer.GetByte((int)(start + i)) ^ fileBuffer.GetByte((int)(currentFilePointer + i))));
+                for (uint i = 0; i < len; i++)
+                {
+                    fileBuffer.SetByte((int)(currentFilePointer + i), (byte)(fileBuffer.GetByte((int)(start + i)) ^ fileBuffer.GetByte((int)(currentFilePointer + i))));
+                }
             }
         }
 
@@ -536,15 +634,20 @@ namespace UndergroundShop.Modules.Rom.Patcher
             uint len = NextPatchVariable();
             for (uint i = 0; i < len; i++)
             {
-                fileBuffer.SetByte((int)(currentFilePointer + i), fileBuffer.GetByte((int)(start + i)));
+                if (fileBuffer != null)
+                {
+                    fileBuffer.SetByte((int)(currentFilePointer + i), fileBuffer.GetByte((int)(start + i)));
+                }
             }
         }
 
         private void IPSPatchOpcode()
         {
+            if (fileBuffer == null) return;
+            
             // IPS file format header "PATCH"
             uint currentAddress = currentFilePointer;
-            byte[] header = { 0x50, 0x41, 0x54, 0x43, 0x48 }; // "PATCH"
+            byte[] header = [ 0x50, 0x41, 0x54, 0x43, 0x48 ]; // "PATCH"
 
             for (int i = 0; i < header.Length; i++)
             {
@@ -588,7 +691,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
                 }
             }
 
-            dirty = true; // Mark fileBuffer as modified
+            // Variable dirty supprimée car jamais utilisée // Mark fileBuffer as modified
         }
 
         private uint NextPatchValue(int size)
@@ -602,12 +705,38 @@ namespace UndergroundShop.Modules.Rom.Patcher
         }
 
 
-        private uint NextPatchByte() => fileBuffer.GetByte((int)frames[0].InstructionPointer++);
-        private uint NextPatchHalfWord() => fileBuffer.GetHalfWord((int)frames[0].InstructionPointer++);
-        private uint NextPatchWord() => fileBuffer.GetWord((int)frames[0].InstructionPointer++);
+        /// <summary>
+        /// Reads the next byte from the patch data and advances the instruction pointer.
+        /// </summary>
+        /// <returns>The byte value read.</returns>
+        private uint NextPatchByte() => fileBuffer?.GetByte((int)frames[0].InstructionPointer++) ?? 0;
+        
+        /// <summary>
+        /// Reads the next half-word (2 bytes) from the patch data and advances the instruction pointer.
+        /// </summary>
+        /// <returns>The half-word value read.</returns>
+        private uint NextPatchHalfWord() => fileBuffer?.GetHalfWord((int)frames[0].InstructionPointer++) ?? 0;
+        
+        /// <summary>
+        /// Reads the next word (4 bytes) from the patch data and advances the instruction pointer.
+        /// </summary>
+        /// <returns>The word value read.</returns>
+        private uint NextPatchWord() => fileBuffer?.GetWord((int)frames[0].InstructionPointer++) ?? 0;
+        
+        /// <summary>
+        /// Reads a variable value using the next byte as an index.
+        /// </summary>
+        /// <returns>The variable value.</returns>
         private uint NextPatchVariable() => frames[0].Variables[NextPatchByte()];
 
-        private bool EvalCondition(uint first, uint second, string condition)
+        /// <summary>
+        /// Evaluates a condition between two values.
+        /// </summary>
+        /// <param name="first">The first value to compare.</param>
+        /// <param name="second">The second value to compare.</param>
+        /// <param name="condition">The condition operator ("<", "<=", ">", ">=", "==", "!=").</param>
+        /// <returns>True if the condition is satisfied, false otherwise.</returns>
+        private static bool EvalCondition(uint first, uint second, string condition)
         {
             return condition switch
             {
@@ -624,6 +753,9 @@ namespace UndergroundShop.Modules.Rom.Patcher
         // Opcodes for file reading/writing and other operations omitted for brevity
     }
 
+    /// <summary>
+    /// A memory block that can be dynamically resized, implemented as a list of fixed-size blocks.
+    /// </summary>
     public class ResizableMemoryBlock
     {
         private List<byte[]> parts;
@@ -632,7 +764,7 @@ namespace UndergroundShop.Modules.Rom.Patcher
 
         public ResizableMemoryBlock(int initialSize = 0)
         {
-            parts = new List<byte[]>();
+            parts = [];
             Resize(initialSize);
         }
 
@@ -707,38 +839,54 @@ namespace UndergroundShop.Modules.Rom.Patcher
             }
         }
 
-        public byte[] CalculateSHA1()
+        public string CalculateSHA1()
         {
-            using (SHA1 sha1 = SHA1.Create())
+            // Flatten the memory block into a single byte array.
+            byte[] fullData = new byte[currentSize];
+            int offset = 0;
+            foreach (var part in parts)
             {
-                // Flatten the memory block into a single byte array.
-                byte[] fullData = new byte[currentSize];
-                int offset = 0;
-                foreach (var part in parts)
-                {
-                    Array.Copy(part, 0, fullData, offset, part.Length);
-                    offset += part.Length;
-                }
+                Array.Copy(part, 0, fullData, offset, part.Length);
+                offset += part.Length;
+            }
 
-                return sha1.ComputeHash(fullData);
+            // Calculate SHA1 hash and convert to hexadecimal string
+            using (var sha1 = SHA1.Create())
+            {
+                byte[] hashBytes = sha1.ComputeHash(fullData);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
             }
         }
     }
 
+    /// <summary>
+    /// A stack implementation for the BSP patcher.
+    /// </summary>
     public class Stack
     {
-        private List<uint> stackList;
+        private readonly List<uint> stackList = [];
 
+        /// <summary>
+        /// Initializes a new instance of the Stack class.
+        /// </summary>
         public Stack()
         {
-            stackList = new List<uint>();
         }
 
+        /// <summary>
+        /// Pushes a value onto the stack.
+        /// </summary>
+        /// <param name="value">The value to push.</param>
         public void Push(uint value)
         {
             stackList.Insert(0, value);
         }
 
+        /// <summary>
+        /// Pops a value from the stack.
+        /// </summary>
+        /// <returns>The popped value.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
         public uint Pop()
         {
             if (stackList.Count == 0)
@@ -748,17 +896,42 @@ namespace UndergroundShop.Modules.Rom.Patcher
             return value;
         }
 
+        /// <summary>
+        /// Gets the number of elements in the stack.
+        /// </summary>
         public int Size => stackList.Count;
     }
 
 
+    /// <summary>
+    /// Represents an execution frame for the BSP patcher.
+    /// </summary>
     public class Frame
     {
-        public uint InstructionPointer;
-        public byte[] PatchSpace;
-        public List<uint> Stack = new List<uint>();
-        public uint[] Variables = new uint[256];
-        public string MessageBuffer = "";
+        /// <summary>
+        /// Gets or sets the current instruction pointer.
+        /// </summary>
+        public uint InstructionPointer { get; set; }
+        
+        /// <summary>
+        /// Gets the patch data.
+        /// </summary>
+        public byte[] PatchSpace { get; }
+        
+        /// <summary>
+        /// Gets the stack for this frame.
+        /// </summary>
+        public List<uint> Stack { get; } = new List<uint>();
+        
+        /// <summary>
+        /// Gets the variables array for this frame.
+        /// </summary>
+        public uint[] Variables { get; } = new uint[256];
+        
+        /// <summary>
+        /// Gets or sets the message buffer for this frame.
+        /// </summary>
+        public string MessageBuffer { get; set; } = "";
 
         public Frame(byte[] patchSpace)
         {

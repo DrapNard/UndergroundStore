@@ -6,9 +6,9 @@ namespace UndergroundShop.UI.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        public ObservableCollection<TabItemViewModel> TabItems { get; } = new ObservableCollection<TabItemViewModel>();
+        public ObservableCollection<TabItemViewModel> TabItems { get; } = [];
 
-        private TabItemViewModel _selectedTabItem;
+        private TabItemViewModel _selectedTabItem = null!;
         public TabItemViewModel SelectedTabItem
         {
             get => _selectedTabItem;
@@ -53,8 +53,8 @@ namespace UndergroundShop.UI.ViewModels
 
     public class TabItemViewModel : ObservableObject
     {
-        public string Header { get; set; }
-        public string Icon { get; set; }
-        public object Content { get; set; }
+        public string Header { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+        public object Content { get; set; } = null!;
     }
 }

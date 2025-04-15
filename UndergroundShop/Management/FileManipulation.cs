@@ -12,20 +12,33 @@ namespace UndergroundShop.Management
         private static readonly HttpClient client;
         private readonly Uri uri;
 
+        /// <summary>
+        /// Static constructor to initialize the HTTP client with custom certificate validation.
+        /// </summary>
         static WebFile()
         {
             var handler = new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) =>
                 {
-                    // Log and verify SSL certificate here
                     if (sslPolicyErrors == System.Net.Security.SslPolicyErrors.None)
                     {
                         return true; // Certificate is valid
                     }
 
-                    // Log or handle invalid certificates here
-                    MessageManagement.ConsoleMessage($"SSL certificate error: {sslPolicyErrors}", 4);
+                    if (sslPolicyErrors.HasFlag(System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors))
+                    {
+                        MessageManagement.ConsoleMessage("3ss0001", 4);
+                    }
+                    else if (sslPolicyErrors.HasFlag(System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch))
+                    {
+                        MessageManagement.ConsoleMessage("3ss0002", 4);
+                    }
+                    else
+                    {
+                        MessageManagement.ConsoleMessage("3ss0003", 4);
+                    }
+
                     return false; // Reject invalid certificates
                 },
                 SslProtocols = System.Security.Authentication.SslProtocols.Tls12 | System.Security.Authentication.SslProtocols.Tls13
@@ -38,14 +51,25 @@ namespace UndergroundShop.Management
             };
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebFile"/> class.
+        /// </summary>
+        /// <param name="url">The URL of the web file to manage.</param>
+        /// <exception cref="ArgumentException">Thrown if the URL is not HTTPS.</exception>
         public WebFile(string url)
         {
             uri = new Uri(url);
 
             if (uri.Scheme != Uri.UriSchemeHttps)
-                throw new ArgumentException("Only HTTPS protocol is allowed.");
+            {
+                MessageManagement.ConsoleMessage("1fr0003", 4);
+            }
         }
 
+        /// <summary>
+        /// Downloads the file from the specified URL to the given path.
+        /// </summary>
+        /// <param name="path">The destination directory to save the downloaded file.</param>
         public async Task DownloadAsync(string path)
         {
             try
@@ -79,52 +103,66 @@ namespace UndergroundShop.Management
                         }
                     }
 
-                    MessageManagement.ConsoleMessage($"Downloaded file to: {filePath}", 2);
+                    MessageManagement.ConsoleMessage("DownloadedFile", 2, filePath);
                 }
                 else
                 {
-                    MessageManagement.ConsoleMessage($"Failed to download file: {response.StatusCode}", 4);
+                    MessageManagement.ConsoleMessage("0fc0002", 4);
                 }
             }
             catch (Exception ex)
             {
-                MessageManagement.ConsoleMessage($"Error downloading file: {ex.Message}", 4);
+                MessageManagement.ConsoleMessage("GenericError", 4, ex.Message);
             }
         }
 
+        /// <summary>
+        /// Updates the progress of the download.
+        /// </summary>
+        /// <param name="percentage">The percentage of the download completed.</param>
+        /// <param name="downloadedBytes">The total bytes downloaded so far.</param>
         private void UpdateDownloadProgress(double percentage, long downloadedBytes)
         {
-            MessageManagement.ConsoleMessage($"Download progress: {percentage:F2}% ({downloadedBytes} bytes downloaded)", 1);
+            MessageManagement.ConsoleMessage("DownloadedFile", 1, $"{percentage:F2}% ({downloadedBytes} bytes downloaded)");
         }
 
+        /// <summary>
+        /// Extracts the file name from the given URI.
+        /// </summary>
+        /// <param name="uri">The URI of the file.</param>
+        /// <returns>The file name extracted from the URI.</returns>
         private static string GetFileNameFromUrl(Uri uri)
         {
             return Path.GetFileName(uri.LocalPath);
         }
 
+        /// <summary>
+        /// Gets the length of the file from the specified URL.
+        /// </summary>
+        /// <returns>The length of the file in bytes, or 0 if an error occurs.</returns>
         public async Task<long> GetFileLengthAsync()
         {
             try
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0");
 
                 using var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, uri));
 
                 if (response.IsSuccessStatusCode && response.Content.Headers.ContentLength.HasValue)
                 {
                     var contentLength = response.Content.Headers.ContentLength.Value;
-                    MessageManagement.ConsoleMessage($"File Length: {contentLength} bytes", 2);
+                    MessageManagement.ConsoleMessage("2fc0005", 2, contentLength);
                     return contentLength;
                 }
                 else
                 {
-                    MessageManagement.ConsoleMessage($"Failed to get file length: {response.StatusCode}", 4);
+                    MessageManagement.ConsoleMessage("0fc0002", 4);
                     return 0;
                 }
             }
             catch (Exception ex)
             {
-                MessageManagement.ConsoleMessage($"Error: {ex.Message}", 4);
+                MessageManagement.ConsoleMessage("GenericError", 4, ex.Message);
                 return 0;
             }
         }
@@ -132,50 +170,56 @@ namespace UndergroundShop.Management
 
     internal class FileManagement
     {
+        /// <summary>
+        /// Renames a folder to a new name.
+        /// </summary>
+        /// <param name="currentFolderPath">The current folder path.</param>
+        /// <param name="newFolderName">The new folder name.</param>
         public static void RenameFolder(string currentFolderPath, string newFolderName)
         {
-            // Ensure the current folder exists
             if (!Directory.Exists(currentFolderPath))
             {
-                MessageManagement.ConsoleMessage(MessageManagement.DirNotEx, 4);
+                MessageManagement.ConsoleMessage("0fc0001", 4);
                 return;
             }
 
-            // Ensure the new folder name is not empty or null
             if (string.IsNullOrWhiteSpace(newFolderName))
             {
-                Console.WriteLine("The new folder name is not valid.");
+                MessageManagement.ConsoleMessage("1fr0003", 4);
                 return;
             }
 
-            // Get the full path of the new folder by combining the parent directory with the new name
-            string newFolderPath = Path.Combine(path1: Path.GetDirectoryName(currentFolderPath), path2: newFolderName);
+            string newFolderPath = Path.Combine(Path.GetDirectoryName(currentFolderPath) ?? string.Empty, newFolderName);
 
-            // Check if a folder with the new name already exists
             if (Directory.Exists(newFolderPath))
             {
-                MessageManagement.ConsoleMessage("A folder with the new name already exists.", 3);
+                MessageManagement.ConsoleMessage("1fr0004", 3);
                 return;
             }
 
-            // Rename the folder
             try
             {
                 Directory.Move(currentFolderPath, newFolderPath);
-                MessageManagement.ConsoleMessage("Folder renamed successfully.", 2);
+                MessageManagement.ConsoleMessage("FolderRenamed", 2, newFolderName);
             }
             catch (Exception ex)
             {
-                MessageManagement.ConsoleMessage($"Error renaming the folder: {ex.Message}", 4);
+                MessageManagement.ConsoleMessage("ErrorRenamingFolder", 4, ex.Message);
             }
         }
 
+        /// <summary>
+        /// Finds folders matching a partial name within a parent directory.
+        /// </summary>
+        /// <param name="parentDirectory">The parent directory to search in.</param>
+        /// <param name="partialName">The partial name to search for.</param>
+        /// <returns>An array of matching folder paths.</returns>
         public static string[] FindFoldersByPartialName(string parentDirectory, string partialName)
         {
             if (!Directory.Exists(parentDirectory))
             {
-                MessageManagement.ConsoleMessage(MessageManagement.DirNotEx, 4);
-                return new string[0];
+                MessageManagement.ConsoleMessage("0fc0001", 4);
+                return Array.Empty<string>();
             }
 
             try
@@ -185,11 +229,16 @@ namespace UndergroundShop.Management
             }
             catch (Exception ex)
             {
-                MessageManagement.ConsoleMessage($"Error searching for folders: {ex.Message}", 4);
-                return new string[0];
+                MessageManagement.ConsoleMessage("GenericError", 4, ex.Message);
+                return Array.Empty<string>();
             }
         }
 
+        /// <summary>
+        /// Copies files and subdirectories from a source directory to a destination directory recursively.
+        /// </summary>
+        /// <param name="source">The source directory.</param>
+        /// <param name="destination">The destination directory.</param>
         public static async Task CopyFilesRecursively(DirectoryInfo source, DirectoryInfo destination)
         {
             if (!destination.Exists)
@@ -210,17 +259,22 @@ namespace UndergroundShop.Management
             }
         }
 
+        /// <summary>
+        /// Decompresses a .zip file to the specified extraction path.
+        /// </summary>
+        /// <param name="zipFilePath">The path to the .zip file.</param>
+        /// <param name="extractPath">The destination directory for extraction.</param>
         public static Task DecompressZip(string zipFilePath, string extractPath)
         {
             if (!File.Exists(zipFilePath))
             {
-                MessageManagement.ConsoleMessage("The .zip file does not exist.", 3);
+                MessageManagement.ConsoleMessage("0fc0002", 3);
                 return Task.CompletedTask;
             }
 
             if (!Directory.Exists(extractPath))
             {
-                MessageManagement.ConsoleMessage(MessageManagement.DirNotEx, 4);
+                MessageManagement.ConsoleMessage("0fc0001", 4);
                 return Task.CompletedTask;
             }
 
@@ -242,18 +296,23 @@ namespace UndergroundShop.Management
                         }
                     }
                 }
-                string extractedDirectoryName = Path.GetFileName(extractPath);
-                MessageManagement.ConsoleMessage("Decompression completed.", 2);
+                MessageManagement.ConsoleMessage("DecompressionCompleted", 2);
 
                 return Task.CompletedTask;
             }
             catch (Exception ex)
             {
-                MessageManagement.ConsoleMessage($"Error when decompress the .zip: {ex.Message}", 4);
+                MessageManagement.ConsoleMessage("2fc0005", 4, ex.Message);
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Deletes files in a folder while excluding specific files or subdirectories.
+        /// </summary>
+        /// <param name="folder">The folder to delete files from.</param>
+        /// <param name="folderToExclude">Subdirectories to exclude from deletion.</param>
+        /// <param name="fileToExclude">Files to exclude from deletion.</param>
         public static void DeleteFiles(string folder, string[]? folderToExclude = null, string[]? fileToExclude = null)
         {
             try
@@ -287,13 +346,13 @@ namespace UndergroundShop.Management
                     if (!isExcluded)
                     {
                         File.Delete(file);
-                        MessageManagement.ConsoleMessage($"The file {file} has been deleted.", 2);
+                        MessageManagement.ConsoleMessage("FileDeleted", 2, file);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageManagement.ConsoleMessage($"Error deleting files: {ex.Message}", 4);
+                MessageManagement.ConsoleMessage("GenericError", 4, ex.Message);
             }
         }
     }
